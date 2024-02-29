@@ -1,0 +1,39 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "de.glowman554.framework.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+  ],
+  "client": [
+    "AbstractBlockStateMixin",
+    "BasicBakedModelMixin",
+    "BlockMixin",
+    "ChatHeadsMixin",
+    "ChatHudAccessor",
+    "ChatHudMixin",
+    "ClientPlayerEntityMixin",
+    "ClientPlayNetworkHandlerMixin",
+    "ConnectScreenMixin",
+    "DeathScreenMixin",
+    "EntityMixin",
+    "GameOptionsMixin",
+    "GLFWMixin",
+    "InGameHudMixin",
+    "KeyBindingAccessor",
+    "LevelLoadingScreenMixin",
+    "LivingEntityMixin",
+    "MinecraftClientMixin",
+    "MinecraftServerAccessor",
+    "PlayerEntityRendererMixin",
+    "ServerListMixin",
+    "TextRendererMixin",
+    "darkloading.SplashOverlayMixin",
+    "darkloading.WindowMixin",
+    "sodium.BlockOcclusionCacheMixin",
+    "sodium.FluidRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

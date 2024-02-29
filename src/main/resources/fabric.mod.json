@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "framework",
+  "version": "${version}",
+  "name": "Framework",
+  "description": "Simple framework for a custom client",
+  "authors": [
+    "Glowman554"
+  ],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/framework/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "de.glowman554.framework.client.FrameworkClient"
+    ],
+    "preLaunch": [
+      "de.glowman554.framework.FrameworkPreLaunch"
+    ]
+  },
+  "mixins": [
+    "framework.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "minecraft": "${minecraft_version}"
+  }
+}
