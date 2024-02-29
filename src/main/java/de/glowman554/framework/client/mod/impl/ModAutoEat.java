@@ -19,7 +19,7 @@ public class ModAutoEat extends Mod {
     private int oldSlot = -1;
 
     @Saved
-    private int eatAt = 15;
+    private final int eatAt = 15;
 
 
     @Override
@@ -129,5 +129,10 @@ public class ModAutoEat extends Mod {
 
     public boolean isEating() {
         return oldSlot != -1;
+    }
+
+    @Override
+    public boolean isHacked() {
+        return true;
     }
 }

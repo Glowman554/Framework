@@ -44,4 +44,9 @@ public class ModMemoryDisplay extends ModDraggable {
     public String getName() {
         return "Memory display";
     }
+
+    @Override
+    public boolean isHacked() {
+        return false;
+    }
 }

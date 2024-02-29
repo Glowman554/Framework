@@ -116,4 +116,9 @@ public class ModAutoTotem extends ModDraggable {
 
         return nextTotemSlot;
     }
+
+    @Override
+    public boolean isHacked() {
+        return true;
+    }
 }

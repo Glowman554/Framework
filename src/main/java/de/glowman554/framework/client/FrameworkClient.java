@@ -3,6 +3,7 @@ package de.glowman554.framework.client;
 import de.glowman554.config.ConfigManager;
 import de.glowman554.framework.client.command.CommandManager;
 import de.glowman554.framework.client.command.impl.ProfileCommand;
+import de.glowman554.framework.client.command.impl.SetHackedCommand;
 import de.glowman554.framework.client.command.impl.UuidCommand;
 import de.glowman554.framework.client.commandshortcuts.CommandShortcutsManager;
 import de.glowman554.framework.client.config.Processors;
@@ -97,6 +98,7 @@ public class FrameworkClient implements ClientModInitializer {
         commandManager = new CommandManager(config.prefix);
         commandManager.addCommand("uuid", new UuidCommand());
         commandManager.addCommand("profile", new ProfileCommand());
+        commandManager.addCommand("set-hacked", new SetHackedCommand());
 
         commandShortcutsManager = new CommandShortcutsManager();
 

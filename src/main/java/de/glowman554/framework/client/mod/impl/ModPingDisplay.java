@@ -40,4 +40,9 @@ public class ModPingDisplay extends ModDraggable {
     public String getName() {
         return "Ping display";
     }
+
+    @Override
+    public boolean isHacked() {
+        return false;
+    }
 }

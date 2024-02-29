@@ -8,7 +8,7 @@ import java.util.Random;
 public class ModTips extends Mod {
     private final Random random = new Random();
     @Saved
-    private String[] tips = new String[]{
+    private final String[] tips = new String[]{
             "Place a bed in the nether, it'll be a blast!",
             "Drink milk to get rid of potion effects!",
             "Iron Golems are the protectors of villages, they will attack you if you attack a villager.",
@@ -115,5 +115,10 @@ public class ModTips extends Mod {
 
     public String getRandomTip() {
         return tips[random.nextInt(tips.length)];
+    }
+
+    @Override
+    public boolean isHacked() {
+        return false;
     }
 }

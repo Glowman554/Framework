@@ -1,5 +1,6 @@
 package de.glowman554.framework.client.screen;
 
+import de.glowman554.framework.client.FrameworkClient;
 import de.glowman554.framework.client.mod.Mod;
 import de.glowman554.framework.client.registry.FrameworkRegistries;
 import net.minecraft.client.MinecraftClient;
@@ -39,6 +40,10 @@ public class ModSelectionScreen extends Screen {
             List<Mod> mods = FrameworkRegistries.MODS.getRegistry().values().stream().sorted(Comparator.comparing(Mod::getName)).toList();
 
             for (Mod mod : mods) {
+                if (!FrameworkClient.getInstance().getConfig().enableHacks && mod.isHacked()) {
+                    continue;
+                }
+
                 addEntry(new ModListEntry(mod, this));
                 int i = client.textRenderer.getWidth(mod.getName());
                 if (i > maxKeyNameLength) {

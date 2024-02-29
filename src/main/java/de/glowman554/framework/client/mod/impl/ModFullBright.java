@@ -12,4 +12,9 @@ public class ModFullBright extends Mod {
     public String getName() {
         return "Fullbright";
     }
+
+    @Override
+    public boolean isHacked() {
+        return false;
+    }
 }

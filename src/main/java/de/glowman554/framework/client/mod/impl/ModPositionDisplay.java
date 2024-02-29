@@ -37,4 +37,9 @@ public class ModPositionDisplay extends ModDraggable {
     public String getName() {
         return "Position";
     }
+
+    @Override
+    public boolean isHacked() {
+        return false;
+    }
 }

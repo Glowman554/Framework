@@ -91,6 +91,11 @@ public class ModDiscordChat extends Mod {
         }
     }
 
+    @Override
+    public boolean isHacked() {
+        return false;
+    }
+
     private static class DiscordChatCommand extends Command {
         public DiscordChatCommand() {
             super("Set discord webhook!");

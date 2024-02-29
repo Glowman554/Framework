@@ -10,7 +10,7 @@ public class ModTwerk extends Mod {
     private int timer;
 
     @Saved
-    private int delay = 1;
+    private final int delay = 1;
 
     @Override
     public String getId() {
@@ -32,5 +32,10 @@ public class ModTwerk extends Mod {
         KeyBinding sneakKey = mc.options.sneakKey;
         sneakKey.setPressed(!sneakKey.isPressed());
         timer = -1;
+    }
+
+    @Override
+    public boolean isHacked() {
+        return false;
     }
 }

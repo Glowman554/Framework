@@ -14,6 +14,6 @@ public class FrameworkConfig extends AutoSavable {
     public boolean enableTelemetryDebug = false;
     @Saved
     public boolean runDataGenerators = false;
-
-
+    @Saved
+    public boolean enableHacks = false;
 }

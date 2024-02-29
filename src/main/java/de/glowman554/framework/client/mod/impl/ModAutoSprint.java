@@ -23,4 +23,9 @@ public class ModAutoSprint extends Mod {
         }
         mc.player.setSprinting(true);
     }
+
+    @Override
+    public boolean isHacked() {
+        return true;
+    }
 }

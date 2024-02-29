@@ -20,4 +20,9 @@ public class ModAutoRespawn extends Mod {
         assert mc.player != null;
         mc.player.requestRespawn();
     }
+
+    @Override
+    public boolean isHacked() {
+        return true;
+    }
 }

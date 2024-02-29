@@ -7,7 +7,7 @@ import de.glowman554.framework.client.mod.Mod;
 
 public class ModAutoLeave extends Mod {
     @Saved
-    private double health = 10F;
+    private final double health = 10F;
 
     @Override
     public String getId() {
@@ -33,5 +33,10 @@ public class ModAutoLeave extends Mod {
 
             setEnabled(false);
         }
+    }
+
+    @Override
+    public boolean isHacked() {
+        return true;
     }
 }

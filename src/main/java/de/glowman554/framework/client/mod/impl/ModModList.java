@@ -46,4 +46,9 @@ public class ModModList extends ModDraggable {
     public String getName() {
         return "Mod list";
     }
+
+    @Override
+    public boolean isHacked() {
+        return false;
+    }
 }

@@ -40,4 +40,9 @@ public class ModCriticals extends Mod {
         assert mc.player != null;
         mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(x, y, z, onGround));
     }
+
+    @Override
+    public boolean isHacked() {
+        return true;
+    }
 }

@@ -18,4 +18,9 @@ public class ModEntityESP extends Mod {
     public void setEnabled(boolean newEnabled) {
         super.setEnabled(newEnabled);
     }
+
+    @Override
+    public boolean isHacked() {
+        return true;
+    }
 }

@@ -3,7 +3,7 @@
   "id": "framework",
   "version": "${version}",
   "name": "Framework",
-  "description": "Simple framework for a custom client",
+  "description": "Simple custom client",
   "authors": [
     "Glowman554"
   ],
@@ -24,6 +24,7 @@
   ],
   "depends": {
     "fabricloader": ">=${loader_version}",
+    "fabric": ">=${fabric_version}",
     "minecraft": "${minecraft_version}"
   }
 }

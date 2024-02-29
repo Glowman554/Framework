@@ -34,4 +34,9 @@ public class ModFpsDisplay extends ModDraggable {
     public String getName() {
         return "FPS";
     }
+
+    @Override
+    public boolean isHacked() {
+        return false;
+    }
 }

@@ -69,6 +69,11 @@ public class ModDeathPositionSaver extends ModDraggable {
         }
     }
 
+    @Override
+    public boolean isHacked() {
+        return false;
+    }
+
     private static class DeathPositionSave implements Savable {
         private final ConfigManager deathConfigManager = new ConfigManager("deaths", false);
         private DeathPosition[] lastDeaths = new DeathPosition[]{};

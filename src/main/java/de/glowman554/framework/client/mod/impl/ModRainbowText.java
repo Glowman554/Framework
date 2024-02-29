@@ -29,4 +29,9 @@ public class ModRainbowText extends Mod {
     public String getName() {
         return "Rainbow";
     }
+
+    @Override
+    public boolean isHacked() {
+        return false;
+    }
 }

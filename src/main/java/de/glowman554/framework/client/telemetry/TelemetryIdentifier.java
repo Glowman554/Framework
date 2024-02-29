@@ -5,9 +5,9 @@ import de.glowman554.config.auto.Saved;
 
 public class TelemetryIdentifier extends AutoSavable {
     @Saved
-    private String playerName;
+    private final String playerName;
     @Saved
-    private int sessionId;
+    private final int sessionId;
 
     public TelemetryIdentifier(String playerName, int sessionId) {
         this.playerName = playerName;

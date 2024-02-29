@@ -105,6 +105,11 @@ public class ModQueueNotifier extends ModDraggable {
         return "Queue notifier";
     }
 
+    @Override
+    public boolean isHacked() {
+        return false;
+    }
+
     public static class QueueNotifierConfig extends AutoSavable {
         @Saved
         protected String webhook;

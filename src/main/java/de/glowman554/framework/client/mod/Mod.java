@@ -40,6 +40,10 @@ public abstract class Mod extends AutoSavable {
     public void setEnabled(boolean newEnabled) {
         this.enabled = newEnabled;
 
+        if (!FrameworkClient.getInstance().getConfig().enableHacks && isHacked()) {
+            enabled = false;
+        }
+
         save();
 
         if (enabled) {
@@ -68,4 +72,6 @@ public abstract class Mod extends AutoSavable {
     public boolean defaultEnable() {
         return false;
     }
+
+    public abstract boolean isHacked();
 }

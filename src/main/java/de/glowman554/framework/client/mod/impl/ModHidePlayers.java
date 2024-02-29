@@ -47,6 +47,11 @@ public class ModHidePlayers extends Mod {
         return false;
     }
 
+    @Override
+    public boolean isHacked() {
+        return false;
+    }
+
     private class HiddenCommand extends Command {
         private final ModHidePlayers mod;
 

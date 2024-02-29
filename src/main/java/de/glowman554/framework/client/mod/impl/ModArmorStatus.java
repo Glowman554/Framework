@@ -57,4 +57,9 @@ public class ModArmorStatus extends ModDraggable {
     public String getName() {
         return "Armor status";
     }
+
+    @Override
+    public boolean isHacked() {
+        return false;
+    }
 }

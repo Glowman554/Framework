@@ -4,13 +4,10 @@ import de.glowman554.framework.client.event.EventManager;
 import de.glowman554.framework.client.event.EventTarget;
 import de.glowman554.framework.client.event.impl.WindowOpeningEvent;
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
-import org.apache.logging.log4j.core.LogEvent;
-import org.apache.logging.log4j.core.appender.AbstractAppender;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 public class FrameworkPreLaunch implements PreLaunchEntrypoint {
     public static Optional<JFrame> frame = Optional.empty();

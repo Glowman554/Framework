@@ -43,4 +43,9 @@ public class ModAntiBreak extends Mod {
             }
         }
     }
+
+    @Override
+    public boolean isHacked() {
+        return true;
+    }
 }
