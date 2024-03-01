@@ -4,10 +4,12 @@ import de.glowman554.framework.client.FrameworkClient;
 import de.glowman554.framework.client.event.impl.LeftClickEvent;
 import de.glowman554.framework.client.event.impl.RightClickEvent;
 import de.glowman554.framework.client.event.impl.TickEvent;
+import de.glowman554.framework.client.event.impl.WorldJoinEvent;
 import de.glowman554.framework.client.mod.impl.ModNoTelemetry;
 import de.glowman554.framework.client.registry.FrameworkRegistries;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.RunArgs;
+import net.minecraft.client.gui.screen.Screen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -78,5 +80,10 @@ public class MinecraftClientMixin {
         if (event.isCanceled()) {
             ci.cancel();
         }
+    }
+
+    @Inject(at = @At("RETURN"), method = "disconnect(Lnet/minecraft/client/gui/screen/Screen;)V")
+    private void disconnect(Screen disconnectionScreen, CallbackInfo ci) {
+        new WorldJoinEvent(null, null, null).call();
     }
 }

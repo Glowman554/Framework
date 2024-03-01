@@ -22,6 +22,7 @@
   "mixins": [
     "framework.mixins.json"
   ],
+  "accessWidener": "framework.accesswidener",
   "depends": {
     "fabricloader": ">=${loader_version}",
     "fabric": ">=${fabric_version}",

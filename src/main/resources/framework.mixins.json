@@ -26,6 +26,7 @@
     "MinecraftClientMixin",
     "MinecraftServerAccessor",
     "PlayerEntityRendererMixin",
+    "QuickPlayLoggerMixin",
     "ServerListMixin",
     "TextRendererMixin",
     "darkloading.SplashOverlayMixin",

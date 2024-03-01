@@ -5,6 +5,7 @@ import de.glowman554.framework.client.FrameworkClient;
 import de.glowman554.framework.client.FrameworkKeyBinding;
 import de.glowman554.framework.client.mod.Mod;
 import de.glowman554.framework.client.mod.ModDraggable;
+import de.glowman554.framework.client.telemetry.TelemetryCollector;
 
 public class FrameworkRegistries {
     public static final FrameworkRegistry<String, FrameworkKeyBinding> KEY_BINDINGS = new FrameworkRegistry<>((s, frameworkKeyBinding) -> {
@@ -21,7 +22,13 @@ public class FrameworkRegistries {
             FrameworkClient.LOGGER.info("Binding keybinding {} to mod {}", binding.getTranslationKey(), mod.getId());
             binding.setLambda(mod::onKeybinding);
         }
-        mod.configure(new ConfigManager("mods/" + mod.getId(), false));
+        if (FrameworkClient.getInstance().getConfig().development.singleModFile) {
+            mod.configure(FrameworkClient.getInstance().getModsManager());
+        } else {
+            mod.configure(new ConfigManager("mods/" + mod.getId(), false));
+        }
         FrameworkClient.LOGGER.info("Registered mod {} with status {}", mod.getId(), mod.isEnabled() ? "enabled" : "disabled");
     });
+
+    public static final FrameworkRegistry<Class<? extends TelemetryCollector>, TelemetryCollector> TELEMETRY_COLLECTORS = new FrameworkRegistry<>((aClass, telemetryCollector) -> {});
 }

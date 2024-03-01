@@ -7,6 +7,7 @@ import de.glowman554.framework.client.command.impl.SetHackedCommand;
 import de.glowman554.framework.client.command.impl.UuidCommand;
 import de.glowman554.framework.client.commandshortcuts.CommandShortcutsManager;
 import de.glowman554.framework.client.config.Processors;
+import de.glowman554.framework.client.discord.RichPresence;
 import de.glowman554.framework.client.event.EventManager;
 import de.glowman554.framework.client.event.EventTarget;
 import de.glowman554.framework.client.event.impl.ModRegisterEvent;
@@ -18,6 +19,7 @@ import de.glowman554.framework.client.registry.FrameworkRegistries;
 import de.glowman554.framework.client.screen.CommandShortcutScreen;
 import de.glowman554.framework.client.screen.ModSelectionScreen;
 import de.glowman554.framework.client.telemetry.TelemetryManager;
+import de.glowman554.framework.client.telemetry.buildin.TelemetryDiscordUserCollector;
 import de.glowman554.framework.client.telemetry.buildin.TelemetryFabricModCollector;
 import de.glowman554.framework.client.telemetry.buildin.TelemetryModCollector;
 import de.glowman554.framework.client.utils.DirectoryUtils;
@@ -38,8 +40,9 @@ public class FrameworkClient implements ClientModInitializer {
     private ConfigManager configManager;
     private FrameworkConfig config;
     private TelemetryManager telemetryManager;
-    private TelemetryModCollector telemetryModCollector;
     private CommandShortcutsManager commandShortcutsManager;
+    private RichPresence richPresence;
+    private ConfigManager modsManager;
 
 
     public FrameworkClient() {
@@ -59,8 +62,6 @@ public class FrameworkClient implements ClientModInitializer {
 
         File dataFolder = new File("framework");
         DirectoryUtils.createDirectory(dataFolder);
-        DirectoryUtils.createDirectory(new File(dataFolder, "mods"));
-        DirectoryUtils.createDirectory(new File(dataFolder, "scripts"));
 
         ConfigManager.BASE_FOLDER = dataFolder;
 
@@ -72,12 +73,18 @@ public class FrameworkClient implements ClientModInitializer {
         }
         saveConfig();
 
-        if (config.runDataGenerators) {
+        if (config.development.singleModFile) {
+            modsManager = new ConfigManager("mods", false);
+        } else {
+            DirectoryUtils.createDirectory(new File(dataFolder, "mods"));
+        }
+
+        if (config.development.singleModFile) {
             LOGGER.info("Running data generators");
             Data.generate();
         }
 
-        ServerInfoFeatured.load(config.featuredServersBackend);
+        ServerInfoFeatured.load(config.development.featuredServersBackend);
 
         new FrameworkKeyBinding("key.framework.hud", GLFW.GLFW_KEY_H, FrameworkKeyBinding.MISC, HUDConfigScreen::open);
         new FrameworkKeyBinding("key.framework.modselect", GLFW.GLFW_KEY_M, FrameworkKeyBinding.MISC, ModSelectionScreen::open);
@@ -103,10 +110,13 @@ public class FrameworkClient implements ClientModInitializer {
         commandShortcutsManager = new CommandShortcutsManager();
 
         telemetryManager = new TelemetryManager();
-        if (config.enableTelemetryDebug) {
+        if (config.telemetry.debug) {
             telemetryManager.setDebug(true);
         }
         // telemetryManager.addEndpoint(new URL("https://telemetry.glowman554.de/"));
+
+        richPresence = new RichPresence();
+        richPresence.start();
 
 
         FabricLoader.getInstance().getEntrypointContainers("framework", FrameworkEntrypoint.class).forEach(extension -> {
@@ -115,9 +125,9 @@ public class FrameworkClient implements ClientModInitializer {
             entrypoint.initialize();
         });
 
-        telemetryManager.addCollector(new TelemetryFabricModCollector());
-        telemetryModCollector = new TelemetryModCollector();
-        telemetryManager.addCollector(telemetryModCollector);
+        FrameworkRegistries.TELEMETRY_COLLECTORS.register(TelemetryFabricModCollector.class, new TelemetryFabricModCollector());
+        FrameworkRegistries.TELEMETRY_COLLECTORS.register(TelemetryModCollector.class, new TelemetryModCollector());
+        FrameworkRegistries.TELEMETRY_COLLECTORS.register(TelemetryDiscordUserCollector.class, new TelemetryDiscordUserCollector());
     }
 
     private void keybinding(String modId) {
@@ -182,11 +192,15 @@ public class FrameworkClient implements ClientModInitializer {
         return telemetryManager;
     }
 
-    public TelemetryModCollector getTelemetryModCollector() {
-        return telemetryModCollector;
-    }
-
     public CommandShortcutsManager getCommandShortcutsManager() {
         return commandShortcutsManager;
+    }
+
+    public RichPresence getRichPresence() {
+        return richPresence;
+    }
+
+    public ConfigManager getModsManager() {
+        return modsManager;
     }
 }

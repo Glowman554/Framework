@@ -5,6 +5,9 @@ import de.glowman554.config.auto.AutoSavable;
 import de.glowman554.config.auto.Saved;
 import de.glowman554.framework.client.FrameworkClient;
 import de.glowman554.framework.client.event.EventManager;
+import de.glowman554.framework.client.registry.FrameworkRegistries;
+import de.glowman554.framework.client.telemetry.TelemetryCollector;
+import de.glowman554.framework.client.telemetry.buildin.TelemetryModCollector;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.toast.SystemToast;
@@ -52,7 +55,12 @@ public abstract class Mod extends AutoSavable {
             EventManager.unregister(this);
         }
 
-        FrameworkClient.getInstance().getTelemetryModCollector().send(this);
+        try {
+            TelemetryModCollector collector = (TelemetryModCollector) FrameworkRegistries.TELEMETRY_COLLECTORS.get(TelemetryModCollector.class);
+            collector.send(this);
+        } catch (IllegalArgumentException ignored) {
+
+        }
     }
 
 
