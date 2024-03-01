@@ -10,7 +10,8 @@ import de.glowman554.framework.client.telemetry.TelemetryCollector;
 public class FrameworkRegistries {
     public static final FrameworkRegistry<String, FrameworkKeyBinding> KEY_BINDINGS = new FrameworkRegistry<>((s, frameworkKeyBinding) -> {
     });
-
+    public static final FrameworkRegistry<Class<? extends TelemetryCollector>, TelemetryCollector> TELEMETRY_COLLECTORS = new FrameworkRegistry<>((aClass, telemetryCollector) -> {
+    });
     public static final FrameworkRegistry<Class<? extends Mod>, Mod> MODS = new FrameworkRegistry<>((aClass, mod) -> {
         if (mod instanceof ModDraggable modDraggable) {
             FrameworkClient.getInstance().getHudManager().register(modDraggable);
@@ -29,6 +30,4 @@ public class FrameworkRegistries {
         }
         FrameworkClient.LOGGER.info("Registered mod {} with status {}", mod.getId(), mod.isEnabled() ? "enabled" : "disabled");
     });
-
-    public static final FrameworkRegistry<Class<? extends TelemetryCollector>, TelemetryCollector> TELEMETRY_COLLECTORS = new FrameworkRegistry<>((aClass, telemetryCollector) -> {});
 }

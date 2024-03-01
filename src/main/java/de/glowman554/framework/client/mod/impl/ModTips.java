@@ -1,6 +1,7 @@
 package de.glowman554.framework.client.mod.impl;
 
 import de.glowman554.config.auto.Saved;
+import de.glowman554.framework.client.config.Configurable;
 import de.glowman554.framework.client.mod.Mod;
 
 import java.util.Random;
@@ -8,6 +9,7 @@ import java.util.Random;
 public class ModTips extends Mod {
     private final Random random = new Random();
     @Saved
+    @Configurable(text = "Tips")
     private final String[] tips = new String[]{
             "Place a bed in the nether, it'll be a blast!",
             "Drink milk to get rid of potion effects!",

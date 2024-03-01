@@ -1,6 +1,7 @@
 package de.glowman554.framework.client.mod.impl;
 
 import de.glowman554.config.auto.Saved;
+import de.glowman554.framework.client.config.Configurable;
 import de.glowman554.framework.client.event.EventTarget;
 import de.glowman554.framework.client.event.impl.ClientPlayerTickEvent;
 import de.glowman554.framework.client.mod.Mod;
@@ -19,7 +20,8 @@ public class ModAutoEat extends Mod {
     private int oldSlot = -1;
 
     @Saved
-    private final int eatAt = 15;
+    @Configurable(text = "Eat at hunger level")
+    private int eatAt = 15;
 
 
     @Override

@@ -4,6 +4,7 @@ import de.glowman554.config.auto.Saved;
 import de.glowman554.framework.client.FrameworkClient;
 import de.glowman554.framework.client.command.Command;
 import de.glowman554.framework.client.command.CommandEvent;
+import de.glowman554.framework.client.config.Configurable;
 import de.glowman554.framework.client.event.EventTarget;
 import de.glowman554.framework.client.event.impl.ChatEvent;
 import de.glowman554.framework.client.mod.Mod;
@@ -20,6 +21,7 @@ import java.util.TimerTask;
 public class ModDiscordChat extends Mod {
     private final ArrayList<ChatEvent> senderQueue = new ArrayList<>();
     @Saved
+    @Configurable(text = "Discord webhook")
     protected String webhook = "";
     private Timer timer;
 

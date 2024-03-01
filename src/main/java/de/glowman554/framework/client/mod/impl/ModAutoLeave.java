@@ -1,13 +1,15 @@
 package de.glowman554.framework.client.mod.impl;
 
 import de.glowman554.config.auto.Saved;
+import de.glowman554.framework.client.config.Configurable;
 import de.glowman554.framework.client.event.EventTarget;
 import de.glowman554.framework.client.event.impl.ClientPlayerTickEvent;
 import de.glowman554.framework.client.mod.Mod;
 
 public class ModAutoLeave extends Mod {
     @Saved
-    private final double health = 10F;
+    @Configurable(text = "Quit at health")
+    private int health = 10;
 
     @Override
     public String getId() {

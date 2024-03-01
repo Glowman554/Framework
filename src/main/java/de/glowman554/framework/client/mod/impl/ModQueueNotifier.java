@@ -1,12 +1,11 @@
 package de.glowman554.framework.client.mod.impl;
 
 
-import de.glowman554.config.Savable;
-import de.glowman554.config.auto.AutoSavable;
 import de.glowman554.config.auto.Saved;
 import de.glowman554.framework.client.FrameworkClient;
 import de.glowman554.framework.client.command.Command;
 import de.glowman554.framework.client.command.CommandEvent;
+import de.glowman554.framework.client.config.Configurable;
 import de.glowman554.framework.client.hud.ScreenPosition;
 import de.glowman554.framework.client.mod.ModDraggable;
 import de.glowman554.framework.client.registry.FrameworkRegistries;
@@ -20,8 +19,16 @@ import java.util.regex.Pattern;
 
 @TelemetryModCollector.ModTelemetryDisabled
 public class ModQueueNotifier extends ModDraggable {
-    @Saved(remap = Savable.class)
-    protected QueueNotifierConfig config = new QueueNotifierConfig();
+    @Saved
+    @Configurable(text = "Discord webhook")
+    protected String webhook = "";
+    @Saved
+    @Configurable(text = "Position regexes")
+    protected String[] regexes = new String[]{"Position in queue: (\\d*)"};
+    @Saved
+    @Configurable(text = "Notification position")
+    protected int notifyAt = 20;
+
 
     private int position = -1;
 
@@ -53,7 +60,7 @@ public class ModQueueNotifier extends ModDraggable {
         }
         content = content.replaceAll("§.", "").trim();
         int newPosition = -1;
-        for (String regex : config.regexes) {
+        for (String regex : regexes) {
             Pattern pattern = Pattern.compile(regex);
             Matcher matcher = pattern.matcher(content);
             while (matcher.find()) {
@@ -63,7 +70,7 @@ public class ModQueueNotifier extends ModDraggable {
 
         if (newPosition != -1 && newPosition != position) {
             position = newPosition;
-            if (position <= config.notifyAt) {
+            if (position <= notifyAt) {
                 sendNotification(String.format("There are only %d people in the queue! Get ready to play!", position));
             }
             FrameworkClient.LOGGER.info("Got new queue position {}", position);
@@ -71,8 +78,8 @@ public class ModQueueNotifier extends ModDraggable {
     }
 
     private void sendNotification(String content) {
-        if (!config.webhook.isEmpty()) {
-            WebHook webHook = new WebHook(config.webhook);
+        if (!webhook.isEmpty()) {
+            WebHook webHook = new WebHook(webhook);
             webHook.setUsername("Queue Notification");
             webHook.setContent(content);
             try {
@@ -110,21 +117,6 @@ public class ModQueueNotifier extends ModDraggable {
         return false;
     }
 
-    public static class QueueNotifierConfig extends AutoSavable {
-        @Saved
-        protected String webhook;
-        @Saved
-        protected String[] regexes;
-        @Saved
-        protected int notifyAt;
-
-        public QueueNotifierConfig() {
-            regexes = new String[]{"Position in queue: (\\d*)"};
-            notifyAt = 20;
-            webhook = "";
-        }
-    }
-
     private static class QueueNotifierCommand extends Command {
         public QueueNotifierCommand() {
             super("Set discord webhook!");
@@ -136,7 +128,7 @@ public class ModQueueNotifier extends ModDraggable {
                 event.commandFail("No webhook provided!");
             } else {
                 ModQueueNotifier mod = (ModQueueNotifier) FrameworkRegistries.MODS.get(ModQueueNotifier.class);
-                mod.config.webhook = event.args()[0];
+                mod.webhook = event.args()[0];
                 mod.save();
             }
         }

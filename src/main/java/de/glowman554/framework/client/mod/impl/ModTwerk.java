@@ -1,6 +1,7 @@
 package de.glowman554.framework.client.mod.impl;
 
 import de.glowman554.config.auto.Saved;
+import de.glowman554.framework.client.config.Configurable;
 import de.glowman554.framework.client.event.EventTarget;
 import de.glowman554.framework.client.event.impl.ClientPlayerTickEvent;
 import de.glowman554.framework.client.mod.Mod;
@@ -10,7 +11,8 @@ public class ModTwerk extends Mod {
     private int timer;
 
     @Saved
-    private final int delay = 1;
+    @Configurable(text = "Twerk delay")
+    private int delay = 1;
 
     @Override
     public String getId() {

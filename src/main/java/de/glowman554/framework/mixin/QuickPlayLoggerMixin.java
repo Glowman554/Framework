@@ -1,6 +1,5 @@
 package de.glowman554.framework.mixin;
 
-import de.glowman554.framework.client.FrameworkClient;
 import de.glowman554.framework.client.event.impl.WorldJoinEvent;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.QuickPlayLogger;

@@ -1,6 +1,7 @@
 package de.glowman554.framework.client.screen;
 
 import de.glowman554.framework.client.FrameworkClient;
+import de.glowman554.framework.client.config.Configurable;
 import de.glowman554.framework.client.mod.Mod;
 import de.glowman554.framework.client.registry.FrameworkRegistries;
 import net.minecraft.client.MinecraftClient;
@@ -13,6 +14,7 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ElementListWidget;
 import net.minecraft.text.Text;
 
+import java.lang.reflect.Field;
 import java.util.Comparator;
 import java.util.List;
 
@@ -60,8 +62,10 @@ public class ModSelectionScreen extends Screen {
 
     private static class ModListEntry extends ElementListWidget.Entry<ModListEntry> {
         private final ButtonWidget toggleButton;
+        private final ButtonWidget configButton;
         private final Mod mod;
         private final ModListWidget parent;
+        private boolean isConfigurable = false;
 
         public ModListEntry(Mod mod, ModListWidget parent) {
             this.mod = mod;
@@ -71,7 +75,22 @@ public class ModSelectionScreen extends Screen {
                 mod.setEnabled(!mod.isEnabled());
                 button.setMessage(Text.of(getButtonString()));
                 button.setTooltip(Tooltip.of(Text.of(getButtonTooltip())));
-            }).tooltip(Tooltip.of(Text.of(getButtonTooltip()))).dimensions(0, 0, 75 + 50, 20).build();
+            }).tooltip(Tooltip.of(Text.of(getButtonTooltip()))).dimensions(0, 0, 75 + 25, 20).build();
+
+            for (Field field : mod.getClass().getDeclaredFields()) {
+                if (field.isAnnotationPresent(Configurable.class)) {
+                    isConfigurable = true;
+                    break;
+                }
+            }
+
+            if (isConfigurable) {
+                configButton = ButtonWidget.builder(Text.of("⚙"), button -> {
+                    ModConfigurationScreen.open(mod);
+                }).tooltip(Tooltip.of(Text.of("Configure " + mod.getName().toLowerCase()))).dimensions(0, 0, 20, 20).build();
+            } else {
+                configButton = null;
+            }
         }
 
         private String getButtonString() {
@@ -97,7 +116,11 @@ public class ModSelectionScreen extends Screen {
 
         @Override
         public List<? extends Element> children() {
-            return List.of(toggleButton);
+            if (isConfigurable) {
+                return List.of(toggleButton, configButton);
+            } else {
+                return List.of(toggleButton);
+            }
         }
 
         @Override
@@ -105,6 +128,12 @@ public class ModSelectionScreen extends Screen {
             toggleButton.setX(x + 90);
             toggleButton.setY(y);
             toggleButton.render(context, mouseX, mouseY, tickDelta);
+
+            if (isConfigurable) {
+                configButton.setX(x + 90 + 75 + 25);
+                configButton.setY(y);
+                configButton.render(context, mouseX, mouseY, tickDelta);
+            }
 
             String renderName = mod.getName();
             context.drawText(MinecraftClient.getInstance().textRenderer, renderName, x + 90 - parent.maxKeyNameLength, y + entryHeight / 2, -1, true);

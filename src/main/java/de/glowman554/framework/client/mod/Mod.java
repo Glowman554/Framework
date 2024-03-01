@@ -6,7 +6,6 @@ import de.glowman554.config.auto.Saved;
 import de.glowman554.framework.client.FrameworkClient;
 import de.glowman554.framework.client.event.EventManager;
 import de.glowman554.framework.client.registry.FrameworkRegistries;
-import de.glowman554.framework.client.telemetry.TelemetryCollector;
 import de.glowman554.framework.client.telemetry.buildin.TelemetryModCollector;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;

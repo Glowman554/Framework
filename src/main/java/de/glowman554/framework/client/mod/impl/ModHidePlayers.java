@@ -4,6 +4,7 @@ import de.glowman554.config.auto.Saved;
 import de.glowman554.framework.client.FrameworkClient;
 import de.glowman554.framework.client.command.Command;
 import de.glowman554.framework.client.command.CommandEvent;
+import de.glowman554.framework.client.config.Configurable;
 import de.glowman554.framework.client.mod.Mod;
 
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.List;
 
 public class ModHidePlayers extends Mod {
     @Saved
+    @Configurable(text = "UUID's of hidden players")
     private String[] hiddenPlayers = new String[]{};
 
     @Override
