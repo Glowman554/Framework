@@ -6,22 +6,21 @@ import de.glowman554.framework.client.event.EventTarget;
 import de.glowman554.framework.client.event.impl.ClientPlayerTickEvent;
 import de.glowman554.framework.client.mod.Mod;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.FoodComponent;
+import net.minecraft.component.type.FoodComponents;
 import net.minecraft.entity.player.HungerManager;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.FoodComponent;
-import net.minecraft.item.FoodComponents;
-import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.EntityHitResult;
-
-import java.util.Objects;
 
 public class ModAutoEat extends Mod {
     private int oldSlot = -1;
 
     @Saved
     @Configurable(text = "Eat at hunger level")
-    private int eatAt = 15;
+    private final int eatAt = 15;
 
 
     @Override
@@ -51,7 +50,7 @@ public class ModAutoEat extends Mod {
 
         if (isEating()) {
             assert mc.player != null;
-            if (mc.player.getInventory().getMainHandStack() == null || !mc.player.getInventory().getMainHandStack().getItem().isFood()) {
+            if (mc.player.getInventory().getMainHandStack() == null || mc.player.getInventory().getMainHandStack().get(DataComponentTypes.FOOD) == null) {
                 stopEating();
                 return;
             }
@@ -96,17 +95,16 @@ public class ModAutoEat extends Mod {
         FoodComponent bestFood = null;
         int bestSlot = -1;
         for (int slot = 0; slot < 9; slot++) {
-            Item item = inventory.getStack(slot).getItem();
+            ItemStack item = inventory.getStack(slot);
+            FoodComponent foodComponent = item.get(DataComponentTypes.FOOD);
+            if (foodComponent != null) {
 
-            if (item.isFood()) {
-
-                FoodComponent food = Objects.requireNonNull(item.getFoodComponent());
-                if (food == FoodComponents.CHORUS_FRUIT) {
+                if (foodComponent == FoodComponents.CHORUS_FRUIT) {
                     continue;
                 }
 
-                if (bestFood == null || bestFood.getSaturationModifier() < food.getSaturationModifier()) {
-                    bestFood = food;
+                if (bestFood == null || bestFood.saturation() < foodComponent.saturation()) {
+                    bestFood = foodComponent;
                     bestSlot = slot;
                 }
             }

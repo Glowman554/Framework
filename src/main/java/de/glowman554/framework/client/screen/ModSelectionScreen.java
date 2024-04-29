@@ -37,7 +37,6 @@ public class ModSelectionScreen extends Screen {
 
         public ModListWidget(MinecraftClient minecraftClient, int width, int height, int y, int entryHeight) {
             super(minecraftClient, width, height, y, entryHeight);
-            setRenderBackground(false);
 
             List<Mod> mods = FrameworkRegistries.MODS.getRegistry().values().stream().sorted(Comparator.comparing(Mod::getName)).toList();
 
@@ -55,8 +54,8 @@ public class ModSelectionScreen extends Screen {
         }
 
         @Override
-        protected int getScrollbarPositionX() {
-            return super.getScrollbarPositionX() + 15;
+        protected int getScrollbarX() {
+            return super.getScrollbarX() + 15;
         }
     }
 

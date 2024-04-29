@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.2-SNAPSHOT'
+    id 'fabric-loom' version '1.6-SNAPSHOT'
     id 'maven-publish'
 }
 
@@ -29,8 +29,8 @@ dependencies {
     include(modImplementation("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"))
     include(implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:0.2.2")))
 
-    include(implementation("ConfigManager-lib:ConfigManager-lib:1.0.2"))
-    include(modImplementation(name: "chat_heads-0.10.30-fabric-1.20.3"))
+    include(implementation("ConfigManager-lib:ConfigManager-lib:1.0.4"))
+    include(modImplementation(name: "chat_heads-0.11.0-fabric-1.20.5"))
 }
 
 processResources {

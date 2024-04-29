@@ -8,6 +8,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.registry.entry.RegistryEntry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -22,7 +23,7 @@ public abstract class LivingEntityMixin {
     public abstract Map<StatusEffect, StatusEffectInstance> getActiveStatusEffects();
 
     @Inject(at = @At("RETURN"), method = "hasStatusEffect", cancellable = true)
-    public void hasStatusEffect(StatusEffect effect, CallbackInfoReturnable<Boolean> cir) {
+    public void hasStatusEffect(RegistryEntry<StatusEffect> effect, CallbackInfoReturnable<Boolean> cir) {
         LivingEntity entity = (LivingEntity) (Object) this;
         if (entity instanceof ClientPlayerEntity) {
             try {
@@ -36,7 +37,7 @@ public abstract class LivingEntityMixin {
     }
 
     @Inject(at = @At("RETURN"), method = "getStatusEffect", cancellable = true)
-    public void getStatusEffect(StatusEffect effect, CallbackInfoReturnable<StatusEffectInstance> cir) {
+    public void getStatusEffect(RegistryEntry<StatusEffect> effect, CallbackInfoReturnable<StatusEffectInstance> cir) {
         LivingEntity entity = (LivingEntity) (Object) this;
         if (entity instanceof ClientPlayerEntity) {
             try {

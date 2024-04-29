@@ -12,7 +12,7 @@ public class ModTwerk extends Mod {
 
     @Saved
     @Configurable(text = "Twerk delay")
-    private int delay = 1;
+    private final int delay = 1;
 
     @Override
     public String getId() {

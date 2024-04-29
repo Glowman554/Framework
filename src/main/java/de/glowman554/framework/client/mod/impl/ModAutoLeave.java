@@ -9,7 +9,7 @@ import de.glowman554.framework.client.mod.Mod;
 public class ModAutoLeave extends Mod {
     @Saved
     @Configurable(text = "Quit at health")
-    private int health = 10;
+    private final int health = 10;
 
     @Override
     public String getId() {

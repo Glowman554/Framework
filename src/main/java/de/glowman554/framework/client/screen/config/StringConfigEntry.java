@@ -18,6 +18,7 @@ public class StringConfigEntry extends ModConfigurationScreen.ModConfigEntry {
         super(field, mod, parent, client);
 
         textFieldWidget = new TextFieldWidget(client.textRenderer, 100, 20, Text.empty());
+        textFieldWidget.setMaxLength(4096);
         try {
             textFieldWidget.setText(field.get(mod).toString());
         } catch (IllegalAccessException e) {

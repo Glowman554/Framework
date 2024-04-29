@@ -35,7 +35,6 @@ public class CommandShortcutScreen extends Screen {
     private static class CommandShortcutWidget extends ElementListWidget<CommandShortcutEntry> {
         public CommandShortcutWidget(MinecraftClient minecraftClient, int width, int height, int y, int entryHeight, CommandShortcut[] shortcuts, CommandShortcutScreen commandShortcutScreen) {
             super(minecraftClient, width, height, y, entryHeight);
-            setRenderBackground(false);
 
             for (CommandShortcut shortcut : shortcuts) {
                 addEntry(new CommandShortcutEntry(shortcut, commandShortcutScreen));
@@ -43,8 +42,8 @@ public class CommandShortcutScreen extends Screen {
         }
 
         @Override
-        protected int getScrollbarPositionX() {
-            return super.getScrollbarPositionX() + 15;
+        protected int getScrollbarX() {
+            return super.getScrollbarX() + 15;
         }
     }
 

@@ -22,6 +22,7 @@ public class EnglishLanguageGenerator extends LanguageGenerator {
         addTranslation("key.framework.rainbow", "Toggle rainbow");
         addTranslation("key.framework.xray", "Toggle x-ray");
         addTranslation("key.framework.auto-leave", "Toggle auto leave");
+        addTranslation("key.framework.twerk", "Toggle twerk");
     }
 
 

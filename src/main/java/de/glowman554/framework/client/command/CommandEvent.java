@@ -1,6 +1,5 @@
 package de.glowman554.framework.client.command;
 
-import de.glowman554.framework.mixin.ChatHudAccessor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.MessageIndicator;
 import net.minecraft.text.Text;
@@ -14,8 +13,7 @@ public record CommandEvent(String message, String command, String[] args) {
     }
 
     public static void sendText(String text) {
-        ChatHudAccessor accessor = (ChatHudAccessor) MinecraftClient.getInstance().inGameHud.getChatHud();
-        accessor.callAddMessage(Text.of(text), null, MinecraftClient.getInstance().inGameHud.getTicks(), MessageIndicator.notSecure(), false);
+        MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of(text), null, MessageIndicator.notSecure());
     }
 
     public static CommandEvent from(String message) {

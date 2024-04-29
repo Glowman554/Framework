@@ -161,6 +161,7 @@ public class FrameworkClient implements ClientModInitializer {
         register(new ModAutoLeave());
         register(new ModTips());
         register(new ModTwerk());
+        register(new ModMenuBackground());
     }
 
     private void register(Mod mod) {

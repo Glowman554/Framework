@@ -40,7 +40,7 @@ public class ModArmorStatus extends ModDraggable {
 
         int yAdd = (-16 * i) + 48;
 
-        if (itemStack.getItem().isDamageable()) {
+        if (itemStack.isDamageable()) {
             double damage = ((itemStack.getMaxDamage() - itemStack.getDamage()) / (double) itemStack.getMaxDamage()) * 100;
             drawContext.drawText(textRenderer, String.format("%.2f%%", damage), pos.getAbsoluteX() + 20, pos.getAbsoluteY() + yAdd + 5, -1, true);
         }

@@ -64,7 +64,6 @@ public class ModConfigurationScreen extends Screen {
         public ModConfigWidget(Mod mod, MinecraftClient minecraftClient, int width, int height, int y, int entryHeight, ModConfigurationScreen parent) {
             super(minecraftClient, width, height, y, entryHeight);
             this.parent = parent;
-            setRenderBackground(false);
 
             for (Field field : mod.getClass().getDeclaredFields()) {
                 if (field.isAnnotationPresent(Configurable.class)) {
@@ -80,8 +79,8 @@ public class ModConfigurationScreen extends Screen {
         }
 
         @Override
-        protected int getScrollbarPositionX() {
-            return super.getScrollbarPositionX() + 15;
+        protected int getScrollbarX() {
+            return super.getScrollbarX() + 15;
         }
     }
 
