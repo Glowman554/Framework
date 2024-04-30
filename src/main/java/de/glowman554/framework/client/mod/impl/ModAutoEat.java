@@ -16,12 +16,10 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.hit.EntityHitResult;
 
 public class ModAutoEat extends Mod {
-    private int oldSlot = -1;
-
     @Saved
     @Configurable(text = "Eat at hunger level")
     private final int eatAt = 15;
-
+    private int oldSlot = -1;
 
     @Override
     public String getId() {

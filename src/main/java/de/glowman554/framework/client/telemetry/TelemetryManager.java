@@ -1,6 +1,8 @@
 package de.glowman554.framework.client.telemetry;
 
 import de.glowman554.framework.client.FrameworkClient;
+import de.glowman554.framework.client.mod.Mod;
+import de.glowman554.framework.client.mod.impl.ModNoTelemetry;
 import de.glowman554.framework.client.registry.FrameworkRegistries;
 import net.minecraft.client.MinecraftClient;
 import net.shadew.json.Json;
@@ -23,15 +25,25 @@ public class TelemetryManager extends TimerTask {
 
     public TelemetryManager() {
         sessionId = new Random().nextInt();
-        FrameworkClient.LOGGER.info(prefix + "sessionId: " + sessionId);
+    }
 
+    public void start() {
         boolean disabled = MinecraftClient.getInstance().getGameProfile().getName().matches("Player\\d+");
+        try {
+            Mod noTelemetry = FrameworkRegistries.MODS.get(ModNoTelemetry.class);
+            if (noTelemetry.isEnabled()) {
+                disabled = true;
+            }
+        } catch (IllegalArgumentException ignored) {
+        }
+
         if (FrameworkClient.getInstance().getConfig().telemetry.enable && !disabled) {
+            FrameworkClient.LOGGER.info(prefix + "sessionId: " + sessionId);
+
             Timer timer = new Timer("Telemetry timer");
             timer.scheduleAtFixedRate(this, 0, 1000);
         } else {
             FrameworkClient.LOGGER.info(prefix + "Disabling telemetry");
-
         }
     }
 

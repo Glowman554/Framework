@@ -7,6 +7,7 @@ import de.glowman554.framework.client.event.impl.TickEvent;
 import de.glowman554.framework.client.event.impl.WorldJoinEvent;
 import de.glowman554.framework.client.mod.impl.ModNoTelemetry;
 import de.glowman554.framework.client.registry.FrameworkRegistries;
+import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.RunArgs;
 import net.minecraft.client.gui.screen.Screen;
@@ -85,5 +86,10 @@ public class MinecraftClientMixin {
     @Inject(at = @At("RETURN"), method = "disconnect(Lnet/minecraft/client/gui/screen/Screen;)V")
     private void disconnect(Screen disconnectionScreen, CallbackInfo ci) {
         new WorldJoinEvent(null, null, null).call();
+    }
+
+    @Inject(at = @At("RETURN"), method = "getWindowTitle", cancellable = true)
+    private void getWindowTitle(CallbackInfoReturnable<String> cir) {
+        cir.setReturnValue("Framework (" + cir.getReturnValue() + ")");
     }
 }

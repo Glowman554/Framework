@@ -171,6 +171,7 @@ public class FrameworkClient implements ClientModInitializer {
     public void start() {
         hudManager = HUDManager.getInstance();
         new ModRegisterEvent().call();
+        telemetryManager.start();
     }
 
     public void saveConfig() {

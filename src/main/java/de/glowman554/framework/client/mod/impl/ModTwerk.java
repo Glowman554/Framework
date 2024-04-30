@@ -8,11 +8,10 @@ import de.glowman554.framework.client.mod.Mod;
 import net.minecraft.client.option.KeyBinding;
 
 public class ModTwerk extends Mod {
-    private int timer;
-
     @Saved
     @Configurable(text = "Twerk delay")
     private final int delay = 1;
+    private int timer;
 
     @Override
     public String getId() {

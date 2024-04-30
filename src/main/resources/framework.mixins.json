@@ -29,6 +29,7 @@
     "ScreenMixin",
     "ServerListMixin",
     "TextRendererMixin",
+    "TitleScreenMixin",
     "darkloading.SplashOverlayMixin",
     "darkloading.WindowMixin",
     "sodium.BlockOcclusionCacheMixin",
