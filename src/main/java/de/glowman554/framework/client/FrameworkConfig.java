@@ -30,6 +30,8 @@ public class FrameworkConfig extends AutoSavable {
         @Saved
         public boolean runGenerators = false;
         @Saved
-        public String featuredServersBackend = "https://glowman554.de/api/framework/featrued_servers";
+        public String featuredServersBackend = "https://framework.glowman554.de/api/featured/fetch";
+        @Saved
+        public String telemetryCollectorBackend = "https://framework.glowman554.de/api/telemetry/collect";
     }
 }
