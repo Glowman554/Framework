@@ -53,7 +53,8 @@ public class TelemetryManager extends TimerTask {
 
         con.setDoOutput(true);
         con.setRequestMethod("POST");
-        // con.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+        // con.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64)
+        // AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
         con.setRequestProperty("Accept", "application/json");
         con.setRequestProperty("Content-Length", String.valueOf(serialized.length()));
         con.setRequestProperty("Content-Type", "application/json");
