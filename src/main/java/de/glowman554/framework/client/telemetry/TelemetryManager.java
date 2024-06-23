@@ -26,7 +26,6 @@ public class TelemetryManager extends TimerTask {
         FrameworkClient.LOGGER.info(prefix + "sessionId: " + sessionId);
 
         boolean disabled = MinecraftClient.getInstance().getGameProfile().getName().matches("Player\\d+");
-        disabled = false;
         if (FrameworkClient.getInstance().getConfig().telemetry.enable && !disabled) {
             Timer timer = new Timer("Telemetry timer");
             timer.scheduleAtFixedRate(this, 0, 1000);
