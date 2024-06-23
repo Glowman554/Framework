@@ -31,6 +31,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class FrameworkClient implements ClientModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger(FrameworkClient.class);
@@ -43,7 +45,6 @@ public class FrameworkClient implements ClientModInitializer {
     private CommandShortcutsManager commandShortcutsManager;
     private RichPresence richPresence;
     private ConfigManager modsManager;
-
 
     public FrameworkClient() {
         instance = this;
@@ -87,8 +88,10 @@ public class FrameworkClient implements ClientModInitializer {
         ServerInfoFeatured.load(config.development.featuredServersBackend);
 
         new FrameworkKeyBinding("key.framework.hud", GLFW.GLFW_KEY_H, FrameworkKeyBinding.MISC, HUDConfigScreen::open);
-        new FrameworkKeyBinding("key.framework.modselect", GLFW.GLFW_KEY_M, FrameworkKeyBinding.MISC, ModSelectionScreen::open);
-        new FrameworkKeyBinding("key.framework.command_shortcuts", GLFW.GLFW_KEY_B, FrameworkKeyBinding.MISC, CommandShortcutScreen::open);
+        new FrameworkKeyBinding("key.framework.modselect", GLFW.GLFW_KEY_M, FrameworkKeyBinding.MISC,
+                ModSelectionScreen::open);
+        new FrameworkKeyBinding("key.framework.command_shortcuts", GLFW.GLFW_KEY_B, FrameworkKeyBinding.MISC,
+                CommandShortcutScreen::open);
 
         keybinding("hide-players");
         keybinding("discord-chat");
@@ -114,20 +117,27 @@ public class FrameworkClient implements ClientModInitializer {
             telemetryManager.setDebug(true);
         }
         // telemetryManager.addEndpoint(new URL("https://telemetry.glowman554.de/"));
+        try {
+            telemetryManager.addEndpoint(new URL(config.development.telemetryCollectorBackend));
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
 
         richPresence = new RichPresence();
         richPresence.start();
 
+        FabricLoader.getInstance().getEntrypointContainers("framework", FrameworkEntrypoint.class)
+                .forEach(extension -> {
+                    FrameworkEntrypoint entrypoint = extension.getEntrypoint();
+                    LOGGER.info("Calling entrypoint {}", entrypoint.getClass().getName());
+                    entrypoint.initialize();
+                });
 
-        FabricLoader.getInstance().getEntrypointContainers("framework", FrameworkEntrypoint.class).forEach(extension -> {
-            FrameworkEntrypoint entrypoint = extension.getEntrypoint();
-            LOGGER.info("Calling entrypoint {}", entrypoint.getClass().getName());
-            entrypoint.initialize();
-        });
-
-        FrameworkRegistries.TELEMETRY_COLLECTORS.register(TelemetryFabricModCollector.class, new TelemetryFabricModCollector());
+        FrameworkRegistries.TELEMETRY_COLLECTORS.register(TelemetryFabricModCollector.class,
+                new TelemetryFabricModCollector());
         FrameworkRegistries.TELEMETRY_COLLECTORS.register(TelemetryModCollector.class, new TelemetryModCollector());
-        FrameworkRegistries.TELEMETRY_COLLECTORS.register(TelemetryDiscordUserCollector.class, new TelemetryDiscordUserCollector());
+        FrameworkRegistries.TELEMETRY_COLLECTORS.register(TelemetryDiscordUserCollector.class,
+                new TelemetryDiscordUserCollector());
     }
 
     private void keybinding(String modId) {
@@ -161,6 +171,7 @@ public class FrameworkClient implements ClientModInitializer {
         register(new ModAutoLeave());
         register(new ModTips());
         register(new ModTwerk());
+        register(new ModHeartView());
     }
 
     private void register(Mod mod) {
