@@ -81,7 +81,7 @@ public class BlockArrayConfigEntry extends ModConfigurationScreen.ModConfigEntry
                     if (string.isEmpty()) {
                         entry.field.set(entry.mod, new Block[]{});
                     } else {
-                        entry.field.set(entry.mod, Arrays.stream(string.split("\\n")).map(s -> Registries.BLOCK.get(new Identifier(s))).toArray(Block[]::new));
+                        entry.field.set(entry.mod, Arrays.stream(string.split("\\n")).map(s -> Registries.BLOCK.get(Identifier.of(s))).toArray(Block[]::new));
                     }
                 } catch (IllegalAccessException e) {
                     throw new RuntimeException(e);

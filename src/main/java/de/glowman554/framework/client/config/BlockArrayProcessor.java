@@ -27,7 +27,7 @@ public class BlockArrayProcessor implements JsonProcessor {
         String[] blockIds = jsonNode.asStringArray();
         ArrayList<Block> blocks = new ArrayList<>();
         for (String blockId : blockIds) {
-            blocks.add(Registries.BLOCK.get(new Identifier(blockId)));
+            blocks.add(Registries.BLOCK.get(Identifier.of(blockId)));
         }
         return blocks.toArray(Block[]::new);
     }

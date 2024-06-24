@@ -37,7 +37,7 @@ public abstract class ScreenMixin {
 
             if (mod.isEnabled() && (client == null || client.world == null)) {
                 if (OPTIONS_BACKGROUND_TEXTURE == null) {
-                    OPTIONS_BACKGROUND_TEXTURE = new Identifier(((ModMenuBackground) mod).getBackground());
+                    OPTIONS_BACKGROUND_TEXTURE = Identifier.of(((ModMenuBackground) mod).getBackground());
                 }
 
                 context.setShaderColor(0.25F, 0.25F, 0.25F, 1.0F);
