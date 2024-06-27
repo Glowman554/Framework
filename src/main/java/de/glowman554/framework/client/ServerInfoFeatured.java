@@ -8,6 +8,7 @@ import net.shadew.json.JsonNode;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class ServerInfoFeatured extends ServerInfo {
     private static final ArrayList<ServerInfoFeatured> featuredServers = new ArrayList<>();
@@ -19,7 +20,7 @@ public class ServerInfoFeatured extends ServerInfo {
 
     public static void load(String from) {
         try {
-            String result = WebClient.get(from, new HashMap<>());
+            String result = WebClient.get(from, Map.of("Accept", "application/json"));
 
             JsonNode root = Json.json().parse(result);
             for (JsonNode entry : root) {
