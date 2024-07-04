@@ -32,7 +32,9 @@
     "darkloading.SplashOverlayMixin",
     "darkloading.WindowMixin",
     "sodium.BlockOcclusionCacheMixin",
-    "sodium.FluidRendererMixin"
+    "sodium.FluidRendererMixin",
+    "serverpack.ResourcePackSendS2CPacketMixin",
+    "serverpack.ResourcePackProfileMixin"
   ],
   "injectors": {
     "defaultRequire": 1
