@@ -11,6 +11,7 @@ import de.glowman554.framework.client.discord.RichPresence;
 import de.glowman554.framework.client.event.EventManager;
 import de.glowman554.framework.client.event.EventTarget;
 import de.glowman554.framework.client.event.impl.ModRegisterEvent;
+import de.glowman554.framework.client.event.impl.WorldJoinEvent;
 import de.glowman554.framework.client.hud.HUDConfigScreen;
 import de.glowman554.framework.client.hud.HUDManager;
 import de.glowman554.framework.client.mod.Mod;
@@ -23,16 +24,26 @@ import de.glowman554.framework.client.telemetry.buildin.TelemetryDiscordUserColl
 import de.glowman554.framework.client.telemetry.buildin.TelemetryFabricModCollector;
 import de.glowman554.framework.client.telemetry.buildin.TelemetryModCollector;
 import de.glowman554.framework.client.utils.DirectoryUtils;
+import de.glowman554.framework.client.utils.WebClient;
 import de.glowman554.framework.data.Data;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.MinecraftVersion;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.toast.SystemToast;
+import net.minecraft.text.Text;
+import net.shadew.json.Json;
+import net.shadew.json.JsonNode;
 import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.http.HttpClient;
+import java.util.Map;
 
 public class FrameworkClient implements ClientModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger(FrameworkClient.class);
@@ -173,6 +184,29 @@ public class FrameworkClient implements ClientModInitializer {
         register(new ModTwerk());
         register(new ModHeartView());
         register(new ModPiShock());
+
+        performVersionCheck();
+    }
+
+    private void performVersionCheck() {
+        String currentVersion = MinecraftVersion.CURRENT.getName();
+
+        try {
+            String result = WebClient.get(config.development.versionInfoBackend.replace("{version}", currentVersion), Map.of());
+            JsonNode root = Json.json().parse(result);
+
+            JsonNode error = root.get("error");
+            if (error != null) {
+                LOGGER.error("Failed to fetch version info: {}", error.asString());
+                return;
+            }
+
+            if (root.get("eol").asBoolean()) {
+                SystemToast.show(MinecraftClient.getInstance().getToastManager(), SystemToast.Type.PERIODIC_NOTIFICATION, Text.of("End of life"), Text.of("This version of Framework reached end of life."));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void register(Mod mod) {
