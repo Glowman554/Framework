@@ -33,5 +33,7 @@ public class FrameworkConfig extends AutoSavable {
         public String featuredServersBackend = "https://framework.glowman554.de/api/featured/fetch";
         @Saved
         public String telemetryCollectorBackend = "https://framework.glowman554.de/api/telemetry/collect";
+        @Saved
+        public String versionInfoBackend = "https://framework.glowman554.de/api/version/{version}";
     }
 }
