@@ -1,10 +1,7 @@
 package de.glowman554.framework.mixin;
 
 import de.glowman554.framework.client.FrameworkClient;
-import de.glowman554.framework.client.event.impl.LeftClickEvent;
-import de.glowman554.framework.client.event.impl.RightClickEvent;
-import de.glowman554.framework.client.event.impl.TickEvent;
-import de.glowman554.framework.client.event.impl.WorldJoinEvent;
+import de.glowman554.framework.client.event.impl.*;
 import de.glowman554.framework.client.mod.impl.ModNoTelemetry;
 import de.glowman554.framework.client.registry.FrameworkRegistries;
 import net.minecraft.SharedConstants;
@@ -26,6 +23,11 @@ public class MinecraftClientMixin {
     @Inject(at = @At("RETURN"), method = "<init>")
     public void contructor(RunArgs args, CallbackInfo ci) {
         FrameworkClient.getInstance().start();
+    }
+
+    @Inject(at = @At("RETURN"), method = "onFinishedLoading")
+    private void onFinishedLoading(MinecraftClient.LoadingContext loadingContext, CallbackInfo ci) {
+        new ClientFinishLoadingEvent().call();
     }
 
     @Inject(at = @At("RETURN"), method = "tick()V")
@@ -91,5 +93,10 @@ public class MinecraftClientMixin {
     @Inject(at = @At("RETURN"), method = "getWindowTitle", cancellable = true)
     private void getWindowTitle(CallbackInfoReturnable<String> cir) {
         cir.setReturnValue("Framework (" + cir.getReturnValue() + ")");
+    }
+
+    @Inject(at = @At("HEAD"), method = "stop")
+    private void stop(CallbackInfo ci) {
+        new ClientStopEvent().call();
     }
 }
