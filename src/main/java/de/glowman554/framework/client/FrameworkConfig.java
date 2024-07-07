@@ -11,6 +11,8 @@ public class FrameworkConfig extends AutoSavable {
     public boolean enableHacks = false;
     @Saved
     public boolean discordRpc = true;
+    @Saved
+    public boolean sync = false;
 
     @Saved(remap = Savable.class)
     public TelemetryConfig telemetry = new TelemetryConfig();
@@ -35,5 +37,9 @@ public class FrameworkConfig extends AutoSavable {
         public String telemetryCollectorBackend = "https://framework.glowman554.de/api/telemetry/collect";
         @Saved
         public String versionInfoBackend = "https://framework.glowman554.de/api/version/{version}";
+        @Saved
+        public String configTest = "https://framework.glowman554.de/api/config/test";
+        @Saved
+        public String configSync = "https://framework.glowman554.de/api/config/sync";
     }
 }
