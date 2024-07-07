@@ -2,16 +2,15 @@ package de.glowman554.framework.client;
 
 import de.glowman554.config.ConfigManager;
 import de.glowman554.framework.client.command.CommandManager;
-import de.glowman554.framework.client.command.impl.ProfileCommand;
-import de.glowman554.framework.client.command.impl.SetHackedCommand;
-import de.glowman554.framework.client.command.impl.UuidCommand;
+import de.glowman554.framework.client.command.impl.*;
 import de.glowman554.framework.client.commandshortcuts.CommandShortcutsManager;
 import de.glowman554.framework.client.config.Processors;
 import de.glowman554.framework.client.discord.RichPresence;
 import de.glowman554.framework.client.event.EventManager;
 import de.glowman554.framework.client.event.EventTarget;
+import de.glowman554.framework.client.event.impl.ClientFinishLoadingEvent;
+import de.glowman554.framework.client.event.impl.ClientStopEvent;
 import de.glowman554.framework.client.event.impl.ModRegisterEvent;
-import de.glowman554.framework.client.event.impl.WorldJoinEvent;
 import de.glowman554.framework.client.hud.HUDConfigScreen;
 import de.glowman554.framework.client.hud.HUDManager;
 import de.glowman554.framework.client.mod.Mod;
@@ -42,7 +41,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.http.HttpClient;
 import java.util.Map;
 
 public class FrameworkClient implements ClientModInitializer {
@@ -56,6 +54,7 @@ public class FrameworkClient implements ClientModInitializer {
     private CommandShortcutsManager commandShortcutsManager;
     private RichPresence richPresence;
     private ConfigManager modsManager;
+    private FrameworkConfigSync configSync;
 
     public FrameworkClient() {
         instance = this;
@@ -91,7 +90,7 @@ public class FrameworkClient implements ClientModInitializer {
             DirectoryUtils.createDirectory(new File(dataFolder, "mods"));
         }
 
-        if (config.development.singleModFile) {
+        if (config.development.runGenerators) {
             LOGGER.info("Running data generators");
             Data.generate();
         }
@@ -120,6 +119,8 @@ public class FrameworkClient implements ClientModInitializer {
         commandManager.addCommand("uuid", new UuidCommand());
         commandManager.addCommand("profile", new ProfileCommand());
         commandManager.addCommand("set-hacked", new SetHackedCommand());
+        commandManager.addCommand("token", new TokenCommand());
+        commandManager.addCommand("set-sync", new SetSyncCommand());
 
         commandShortcutsManager = new CommandShortcutsManager();
 
@@ -149,6 +150,10 @@ public class FrameworkClient implements ClientModInitializer {
         FrameworkRegistries.TELEMETRY_COLLECTORS.register(TelemetryModCollector.class, new TelemetryModCollector());
         FrameworkRegistries.TELEMETRY_COLLECTORS.register(TelemetryDiscordUserCollector.class,
                 new TelemetryDiscordUserCollector());
+
+        if (config.sync) {
+            configSyncLogin();
+        }
     }
 
     private void keybinding(String modId) {
@@ -210,6 +215,27 @@ public class FrameworkClient implements ClientModInitializer {
         }
     }
 
+    private void configSyncLogin() {
+        String token = MinecraftClient.getInstance().getSession().getAccessToken();
+
+        if (FrameworkConfigSync.ok(token)) {
+            configSync = new FrameworkConfigSync(token);
+            EventManager.register(new Object() {
+                @EventTarget
+                public void onClientStop(ClientStopEvent event) {
+                    configSync.sync();
+                }
+
+                @EventTarget
+                public void onClientFinishLoading(ClientFinishLoadingEvent event) {
+                    configSync.load();
+                }
+            });
+
+            LOGGER.info("cloud init ok");
+        }
+    }
+
     private void register(Mod mod) {
         FrameworkRegistries.MODS.register(mod.getClass(), mod);
     }
@@ -250,5 +276,9 @@ public class FrameworkClient implements ClientModInitializer {
 
     public ConfigManager getModsManager() {
         return modsManager;
+    }
+
+    public FrameworkConfigSync getConfigSync() {
+        return configSync;
     }
 }
