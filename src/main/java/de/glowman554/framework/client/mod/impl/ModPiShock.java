@@ -3,6 +3,8 @@ package de.glowman554.framework.client.mod.impl;
 import com.google.gson.JsonObject;
 
 import de.glowman554.config.auto.Saved;
+import de.glowman554.framework.client.FrameworkClient;
+import de.glowman554.framework.client.command.impl.ShockCommand;
 import de.glowman554.framework.client.config.Configurable;
 import de.glowman554.framework.client.event.EventTarget;
 import de.glowman554.framework.client.event.impl.DeathEvent;
@@ -19,7 +21,7 @@ import java.util.Map;
 @ModTelemetryDisabled
 public class ModPiShock extends Mod {
     @Saved
-    @Configurable(text = "Shock intensity")
+    @Configurable(text = "Shock duration")
     private int duration = 1;
     @Saved
     @Configurable(text = "Shock intensity")
@@ -53,24 +55,39 @@ public class ModPiShock extends Mod {
         return false;
     }
 
+    @Override
+    public void setEnabled(boolean newEnabled) {
+        super.setEnabled(newEnabled);
+
+
+        if (isEnabled()) {
+            FrameworkClient.getInstance().getCommandManager().addCommand("pishock-shock", new ShockCommand(this::trigger));
+        }else {
+            FrameworkClient.getInstance().getCommandManager().removeCommand("pishock-shock");
+
+        }
+    }
+
     @EventTarget
     public void onDeath(DeathEvent event) {
-        new Thread(() -> {
-            JsonNode root = JsonNode.object();
-            root.set("Username", username);
-            root.set("Name", name);
-            root.set("Code", code);
-            root.set("Intensity", String.valueOf(intensity));
-            root.set("Duration", String.valueOf(duration));
-            root.set("Apikey", apikey);
-            root.set("Op", String.valueOf(Operation.Shock.op));
+        new Thread(this::trigger).start();
+    }
 
-            try {
-                WebClient.post("https://do.pishock.com/api/apioperate/", Json.json().serialize(root), Map.of("Content-Type", "application/json"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }).start();
+    private void trigger() {
+        JsonNode root = JsonNode.object();
+        root.set("Username", username);
+        root.set("Name", name);
+        root.set("Code", code);
+        root.set("Intensity", String.valueOf(intensity));
+        root.set("Duration", String.valueOf(duration));
+        root.set("Apikey", apikey);
+        root.set("Op", String.valueOf(Operation.Shock.op));
+
+        try {
+            WebClient.post("https://do.pishock.com/api/apioperate/", Json.json().serialize(root), Map.of("Content-Type", "application/json"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private static enum Operation {
