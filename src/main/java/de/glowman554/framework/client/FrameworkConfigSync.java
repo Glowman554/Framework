@@ -39,7 +39,7 @@ public class FrameworkConfigSync {
                 try {
                     mod.fromJSON(root.get(mod.getId()));
                     mod.setEnabled(mod.isEnabled()); // trigger reload
-                } catch (IllegalArgumentException e) {
+                } catch (Exception e) {
                     mod.setEnabled(false);
                 }
             }
