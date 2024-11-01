@@ -121,6 +121,7 @@ public class FrameworkClient implements ClientModInitializer {
         commandManager.addCommand("set-hacked", new SetHackedCommand());
         commandManager.addCommand("token", new TokenCommand());
         commandManager.addCommand("set-sync", new SetSyncCommand());
+        commandManager.addCommand("config", new ConfigCommand());
 
         commandShortcutsManager = new CommandShortcutsManager();
 
@@ -151,9 +152,9 @@ public class FrameworkClient implements ClientModInitializer {
         FrameworkRegistries.TELEMETRY_COLLECTORS.register(TelemetryDiscordUserCollector.class,
                 new TelemetryDiscordUserCollector());
 
-        if (config.sync) {
-            configSyncLogin();
-        }
+
+        configSyncLogin();
+
     }
 
     private void keybinding(String modId) {
@@ -221,19 +222,23 @@ public class FrameworkClient implements ClientModInitializer {
 
         if (FrameworkConfigSync.ok(token)) {
             configSync = new FrameworkConfigSync(token);
-            EventManager.register(new Object() {
-                @EventTarget
-                public void onClientStop(ClientStopEvent event) {
-                    configSync.sync();
-                }
+            if (config.sync) {
+                EventManager.register(new Object() {
+                    @EventTarget
+                    public void onClientStop(ClientStopEvent event) {
+                        configSync.upload();
+                    }
 
-                @EventTarget
-                public void onClientFinishLoading(ClientFinishLoadingEvent event) {
-                    configSync.load();
-                }
-            });
+                    @EventTarget
+                    public void onClientFinishLoading(ClientFinishLoadingEvent event) {
+                        configSync.download();
+                    }
+                });
+            }
 
             LOGGER.info("cloud init ok");
+        } else {
+            LOGGER.info("cloud init failed");
         }
     }
 

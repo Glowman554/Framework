@@ -21,7 +21,7 @@ public class ShockCommand extends Command {
         }
     }
 
-    public static interface Shocker {
+    public interface Shocker {
         void trigger();
     }
 }

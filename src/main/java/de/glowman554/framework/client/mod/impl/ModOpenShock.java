@@ -39,7 +39,7 @@ public class ModOpenShock extends Mod {
         if (isEnabled()) {
             loadShockers();
             FrameworkClient.getInstance().getCommandManager().addCommand("openshock-shock", new ShockCommand(this::trigger));
-        }else {
+        } else {
             FrameworkClient.getInstance().getCommandManager().removeCommand("openshock-shock");
 
         }

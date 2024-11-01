@@ -1,7 +1,5 @@
 package de.glowman554.framework.client.mod.impl;
 
-import com.google.gson.JsonObject;
-
 import de.glowman554.config.auto.Saved;
 import de.glowman554.framework.client.FrameworkClient;
 import de.glowman554.framework.client.command.impl.ShockCommand;
@@ -15,7 +13,6 @@ import net.shadew.json.Json;
 import net.shadew.json.JsonNode;
 
 import java.io.IOException;
-import java.net.http.HttpClient;
 import java.util.Map;
 
 @ModTelemetryDisabled
@@ -62,7 +59,7 @@ public class ModPiShock extends Mod {
 
         if (isEnabled()) {
             FrameworkClient.getInstance().getCommandManager().addCommand("pishock-shock", new ShockCommand(this::trigger));
-        }else {
+        } else {
             FrameworkClient.getInstance().getCommandManager().removeCommand("pishock-shock");
 
         }

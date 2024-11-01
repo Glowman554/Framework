@@ -7,7 +7,6 @@ import net.shadew.json.JsonNode;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 public class ServerInfoFeatured extends ServerInfo {

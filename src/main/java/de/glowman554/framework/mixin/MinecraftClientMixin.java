@@ -4,7 +4,6 @@ import de.glowman554.framework.client.FrameworkClient;
 import de.glowman554.framework.client.event.impl.*;
 import de.glowman554.framework.client.mod.impl.ModNoTelemetry;
 import de.glowman554.framework.client.registry.FrameworkRegistries;
-import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.RunArgs;
 import net.minecraft.client.gui.screen.Screen;

@@ -16,7 +16,7 @@ public class FrameworkConfigSync {
         this.authenticationToken = authenticationToken;
     }
 
-    public void sync() {
+    public void upload() {
         JsonNode root = JsonNode.object();
 
         for (Mod mod : FrameworkRegistries.MODS.getRegistry().values()) {
@@ -31,7 +31,7 @@ public class FrameworkConfigSync {
         }
     }
 
-    public void load() {
+    public void download() {
         try {
             String result = WebClient.get(FrameworkClient.getInstance().getConfig().development.configSync, Map.of("Authentication", authenticationToken));
             JsonNode root = Json.json().parse(result);
