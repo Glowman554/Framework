@@ -5,8 +5,8 @@ import de.glowman554.framework.client.event.impl.ClientPlayerTickEvent;
 import de.glowman554.framework.client.hud.ScreenPosition;
 import de.glowman554.framework.client.mod.ModDraggable;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.ingame.AbstractInventoryScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -73,7 +73,7 @@ public class ModAutoTotem extends ModDraggable {
         }
 
 
-        if ((mc.currentScreen instanceof HandledScreen<?> && !(mc.currentScreen instanceof AbstractInventoryScreen<?>)) || nextTotemSlot == -1) {
+        if ((mc.currentScreen instanceof HandledScreen<?> && !(mc.currentScreen instanceof InventoryScreen)) || nextTotemSlot == -1) {
             return;
         }
 
