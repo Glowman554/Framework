@@ -7,6 +7,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 
 public class ModArmorStatus extends ModDraggable {
+
+    public ModArmorStatus() {
+    pos=new ScreenPosition(0.84,0);
+    }
+
     @Override
     public int getWidth() {
         return 64;
@@ -61,5 +66,10 @@ public class ModArmorStatus extends ModDraggable {
     @Override
     public boolean isHacked() {
         return false;
+    }
+
+    @Override
+    public boolean defaultEnable() {
+        return true;
     }
 }

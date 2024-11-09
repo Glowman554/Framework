@@ -20,6 +20,10 @@ import java.util.Objects;
 public class ModDeathPositionSaver extends ModDraggable {
     private final DeathPositionSave lastDeaths = new DeathPositionSave();
 
+    public ModDeathPositionSaver() {
+        pos = new ScreenPosition(0.4, 0);
+    }
+
     @Override
     public int getWidth() {
         return textRenderer.getWidth("New World, minecraft:overworld");

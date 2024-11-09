@@ -5,6 +5,9 @@ import de.glowman554.framework.client.mod.ModDraggable;
 import net.minecraft.client.gui.DrawContext;
 
 public class ModPositionDisplay extends ModDraggable {
+    public ModPositionDisplay() {
+        pos = new ScreenPosition(0.15, 0);
+    }
     @Override
     public int getWidth() {
         return textRenderer.getWidth("Facing: east");
@@ -41,5 +44,10 @@ public class ModPositionDisplay extends ModDraggable {
     @Override
     public boolean isHacked() {
         return false;
+    }
+
+    @Override
+    public boolean defaultEnable() {
+        return true;
     }
 }

@@ -7,6 +7,10 @@ import net.minecraft.client.gui.DrawContext;
 import java.util.Objects;
 
 public class ModPingDisplay extends ModDraggable {
+    public ModPingDisplay() {
+        pos = new ScreenPosition(0, 0.03);
+    }
+
     @Override
     public int getWidth() {
         return textRenderer.getWidth("0 ms");
