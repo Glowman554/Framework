@@ -9,7 +9,7 @@ import net.minecraft.item.Items;
 public class ModArmorStatus extends ModDraggable {
 
     public ModArmorStatus() {
-    pos=new ScreenPosition(0.84,0);
+        pos = new ScreenPosition(0.84, 0);
     }
 
     @Override

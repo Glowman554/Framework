@@ -6,8 +6,9 @@ import net.minecraft.client.gui.DrawContext;
 
 public class ModFpsDisplay extends ModDraggable {
     public ModFpsDisplay() {
-        pos = new ScreenPosition(0,0);
+        pos = new ScreenPosition(0, 0);
     }
+
     @Override
     public int getWidth() {
         return textRenderer.getWidth("FPS: 120");
@@ -45,6 +46,6 @@ public class ModFpsDisplay extends ModDraggable {
 
     @Override
     public boolean defaultEnable() {
-        return  true;
+        return true;
     }
 }

@@ -8,6 +8,7 @@ public class ModPositionDisplay extends ModDraggable {
     public ModPositionDisplay() {
         pos = new ScreenPosition(0.15, 0);
     }
+
     @Override
     public int getWidth() {
         return textRenderer.getWidth("Facing: east");
