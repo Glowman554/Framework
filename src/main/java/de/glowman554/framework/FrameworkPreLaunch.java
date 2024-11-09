@@ -2,7 +2,7 @@ package de.glowman554.framework;
 
 import de.glowman554.framework.client.event.EventManager;
 import de.glowman554.framework.client.event.EventTarget;
-import de.glowman554.framework.client.event.impl.WindowOpeningEvent;
+import de.glowman554.framework.client.event.impl.ClientFinishLoadingEvent;
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 
 import javax.swing.*;
@@ -33,7 +33,7 @@ public class FrameworkPreLaunch implements PreLaunchEntrypoint {
     }
 
     @EventTarget
-    public void onWindowOpen(WindowOpeningEvent event) {
+    public void onFinishLoading(ClientFinishLoadingEvent event) {
         frame.ifPresent(jFrame -> {
             jFrame.setVisible(false);
             jFrame.dispose();
@@ -55,9 +55,9 @@ public class FrameworkPreLaunch implements PreLaunchEntrypoint {
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         mainPanel.setLayout(new BorderLayout());
 
-        mainPanel.add(new JLabel("Initializing Minecraft..."), BorderLayout.NORTH);
+        mainPanel.add(new JLabel("Initializing Framework..."), BorderLayout.NORTH);
         mainPanel.add(progressBar, BorderLayout.CENTER);
-        mainPanel.add(new JLabel("Thank you for using Framework by glowman554 <3"), BorderLayout.SOUTH);
+        mainPanel.add(new JLabel(""), BorderLayout.SOUTH);
 
         loadingFrame.setContentPane(mainPanel);
         loadingFrame.pack();

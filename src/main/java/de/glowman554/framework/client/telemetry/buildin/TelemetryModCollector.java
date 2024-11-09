@@ -34,7 +34,7 @@ public class TelemetryModCollector implements TelemetryCollector {
     }
 
     public void send(Mod mod) {
-        if (mod.getClass().isAnnotationPresent(ModTelemetryDisabled.class)) {
+        if (mod.getClass().isAnnotationPresent(Disabled.class)) {
             return;
         }
         if (updates.contains(mod)) {
@@ -45,6 +45,6 @@ public class TelemetryModCollector implements TelemetryCollector {
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.TYPE)
-    public @interface ModTelemetryDisabled {
+    public @interface Disabled {
     }
 }

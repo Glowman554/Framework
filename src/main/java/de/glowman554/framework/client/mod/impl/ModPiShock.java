@@ -7,7 +7,7 @@ import de.glowman554.framework.client.config.Configurable;
 import de.glowman554.framework.client.event.EventTarget;
 import de.glowman554.framework.client.event.impl.DeathEvent;
 import de.glowman554.framework.client.mod.Mod;
-import de.glowman554.framework.client.telemetry.buildin.TelemetryModCollector.ModTelemetryDisabled;
+import de.glowman554.framework.client.telemetry.buildin.TelemetryModCollector.Disabled;
 import de.glowman554.framework.client.utils.WebClient;
 import net.shadew.json.Json;
 import net.shadew.json.JsonNode;
@@ -15,7 +15,7 @@ import net.shadew.json.JsonNode;
 import java.io.IOException;
 import java.util.Map;
 
-@ModTelemetryDisabled
+@Disabled
 public class ModPiShock extends Mod {
     @Saved
     @Configurable(text = "Shock duration")

@@ -13,6 +13,8 @@ public class FrameworkConfig extends AutoSavable {
     public boolean discordRpc = true;
     @Saved
     public boolean sync = false;
+    @Saved
+    public boolean cloud = true;
 
     @Saved(remap = Savable.class)
     public TelemetryConfig telemetry = new TelemetryConfig();

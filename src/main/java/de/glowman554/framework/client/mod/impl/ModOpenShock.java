@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
-@TelemetryModCollector.ModTelemetryDisabled
+@TelemetryModCollector.Disabled
 public class ModOpenShock extends Mod {
     @Saved
     @Configurable(text = "OpenShock token")

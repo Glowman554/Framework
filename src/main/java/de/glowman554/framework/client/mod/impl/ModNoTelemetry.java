@@ -14,11 +14,6 @@ public class ModNoTelemetry extends Mod {
     }
 
     @Override
-    public boolean defaultEnable() {
-        return true;
-    }
-
-    @Override
     public boolean isHacked() {
         return false;
     }

@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@TelemetryModCollector.ModTelemetryDisabled
+@TelemetryModCollector.Disabled
 public class ModQueueNotifier extends ModDraggable {
     @Saved
     @Configurable(text = "Discord webhook")

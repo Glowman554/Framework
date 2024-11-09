@@ -153,8 +153,9 @@ public class FrameworkClient implements ClientModInitializer {
                 new TelemetryDiscordUserCollector());
 
 
-        configSyncLogin();
-
+        if (config.cloud) {
+            cloudLogin();
+        }
     }
 
     private void keybinding(String modId) {
@@ -163,8 +164,6 @@ public class FrameworkClient implements ClientModInitializer {
 
     @EventTarget
     public void onModRegister(ModRegisterEvent event) {
-        register(new ModHidePlayers());
-        register(new ModDiscordChat());
         register(new ModQueueNotifier());
         register(new ModArmorStatus());
         register(new ModFpsDisplay());
@@ -177,7 +176,6 @@ public class FrameworkClient implements ClientModInitializer {
         register(new ModNoTelemetry());
         register(new ModXRay());
         register(new ModModList());
-        register(new ModCriticals());
         register(new ModAutoSprint());
         register(new ModAntiBreak());
         register(new ModAutoSprintJump());
@@ -188,7 +186,6 @@ public class FrameworkClient implements ClientModInitializer {
         register(new ModAutoLeave());
         register(new ModTips());
         register(new ModTwerk());
-        register(new ModMenuBackground());
         register(new ModHeartView());
         register(new ModPiShock());
         register(new ModOpenShock());
@@ -217,7 +214,7 @@ public class FrameworkClient implements ClientModInitializer {
         }
     }
 
-    private void configSyncLogin() {
+    private void cloudLogin() {
         String token = MinecraftClient.getInstance().getSession().getAccessToken();
 
         if (FrameworkConfigSync.ok(token)) {
