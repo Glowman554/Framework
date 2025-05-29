@@ -1,9 +1,11 @@
 package de.glowman554.framework.client.command.impl;
 
+/*
 import de.glowman554.framework.client.FrameworkClient;
 import de.glowman554.framework.client.command.Command;
 import de.glowman554.framework.client.command.CommandEvent;
 import net.minecraft.client.MinecraftClient;
+
 
 public class SetSyncCommand extends Command {
     public SetSyncCommand() {
@@ -22,3 +24,4 @@ public class SetSyncCommand extends Command {
         }
     }
 }
+*/

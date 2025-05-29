@@ -1,5 +1,6 @@
 package de.glowman554.framework.client;
 
+/*
 import de.glowman554.framework.client.mod.Mod;
 import de.glowman554.framework.client.registry.FrameworkRegistries;
 import de.glowman554.framework.client.utils.WebClient;
@@ -64,3 +65,4 @@ public class FrameworkConfigSync {
         return true;
     }
 }
+*/

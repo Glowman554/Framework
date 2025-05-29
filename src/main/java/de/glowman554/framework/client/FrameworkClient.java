@@ -54,7 +54,7 @@ public class FrameworkClient implements ClientModInitializer {
     private CommandShortcutsManager commandShortcutsManager;
     private RichPresence richPresence;
     private ConfigManager modsManager;
-    private FrameworkConfigSync configSync;
+    // private FrameworkConfigSync configSync;
 
     public FrameworkClient() {
         instance = this;
@@ -95,7 +95,7 @@ public class FrameworkClient implements ClientModInitializer {
             Data.generate();
         }
 
-        ServerInfoFeatured.load(config.development.featuredServersBackend);
+        // ServerInfoFeatured.load(config.development.featuredServersBackend);
 
         new FrameworkKeyBinding("key.framework.hud", GLFW.GLFW_KEY_H, FrameworkKeyBinding.MISC, HUDConfigScreen::open);
         new FrameworkKeyBinding("key.framework.modselect", GLFW.GLFW_KEY_M, FrameworkKeyBinding.MISC,
@@ -120,8 +120,7 @@ public class FrameworkClient implements ClientModInitializer {
         commandManager.addCommand("profile", new ProfileCommand());
         commandManager.addCommand("set-hacked", new SetHackedCommand());
         commandManager.addCommand("token", new TokenCommand());
-        commandManager.addCommand("set-sync", new SetSyncCommand());
-        commandManager.addCommand("config", new ConfigCommand());
+        // commandManager.addCommand("config", new ConfigCommand());
 
         commandShortcutsManager = new CommandShortcutsManager();
 
@@ -130,11 +129,11 @@ public class FrameworkClient implements ClientModInitializer {
             telemetryManager.setDebug(true);
         }
         // telemetryManager.addEndpoint(new URL("https://telemetry.glowman554.de/"));
-        try {
-            telemetryManager.addEndpoint(new URL(config.development.telemetryCollectorBackend));
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
+        // try {
+        //    telemetryManager.addEndpoint(new URL(config.development.telemetryCollectorBackend));
+        // } catch (MalformedURLException e) {
+        //    e.printStackTrace();
+        // }
 
         richPresence = new RichPresence();
         richPresence.start();
@@ -153,9 +152,9 @@ public class FrameworkClient implements ClientModInitializer {
                 new TelemetryDiscordUserCollector());
 
 
-        if (config.cloud) {
-            cloudLogin();
-        }
+        // if (config.cloud) {
+        //     cloudLogin();
+        // }
     }
 
     private void keybinding(String modId) {
@@ -190,9 +189,10 @@ public class FrameworkClient implements ClientModInitializer {
         register(new ModPiShock());
         register(new ModOpenShock());
 
-        performVersionCheck();
+        // performVersionCheck();
     }
 
+    /*
     private void performVersionCheck() {
         String currentVersion = MinecraftVersion.CURRENT.getName();
 
@@ -238,6 +238,7 @@ public class FrameworkClient implements ClientModInitializer {
             LOGGER.info("cloud init failed");
         }
     }
+     */
 
     private void register(Mod mod) {
         FrameworkRegistries.MODS.register(mod.getClass(), mod);
@@ -281,7 +282,9 @@ public class FrameworkClient implements ClientModInitializer {
         return modsManager;
     }
 
+    /*
     public FrameworkConfigSync getConfigSync() {
         return configSync;
     }
+     */
 }

@@ -28,7 +28,7 @@
     "TextRendererMixin",
     "TitleScreenMixin",
     "sodium.BlockOcclusionCacheMixin",
-    "sodium.FluidRendererMixin",
+    "sodium.DefaultFluidRendererMixin",
     "serverpack.ResourcePackSendS2CPacketMixin",
     "serverpack.ResourcePackProfileMixin"
   ],
