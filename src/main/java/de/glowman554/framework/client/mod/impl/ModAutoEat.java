@@ -48,7 +48,7 @@ public class ModAutoEat extends Mod {
 
         if (isEating()) {
             assert mc.player != null;
-            if (mc.player.getInventory().getMainHandStack() == null || mc.player.getInventory().getMainHandStack().get(DataComponentTypes.FOOD) == null) {
+            if (mc.player.getInventory().getSelectedStack() == null || mc.player.getInventory().getSelectedStack().get(DataComponentTypes.FOOD) == null) {
                 stopEating();
                 return;
             }
@@ -76,10 +76,10 @@ public class ModAutoEat extends Mod {
 
         if (foodSlot < 9) {
             if (!isEating()) {
-                oldSlot = inventory.selectedSlot;
+                oldSlot = inventory.getSelectedSlot();
             }
 
-            inventory.selectedSlot = foodSlot;
+            inventory.setSelectedSlot(foodSlot);
         }
 
         mc.options.useKey.setPressed(true);
@@ -120,7 +120,7 @@ public class ModAutoEat extends Mod {
         if (isEating()) {
             mc.options.useKey.setPressed(false);
             assert mc.player != null;
-            mc.player.getInventory().selectedSlot = oldSlot;
+            mc.player.getInventory().setSelectedSlot(oldSlot);
             oldSlot = -1;
         }
     }

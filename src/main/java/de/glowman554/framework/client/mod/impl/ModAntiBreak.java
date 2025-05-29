@@ -34,7 +34,7 @@ public class ModAntiBreak extends Mod {
     private void doAntiBreak(EventCancelable event) {
         assert mc.player != null;
         PlayerInventory inventory = mc.player.getInventory();
-        ItemStack item = inventory.getMainHandStack();
+        ItemStack item = inventory.getSelectedStack();
         if (item.isDamageable()) {
             if (item.getMaxDamage() - item.getDamage() < 2) {
                 event.setCanceled(true);

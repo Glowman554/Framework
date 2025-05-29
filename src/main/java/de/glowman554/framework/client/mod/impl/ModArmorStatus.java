@@ -3,10 +3,19 @@ package de.glowman554.framework.client.mod.impl;
 import de.glowman554.framework.client.hud.ScreenPosition;
 import de.glowman554.framework.client.mod.ModDraggable;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 
 public class ModArmorStatus extends ModDraggable {
+
+    private final int[] slots = new int[]{
+            EquipmentSlot.HEAD.getOffsetEntitySlotId(PlayerInventory.MAIN_SIZE),
+            EquipmentSlot.CHEST.getOffsetEntitySlotId(PlayerInventory.MAIN_SIZE),
+            EquipmentSlot.LEGS.getOffsetEntitySlotId(PlayerInventory.MAIN_SIZE),
+            EquipmentSlot.FEET.getOffsetEntitySlotId(PlayerInventory.MAIN_SIZE)
+    };
 
     public ModArmorStatus() {
         pos = new ScreenPosition(0.84, 0);
@@ -24,18 +33,19 @@ public class ModArmorStatus extends ModDraggable {
 
     @Override
     public void render(DrawContext drawContext, ScreenPosition pos) {
-        for (int i = 0; i < mc.player.getInventory().armor.toArray().length; i++) {
-            ItemStack itemStack = mc.player.getInventory().armor.get(i);
+        for (int i = 0; i < 4; i++) {
+            assert mc.player != null;
+            ItemStack itemStack = mc.player.getInventory().getStack(slots[i]);
             renderItemStack(drawContext, pos, i, itemStack);
         }
     }
 
     @Override
     public void renderDummy(DrawContext drawContext, ScreenPosition pos) {
-        renderItemStack(drawContext, pos, 3, new ItemStack(Items.DIAMOND_HELMET));
-        renderItemStack(drawContext, pos, 2, new ItemStack(Items.DIAMOND_CHESTPLATE));
-        renderItemStack(drawContext, pos, 1, new ItemStack(Items.DIAMOND_LEGGINGS));
-        renderItemStack(drawContext, pos, 0, new ItemStack(Items.DIAMOND_BOOTS));
+        renderItemStack(drawContext, pos, 0, new ItemStack(Items.DIAMOND_HELMET));
+        renderItemStack(drawContext, pos, 1, new ItemStack(Items.DIAMOND_CHESTPLATE));
+        renderItemStack(drawContext, pos, 2, new ItemStack(Items.DIAMOND_LEGGINGS));
+        renderItemStack(drawContext, pos, 3, new ItemStack(Items.DIAMOND_BOOTS));
     }
 
     private void renderItemStack(DrawContext drawContext, ScreenPosition pos, int i, ItemStack itemStack) {
@@ -43,7 +53,7 @@ public class ModArmorStatus extends ModDraggable {
             return;
         }
 
-        int yAdd = (-16 * i) + 48;
+        int yAdd = 16 * i;
 
         if (itemStack.isDamageable()) {
             double damage = ((itemStack.getMaxDamage() - itemStack.getDamage()) / (double) itemStack.getMaxDamage()) * 100;

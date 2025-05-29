@@ -7,7 +7,6 @@
   ],
   "client": [
     "AbstractBlockStateMixin",
-    "BasicBakedModelMixin",
     "BlockMixin",
     "ChatHudMixin",
     "ClientPlayerEntityMixin",
