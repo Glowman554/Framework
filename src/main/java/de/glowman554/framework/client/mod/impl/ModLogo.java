@@ -37,7 +37,6 @@ public class ModLogo extends ModDraggable {
     public void render(DrawContext drawContext, ScreenPosition pos) {
         int size = message.length * textRenderer.fontHeight;
 
-        mc.getTextureManager().getTexture(logo).bindTexture();
         drawContext.drawTexture(RenderLayer::getGuiTextured, logo, pos.getAbsoluteX(), pos.getAbsoluteY(), 0, 0, size, size, size, size);
 
         for (int i = 0; i < message.length; i++) {
