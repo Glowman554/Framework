@@ -43,9 +43,4 @@ public class ModFpsDisplay extends ModDraggable {
     public boolean isHacked() {
         return false;
     }
-
-    @Override
-    public boolean defaultEnable() {
-        return true;
-    }
 }

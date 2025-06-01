@@ -47,8 +47,4 @@ public class ModPositionDisplay extends ModDraggable {
         return false;
     }
 
-    @Override
-    public boolean defaultEnable() {
-        return true;
-    }
 }
