@@ -188,6 +188,7 @@ public class FrameworkClient implements ClientModInitializer {
         register(new ModHeartView());
         register(new ModPiShock());
         register(new ModOpenShock());
+        register(new ModForceLANPort());
 
         // performVersionCheck();
     }

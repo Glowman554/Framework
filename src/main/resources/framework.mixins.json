@@ -22,14 +22,15 @@
     "LivingEntityMixin",
     "MinecraftClientMixin",
     "MinecraftServerAccessor",
+    "OpenToLanScreenMixin",
     "QuickPlayLoggerMixin",
     "ServerListMixin",
     "TextRendererMixin",
     "TitleScreenMixin",
-    "sodium.BlockOcclusionCacheMixin",
-    "sodium.DefaultFluidRendererMixin",
+    "serverpack.ResourcePackProfileMixin",
     "serverpack.ResourcePackSendS2CPacketMixin",
-    "serverpack.ResourcePackProfileMixin"
+    "sodium.BlockOcclusionCacheMixin",
+    "sodium.DefaultFluidRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
