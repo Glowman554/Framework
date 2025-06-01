@@ -9,8 +9,6 @@ public class FrameworkConfig extends AutoSavable {
     public String prefix = ".";
     @Saved
     public boolean enableHacks = false;
-    @Saved
-    public boolean discordRpc = true;
     // @Saved
     // public boolean sync = false;
     // @Saved
