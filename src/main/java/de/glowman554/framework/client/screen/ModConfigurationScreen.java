@@ -3,10 +3,7 @@ package de.glowman554.framework.client.screen;
 import de.glowman554.framework.client.FrameworkClient;
 import de.glowman554.framework.client.config.Configurable;
 import de.glowman554.framework.client.mod.Mod;
-import de.glowman554.framework.client.screen.config.BlockArrayConfigEntry;
-import de.glowman554.framework.client.screen.config.IntegerConfigEntry;
-import de.glowman554.framework.client.screen.config.StringArrayConfigEntry;
-import de.glowman554.framework.client.screen.config.StringConfigEntry;
+import de.glowman554.framework.client.screen.config.*;
 import net.minecraft.block.Block;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
@@ -27,6 +24,7 @@ public class ModConfigurationScreen extends Screen {
         configEntryCreators.put(String.class, StringConfigEntry::new);
         configEntryCreators.put(String[].class, StringArrayConfigEntry::new);
         configEntryCreators.put(Block[].class, BlockArrayConfigEntry::new);
+        configEntryCreators.put(TestButtonExecutor.class, TestButtonConfigEntry::new);
     }
 
     private final Mod mod;

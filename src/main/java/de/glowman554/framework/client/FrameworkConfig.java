@@ -14,6 +14,9 @@ public class FrameworkConfig extends AutoSavable {
     // @Saved
     // public boolean cloud = true;
 
+    @Saved
+    public boolean enableLegacyPiShock = false;
+
     @Saved(remap = Savable.class)
     public TelemetryConfig telemetry = new TelemetryConfig();
     @Saved(remap = Savable.class)
@@ -31,6 +34,8 @@ public class FrameworkConfig extends AutoSavable {
         public boolean singleModFile = true;
         @Saved
         public boolean runGenerators = false;
+        @Saved
+        public boolean debugAutoSavable = false;
         // @Saved
         // public String featuredServersBackend = "https://framework.glowman554.de/api/featured/fetch";
         // @Saved

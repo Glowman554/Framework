@@ -7,6 +7,7 @@ import de.glowman554.framework.client.config.Configurable;
 import de.glowman554.framework.client.event.EventTarget;
 import de.glowman554.framework.client.event.impl.DeathEvent;
 import de.glowman554.framework.client.mod.Mod;
+import de.glowman554.framework.client.screen.TestButtonExecutor;
 import de.glowman554.framework.client.telemetry.buildin.TelemetryModCollector;
 import de.glowman554.framework.client.utils.WebClient;
 import net.shadew.json.Json;
@@ -28,6 +29,9 @@ public class ModOpenShock extends Mod {
     @Saved
     @Configurable(text = "Shock intensity")
     private int intensity = 100;
+
+    @Configurable(text = "Test connection")
+    private TestButtonExecutor testButton = this::trigger;
 
     private final ArrayList<Shocker> shockers = new ArrayList<>();
 
