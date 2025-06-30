@@ -45,12 +45,14 @@ public class ModPiShock extends Mod {
         } else {
             FrameworkClient.getInstance().getCommandManager().removeCommand("pishock-shock");
 
-            try {
-                client.close();
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (client != null) {
+                try {
+                    client.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                client = null;
             }
-            client = null;
         }
     }
 
