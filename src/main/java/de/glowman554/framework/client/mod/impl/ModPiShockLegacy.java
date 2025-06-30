@@ -8,11 +8,16 @@ import de.glowman554.framework.client.event.EventTarget;
 import de.glowman554.framework.client.event.impl.DeathEvent;
 import de.glowman554.framework.client.mod.Mod;
 import de.glowman554.framework.client.screen.TestButtonExecutor;
-import de.glowman554.framework.client.telemetry.buildin.TelemetryModCollector;
-import de.glowman554.framework.client.utils.pishock.PiShockClient;
+import de.glowman554.framework.client.telemetry.buildin.TelemetryModCollector.Disabled;
+import de.glowman554.framework.client.utils.WebClient;
+import net.shadew.json.Json;
+import net.shadew.json.JsonNode;
 
-@TelemetryModCollector.Disabled
-public class ModPiShock extends Mod {
+import java.io.IOException;
+import java.util.Map;
+
+@Disabled
+public class ModPiShockLegacy extends Mod {
     @Saved
     @Configurable(text = "Shock duration")
     private int duration = 1;
@@ -27,49 +32,14 @@ public class ModPiShock extends Mod {
     @Configurable(text = "PiShock api key")
     private String apikey = "";
     @Saved
+    @Configurable(text = "PiShock share-code")
+    private String code = "";
+    @Saved
     @Configurable(text = "Application name")
     private String name = "Framework";
 
     @Configurable(text = "Test connection")
-    private TestButtonExecutor testButton = this::triggerTest;
-
-    private PiShockClient client;
-
-    @Override
-    public void setEnabled(boolean newEnabled) {
-        super.setEnabled(newEnabled);
-
-        if (isEnabled()) {
-            client = new PiShockClient(username, apikey);
-            FrameworkClient.getInstance().getCommandManager().addCommand("pishock-shock", new ShockCommand(this::trigger));
-        } else {
-            FrameworkClient.getInstance().getCommandManager().removeCommand("pishock-shock");
-
-            try {
-                client.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            client = null;
-        }
-    }
-
-    @EventTarget
-    public void onDeath(DeathEvent event) {
-        new Thread(this::trigger).start();
-    }
-
-    private void triggerTest() {
-        try (PiShockClient tmpClient = new PiShockClient(username, apikey)) {
-            tmpClient.trigger(intensity, duration * 1000, name);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void trigger() {
-        client.trigger(intensity, duration * 1000, name);
-    }
+    private TestButtonExecutor testButton = this::trigger;
 
     @Override
     public String getId() {
@@ -85,4 +55,49 @@ public class ModPiShock extends Mod {
     public boolean isHacked() {
         return false;
     }
+
+    @Override
+    public void setEnabled(boolean newEnabled) {
+        super.setEnabled(newEnabled);
+
+
+        if (isEnabled()) {
+            FrameworkClient.getInstance().getCommandManager().addCommand("pishock-shock", new ShockCommand(this::trigger));
+        } else {
+            FrameworkClient.getInstance().getCommandManager().removeCommand("pishock-shock");
+        }
+    }
+
+    @EventTarget
+    public void onDeath(DeathEvent event) {
+        new Thread(this::trigger).start();
+    }
+
+    private void trigger() {
+        JsonNode root = JsonNode.object();
+        root.set("Username", username);
+        root.set("Name", name);
+        root.set("Code", code);
+        root.set("Intensity", String.valueOf(intensity));
+        root.set("Duration", String.valueOf(duration));
+        root.set("Apikey", apikey);
+        root.set("Op", String.valueOf(Operation.Shock.op));
+
+        try {
+            WebClient.post("https://do.pishock.com/api/apioperate/", Json.json().serialize(root), Map.of("Content-Type", "application/json"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static enum Operation {
+        Shock(0), Vibrate(1), Beep(2);
+
+        private Operation(int op) {
+            this.op = op;
+        }
+
+        private final int op;
+    }
+
 }

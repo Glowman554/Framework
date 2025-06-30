@@ -1,6 +1,7 @@
 package de.glowman554.framework.client;
 
 import de.glowman554.config.ConfigManager;
+import de.glowman554.config.auto.AutoSavable;
 import de.glowman554.framework.client.command.CommandManager;
 import de.glowman554.framework.client.command.impl.*;
 import de.glowman554.framework.client.commandshortcuts.CommandShortcutsManager;
@@ -67,6 +68,10 @@ public class FrameworkClient implements ClientModInitializer {
             config = new FrameworkConfig();
         }
         saveConfig();
+
+        if (config.development.debugAutoSavable) {
+            AutoSavable.debug = LOGGER::info;
+        }
 
         if (config.development.singleModFile) {
             modsManager = new ConfigManager("mods", false);
@@ -166,7 +171,11 @@ public class FrameworkClient implements ClientModInitializer {
         register(new ModTips());
         register(new ModTwerk());
         register(new ModHeartView());
-        register(new ModPiShock());
+        if (config.enableLegacyPiShock) {
+            register(new ModPiShockLegacy());
+        } else {
+            register(new ModPiShock());
+        }
         register(new ModOpenShock());
         register(new ModForceLANPort());
         register(new ModLogo());
