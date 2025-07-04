@@ -3,8 +3,8 @@ package de.glowman554.framework.client.mod.impl;
 import de.glowman554.framework.client.hud.ScreenPosition;
 import de.glowman554.framework.client.mod.ModDraggable;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.render.RenderLayer;
 import net.minecraft.util.Identifier;
 
 import java.util.Arrays;
@@ -37,7 +37,7 @@ public class ModLogo extends ModDraggable {
     public void render(DrawContext drawContext, ScreenPosition pos) {
         int size = message.length * textRenderer.fontHeight;
 
-        drawContext.drawTexture(RenderLayer::getGuiTextured, logo, pos.getAbsoluteX(), pos.getAbsoluteY(), 0, 0, size, size, size, size);
+        drawContext.drawTexture(RenderPipelines.GUI_TEXTURED, logo, pos.getAbsoluteX(), pos.getAbsoluteY(), 0, 0, size, size, size, size);
 
         for (int i = 0; i < message.length; i++) {
             drawContext.drawText(textRenderer, message[i], pos.getAbsoluteX() + size + 1, pos.getAbsoluteY() + 1 + textRenderer.fontHeight * i, -1, true);

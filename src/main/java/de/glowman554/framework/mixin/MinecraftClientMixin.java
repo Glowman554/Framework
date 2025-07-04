@@ -84,8 +84,8 @@ public class MinecraftClientMixin {
         }
     }
 
-    @Inject(at = @At("RETURN"), method = "disconnect(Lnet/minecraft/client/gui/screen/Screen;)V")
-    private void disconnect(Screen disconnectionScreen, CallbackInfo ci) {
+    @Inject(at = @At("RETURN"), method = "disconnect")
+    private void disconnect(Screen disconnectionScreen, boolean transferring, CallbackInfo ci) {
         new WorldJoinEvent(null, null, null).call();
     }
 

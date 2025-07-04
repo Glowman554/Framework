@@ -5,6 +5,7 @@ import de.glowman554.framework.client.config.Configurable;
 import de.glowman554.framework.client.event.EventTarget;
 import de.glowman554.framework.client.event.impl.ClientPlayerTickEvent;
 import de.glowman554.framework.client.mod.Mod;
+import net.minecraft.text.Text;
 
 public class ModAutoLeave extends Mod {
     @Saved
@@ -31,7 +32,7 @@ public class ModAutoLeave extends Mod {
         float currentHealth = mc.player.getHealth();
         if (currentHealth <= health) {
             assert mc.world != null;
-            mc.world.disconnect();
+            mc.world.disconnect(Text.of("Low health"));
 
             setEnabled(false);
         }

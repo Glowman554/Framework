@@ -63,7 +63,7 @@ public class BlockArrayConfigEntry extends ModConfigurationScreen.ModConfigEntry
         protected void init() {
             super.init();
 
-            EditBoxWidget editBoxWidget = addDrawableChild(new EditBoxWidget(textRenderer, 0, 20, width, height - 40, Text.empty(), Text.empty()));
+            EditBoxWidget editBoxWidget = addDrawableChild(EditBoxWidget.builder().x(0).y(20).build(textRenderer, width, height - 40, Text.empty()));
 
             try {
                 StringBuilder text = new StringBuilder();
