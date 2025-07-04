@@ -111,6 +111,8 @@ public class FrameworkClient implements ClientModInitializer {
         commandManager.addCommand("token", new TokenCommand());
         // commandManager.addCommand("config", new ConfigCommand());
 
+        EventManager.register(commandManager);
+
         commandShortcutsManager = new CommandShortcutsManager();
 
         telemetryManager = new TelemetryManager();
