@@ -43,7 +43,7 @@ public class HUDConfigScreen extends Screen {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        super.renderBackground(context, mouseX, mouseY, delta);
+        // super.renderBackground(context, mouseX, mouseY, delta);
 
         this.drawHollowRect(context, 0, 0, this.width - 1, this.height - 1, 0xFFFF0000);
 
