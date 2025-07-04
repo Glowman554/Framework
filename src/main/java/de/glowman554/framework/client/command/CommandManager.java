@@ -1,6 +1,8 @@
 package de.glowman554.framework.client.command;
 
 import de.glowman554.framework.client.FrameworkClient;
+import de.glowman554.framework.client.event.EventTarget;
+import de.glowman554.framework.client.event.impl.ChatInputEvent;
 
 import java.util.HashMap;
 
@@ -39,6 +41,20 @@ public class CommandManager {
             } else {
                 event.commandFail("Command not found.");
             }
+        }
+    }
+
+    @EventTarget
+    public void onChatInput(ChatInputEvent event) {
+        String content = event.getContent();
+        if (content.startsWith(FrameworkClient.getInstance().getConfig().prefix)) {
+            try {
+                FrameworkClient.getInstance().getCommandManager().onCommand(CommandEvent.from(content));
+            } catch (Exception e) {
+                e.printStackTrace();
+                CommandEvent.sendText("§4Oops: " + e.getMessage());
+            }
+            event.setCanceled(true);
         }
     }
 
