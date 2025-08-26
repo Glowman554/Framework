@@ -1,8 +1,8 @@
 package de.glowman554.framework.client.hud;
 
 
-import de.glowman554.config.auto.AutoSavable;
-import de.glowman554.config.auto.Saved;
+import de.toxicfox.config.auto.AutoSavable;
+import de.toxicfox.config.auto.Saved;
 import net.minecraft.client.MinecraftClient;
 
 public class ScreenPosition extends AutoSavable {

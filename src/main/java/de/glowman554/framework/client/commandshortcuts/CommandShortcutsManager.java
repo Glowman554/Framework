@@ -1,6 +1,6 @@
 package de.glowman554.framework.client.commandshortcuts;
 
-import de.glowman554.config.ConfigManager;
+import de.toxicfox.config.ConfigManager;
 import de.glowman554.framework.client.FrameworkKeyBinding;
 import org.lwjgl.glfw.GLFW;
 

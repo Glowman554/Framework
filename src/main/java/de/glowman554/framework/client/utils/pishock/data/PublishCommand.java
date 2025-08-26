@@ -1,8 +1,8 @@
 package de.glowman554.framework.client.utils.pishock.data;
 
-import de.glowman554.config.Savable;
-import de.glowman554.config.auto.AutoSavable;
-import de.glowman554.config.auto.Saved;
+import de.toxicfox.config.Savable;
+import de.toxicfox.config.auto.AutoSavable;
+import de.toxicfox.config.auto.Saved;
 
 public class PublishCommand extends AutoSavable {
     @Saved

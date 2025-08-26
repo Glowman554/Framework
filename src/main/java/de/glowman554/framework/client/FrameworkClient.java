@@ -1,7 +1,7 @@
 package de.glowman554.framework.client;
 
-import de.glowman554.config.ConfigManager;
-import de.glowman554.config.auto.AutoSavable;
+import de.toxicfox.config.ConfigManager;
+import de.toxicfox.config.auto.AutoSavable;
 import de.glowman554.framework.client.command.CommandManager;
 import de.glowman554.framework.client.command.impl.*;
 import de.glowman554.framework.client.commandshortcuts.CommandShortcutsManager;
@@ -60,6 +60,8 @@ public class FrameworkClient implements ClientModInitializer {
         DirectoryUtils.createDirectory(dataFolder);
 
         ConfigManager.BASE_FOLDER = dataFolder;
+
+        AutoSavable.strict = false;
 
         configManager = new ConfigManager("config", false);
         try {

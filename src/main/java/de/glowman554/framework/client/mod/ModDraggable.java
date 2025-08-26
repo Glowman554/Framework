@@ -1,7 +1,7 @@
 package de.glowman554.framework.client.mod;
 
-import de.glowman554.config.Savable;
-import de.glowman554.config.auto.Saved;
+import de.toxicfox.config.Savable;
+import de.toxicfox.config.auto.Saved;
 import de.glowman554.framework.client.hud.Renderer;
 import de.glowman554.framework.client.hud.ScreenPosition;
 

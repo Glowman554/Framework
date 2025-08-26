@@ -1,6 +1,6 @@
 package de.glowman554.framework.client.registry;
 
-import de.glowman554.config.ConfigManager;
+import de.toxicfox.config.ConfigManager;
 import de.glowman554.framework.client.FrameworkClient;
 import de.glowman554.framework.client.FrameworkKeyBinding;
 import de.glowman554.framework.client.mod.Mod;

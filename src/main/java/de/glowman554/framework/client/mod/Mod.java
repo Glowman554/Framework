@@ -1,8 +1,8 @@
 package de.glowman554.framework.client.mod;
 
-import de.glowman554.config.ConfigManager;
-import de.glowman554.config.auto.AutoSavable;
-import de.glowman554.config.auto.Saved;
+import de.toxicfox.config.ConfigManager;
+import de.toxicfox.config.auto.AutoSavable;
+import de.toxicfox.config.auto.Saved;
 import de.glowman554.framework.client.FrameworkClient;
 import de.glowman554.framework.client.event.EventManager;
 import de.glowman554.framework.client.registry.FrameworkRegistries;

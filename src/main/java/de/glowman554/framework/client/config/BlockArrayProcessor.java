@@ -1,6 +1,6 @@
 package de.glowman554.framework.client.config;
 
-import de.glowman554.config.auto.JsonProcessor;
+import de.toxicfox.config.auto.JsonProcessor;
 import net.minecraft.block.Block;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
@@ -20,9 +20,12 @@ public class BlockArrayProcessor implements JsonProcessor {
     }
 
     @Override
-    public Object fromJson(JsonNode jsonNode, Object o) {
+    public Object fromJson(JsonNode jsonNode, Object o, boolean optional) {
         if (jsonNode == null) {
-            return o;
+            if (optional) {
+                return o;
+            }
+            throw new RuntimeException("Missing field");
         }
         String[] blockIds = jsonNode.asStringArray();
         ArrayList<Block> blocks = new ArrayList<>();

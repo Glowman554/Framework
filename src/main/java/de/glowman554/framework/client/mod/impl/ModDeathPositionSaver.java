@@ -1,10 +1,10 @@
 package de.glowman554.framework.client.mod.impl;
 
-import de.glowman554.config.ConfigManager;
-import de.glowman554.config.Savable;
-import de.glowman554.config.auto.AutoSavable;
-import de.glowman554.config.auto.Saved;
-import de.glowman554.config.auto.processors.SavableArrayProcessor;
+import de.toxicfox.config.ConfigManager;
+import de.toxicfox.config.Savable;
+import de.toxicfox.config.auto.AutoSavable;
+import de.toxicfox.config.auto.Saved;
+import de.toxicfox.config.auto.processors.SavableArrayProcessor;
 import de.glowman554.framework.client.event.EventTarget;
 import de.glowman554.framework.client.event.impl.DeathEvent;
 import de.glowman554.framework.client.hud.ScreenPosition;
@@ -107,7 +107,7 @@ public class ModDeathPositionSaver extends ModDraggable {
 
         @Override
         public void fromJSON(JsonNode jsonNode) {
-            lastDeaths = (DeathPosition[]) new SavableArrayProcessor(DeathPosition::new, DeathPosition[]::new).fromJson(jsonNode, new DeathPosition[]{});
+            lastDeaths = (DeathPosition[]) new SavableArrayProcessor(DeathPosition::new, DeathPosition[]::new).fromJson(jsonNode, new DeathPosition[]{}, false);
         }
 
         @Override

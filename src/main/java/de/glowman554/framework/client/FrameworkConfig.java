@@ -1,8 +1,8 @@
 package de.glowman554.framework.client;
 
-import de.glowman554.config.Savable;
-import de.glowman554.config.auto.AutoSavable;
-import de.glowman554.config.auto.Saved;
+import de.toxicfox.config.Savable;
+import de.toxicfox.config.auto.AutoSavable;
+import de.toxicfox.config.auto.Saved;
 
 public class FrameworkConfig extends AutoSavable {
     @Saved

@@ -1,7 +1,7 @@
 package de.glowman554.framework.client.commandshortcuts;
 
-import de.glowman554.config.auto.AutoSavable;
-import de.glowman554.config.auto.Saved;
+import de.toxicfox.config.auto.AutoSavable;
+import de.toxicfox.config.auto.Saved;
 import de.glowman554.framework.client.FrameworkClient;
 import de.glowman554.framework.client.command.CommandEvent;
 import de.glowman554.framework.client.screen.NewCommandShortcutScreen;

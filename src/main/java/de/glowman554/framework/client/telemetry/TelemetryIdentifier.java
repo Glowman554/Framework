@@ -1,7 +1,7 @@
 package de.glowman554.framework.client.telemetry;
 
-import de.glowman554.config.auto.AutoSavable;
-import de.glowman554.config.auto.Saved;
+import de.toxicfox.config.auto.AutoSavable;
+import de.toxicfox.config.auto.Saved;
 
 public class TelemetryIdentifier extends AutoSavable {
     @Saved

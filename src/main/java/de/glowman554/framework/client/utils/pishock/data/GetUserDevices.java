@@ -1,10 +1,10 @@
 package de.glowman554.framework.client.utils.pishock.data;
 
-import de.glowman554.config.Savable;
-import de.glowman554.config.auto.AutoSavable;
-import de.glowman554.config.auto.Saved;
-import de.glowman554.config.auto.processors.SavableProcessor;
-import de.glowman554.config.premade.ArrayListSavable;
+import de.toxicfox.config.Savable;
+import de.toxicfox.config.auto.AutoSavable;
+import de.toxicfox.config.auto.Saved;
+import de.toxicfox.config.auto.processors.SavableProcessor;
+import de.toxicfox.config.premade.ArrayListSavable;
 import net.shadew.json.JsonNode;
 
 

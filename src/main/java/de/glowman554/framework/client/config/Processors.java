@@ -1,6 +1,6 @@
 package de.glowman554.framework.client.config;
 
-import de.glowman554.config.auto.AutoSavable;
+import de.toxicfox.config.auto.AutoSavable;
 import net.minecraft.block.Block;
 
 public class Processors {

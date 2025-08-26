@@ -1,10 +1,10 @@
 package de.glowman554.framework.client.commandshortcuts;
 
-import de.glowman554.config.auto.AutoSavable;
-import de.glowman554.config.auto.JsonProcessor;
-import de.glowman554.config.auto.Processor;
-import de.glowman554.config.auto.Saved;
-import de.glowman554.config.auto.processors.SavableArrayProcessor;
+import de.toxicfox.config.auto.AutoSavable;
+import de.toxicfox.config.auto.JsonProcessor;
+import de.toxicfox.config.auto.Processor;
+import de.toxicfox.config.auto.Saved;
+import de.toxicfox.config.auto.processors.SavableArrayProcessor;
 import net.shadew.json.JsonNode;
 
 import java.util.ArrayList;
