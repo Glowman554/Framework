@@ -1,0 +1,20 @@
+{
+    "fullbright": {
+        "enabled": true
+    },
+    "armor-display": {
+        "enabled": true
+    },
+    "tips": {
+        "enabled": true
+    },
+    "death-position-saver": {
+        "enabled": true
+    },
+    "fps": {
+        "enabled": true
+    },
+    "position-display": {
+        "enabled": true
+    }
+}
