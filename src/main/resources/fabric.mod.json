@@ -5,7 +5,7 @@
   "name": "Framework",
   "description": "Simple custom client",
   "authors": [
-    "Glowman554"
+    "ToxicFox"
   ],
   "contact": {},
   "license": "MIT",
@@ -13,10 +13,10 @@
   "environment": "client",
   "entrypoints": {
     "client": [
-      "de.glowman554.framework.client.FrameworkClient"
+      "de.toxicfox.framework.client.FrameworkClient"
     ],
     "preLaunch": [
-      "de.glowman554.framework.FrameworkPreLaunch"
+      "de.toxicfox.framework.FrameworkPreLaunch"
     ]
   },
   "mixins": [
