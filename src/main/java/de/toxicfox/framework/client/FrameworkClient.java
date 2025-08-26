@@ -31,6 +31,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
 
 public class FrameworkClient implements ClientModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger(FrameworkClient.class);
@@ -87,6 +91,12 @@ public class FrameworkClient implements ClientModInitializer {
         if (config.development.runGenerators) {
             LOGGER.info("Running data generators");
             Data.generate();
+        }
+
+        try {
+            extractDefaultProfile("default");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
         // ServerInfoFeatured.load(config.development.featuredServersBackend);
@@ -237,6 +247,25 @@ public class FrameworkClient implements ClientModInitializer {
         }
     }
      */
+
+    private void extractDefaultProfile(String profileName) throws IOException {
+        LOGGER.info("Extracting default profile {}", profileName);
+
+        File profilesDirectory = new File(ConfigManager.BASE_FOLDER, "profiles");
+        profilesDirectory.mkdirs();
+
+        File output = new File(profilesDirectory, profileName + ".json");
+
+        try (InputStream inputStream = FrameworkClient.class.getResourceAsStream("/profiles/" + profileName + ".json")) {
+            if (inputStream == null) {
+                throw new IOException("Profile not found in classpath: " + profileName);
+            }
+
+            try (FileOutputStream outputStream = new FileOutputStream(output)) {
+                inputStream.transferTo(outputStream);
+            }
+        }
+    }
 
     private void register(Mod mod) {
         FrameworkRegistries.MODS.register(mod.getClass(), mod);
