@@ -25,6 +25,7 @@ public class ModConfigurationScreen extends Screen {
         configEntryCreators.put(String[].class, StringArrayConfigEntry::new);
         configEntryCreators.put(Block[].class, BlockArrayConfigEntry::new);
         configEntryCreators.put(TestButtonExecutor.class, TestButtonConfigEntry::new);
+        configEntryCreators.put(boolean.class, BooleanConfigEntry::new);
     }
 
     private final Mod mod;

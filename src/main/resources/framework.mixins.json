@@ -28,6 +28,7 @@
     "ServerListMixin",
     "TextRendererMixin",
     "TitleScreenMixin",
+    "WorldRendererMixin",
     "serverpack.ResourcePackProfileMixin",
     "serverpack.ResourcePackSendS2CPacketMixin",
     "sodium.BlockOcclusionCacheMixin",
