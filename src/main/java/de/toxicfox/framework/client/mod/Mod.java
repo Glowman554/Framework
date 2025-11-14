@@ -81,4 +81,8 @@ public abstract class Mod extends AutoSavable {
     }
 
     public abstract boolean isHacked();
+
+    public MinecraftClient getMc() {
+        return mc;
+    }
 }
