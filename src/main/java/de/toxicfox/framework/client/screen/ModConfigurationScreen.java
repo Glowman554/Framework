@@ -108,8 +108,8 @@ public class ModConfigurationScreen extends Screen {
         }
 
         @Override
-        public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            context.drawText(MinecraftClient.getInstance().textRenderer, title, x + 90 - parent.maxKeyNameLength, y + entryHeight / 2, -1, true);
+        public void render(DrawContext context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
+            context.drawText(MinecraftClient.getInstance().textRenderer, title, this.getContentX() + 90 - parent.maxKeyNameLength, this.getContentY() + getContentHeight() / 2, -1, true);
         }
     }
 }

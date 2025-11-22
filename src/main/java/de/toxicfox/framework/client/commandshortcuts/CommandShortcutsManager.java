@@ -22,7 +22,7 @@ public class CommandShortcutsManager {
         for (int i = 0; i < commandShortcutConfig.shortcuts.length; i++) {
             CommandShortcut shortcut = commandShortcutConfig.shortcuts[i];
             if (shortcut.keybind) {
-                new FrameworkKeyBinding("key.framework.command." + shortcut.name.toLowerCase().replaceAll(" ", "_"), GLFW.GLFW_KEY_UNKNOWN, "key.framework.commands", shortcut::execute);
+                new FrameworkKeyBinding("key.framework.command." + shortcut.name.toLowerCase().replaceAll(" ", "_"), GLFW.GLFW_KEY_UNKNOWN, FrameworkKeyBinding.COMMANDS, shortcut::execute);
             }
         }
     }

@@ -22,7 +22,7 @@ public class ModPositionDisplay extends ModDraggable {
     @Override
     public void render(DrawContext drawContext, ScreenPosition pos) {
         assert mc.player != null;
-        drawContext.drawText(textRenderer, String.format("XYZ: %d, %d, %d", (int) mc.player.getPos().x, (int) mc.player.getPos().y, (int) mc.player.getPos().z), pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1, -1, true);
+        drawContext.drawText(textRenderer, String.format("XYZ: %d, %d, %d", (int) mc.player.getEntityPos().x, (int) mc.player.getEntityPos().y, (int) mc.player.getEntityPos().z), pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1, -1, true);
         drawContext.drawText(textRenderer, "Facing: " + mc.player.getHorizontalFacing(), pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1 + textRenderer.fontHeight, -1, true);
     }
 

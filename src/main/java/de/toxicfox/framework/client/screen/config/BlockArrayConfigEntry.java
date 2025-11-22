@@ -35,12 +35,12 @@ public class BlockArrayConfigEntry extends ModConfigurationScreen.ModConfigEntry
     }
 
     @Override
-    public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-        super.render(context, index, y, x, entryWidth, entryHeight, mouseX, mouseY, hovered, tickDelta);
+    public void render(DrawContext context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
+        super.render(context, mouseX, mouseY, hovered, deltaTicks);
 
-        buttonWidget.setX(x + 100);
-        buttonWidget.setY(y);
-        buttonWidget.render(context, mouseX, mouseY, tickDelta);
+        buttonWidget.setX(this.getContentX() + 100);
+        buttonWidget.setY(this.getContentY());
+        buttonWidget.render(context, mouseX, mouseY, deltaTicks);
     }
 
     private static class BlockArrayConfigScreen extends Screen {

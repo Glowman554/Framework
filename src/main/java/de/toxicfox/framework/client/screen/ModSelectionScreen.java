@@ -123,19 +123,19 @@ public class ModSelectionScreen extends Screen {
         }
 
         @Override
-        public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            toggleButton.setX(x + 90);
-            toggleButton.setY(y);
-            toggleButton.render(context, mouseX, mouseY, tickDelta);
+        public void render(DrawContext context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
+            toggleButton.setX(this.getContentX() + 90);
+            toggleButton.setY(this.getContentY());
+            toggleButton.render(context, mouseX, mouseY, deltaTicks);
 
             if (isConfigurable) {
-                configButton.setX(x + 90 + 75 + 25);
-                configButton.setY(y);
-                configButton.render(context, mouseX, mouseY, tickDelta);
+                configButton.setX(this.getContentX() + 90 + 75 + 25);
+                configButton.setY(this.getContentY());
+                configButton.render(context, mouseX, mouseY, deltaTicks);
             }
 
             String renderName = mod.getName();
-            context.drawText(MinecraftClient.getInstance().textRenderer, renderName, x + 90 - parent.maxKeyNameLength, y + entryHeight / 2, -1, true);
+            context.drawText(MinecraftClient.getInstance().textRenderer, renderName, this.getContentX() + 90 - parent.maxKeyNameLength, this.getContentY() + getContentHeight() / 2, -1, true);
         }
     }
 }

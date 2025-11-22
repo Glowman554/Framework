@@ -28,7 +28,7 @@ public class TelemetryManager extends TimerTask {
     }
 
     public void start() {
-        boolean disabled = MinecraftClient.getInstance().getGameProfile().getName().matches("Player\\d+");
+        boolean disabled = MinecraftClient.getInstance().getGameProfile().name().matches("Player\\d+");
         try {
             Mod noTelemetry = FrameworkRegistries.MODS.get(ModNoTelemetry.class);
             if (noTelemetry.isEnabled()) {
@@ -118,7 +118,7 @@ public class TelemetryManager extends TimerTask {
     }
 
     public TelemetryIdentifier getIdentifier() {
-        return new TelemetryIdentifier(MinecraftClient.getInstance().getGameProfile().getName(), sessionId);
+        return new TelemetryIdentifier(MinecraftClient.getInstance().getGameProfile().name(), sessionId);
     }
 
     public void setDebug(boolean debug) {

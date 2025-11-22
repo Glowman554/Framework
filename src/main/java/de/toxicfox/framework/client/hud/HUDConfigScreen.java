@@ -2,6 +2,7 @@ package de.toxicfox.framework.client.hud;
 
 import de.toxicfox.framework.client.FrameworkClient;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
@@ -62,14 +63,15 @@ public class HUDConfigScreen extends Screen {
         drawContext.drawVerticalLine(absoluteX + width, absoluteY + height, absoluteY, color);
     }
 
+
     @Override
-    public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
+    public boolean mouseDragged(Click click, double offsetX, double offsetY) {
         if (selectedRenderer.isPresent()) {
-            moveSelectedRendererBy((int) mouseX - prevX, (int) mouseY - prevY);
+            moveSelectedRendererBy((int) click.x() - prevX, (int) click.y() - prevY);
         }
 
-        this.prevX = (int) mouseX;
-        this.prevY = (int) mouseY;
+        this.prevX = (int) click.x();
+        this.prevY = (int) click.y();
 
         return false;
     }
@@ -107,11 +109,11 @@ public class HUDConfigScreen extends Screen {
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        this.prevX = (int) mouseX;
-        this.prevY = (int) mouseY;
+    public boolean mouseClicked(Click click, boolean doubled) {
+        this.prevX = (int) click.x();
+        this.prevY = (int) click.y();
 
-        loadMouseOver((int) mouseX, (int) mouseY);
+        loadMouseOver(prevX, prevY);
         return false;
     }
 

@@ -41,11 +41,11 @@ public class IntegerConfigEntry extends ModConfigurationScreen.ModConfigEntry {
     }
 
     @Override
-    public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-        super.render(context, index, y, x, entryWidth, entryHeight, mouseX, mouseY, hovered, tickDelta);
+    public void render(DrawContext context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
+        super.render(context, mouseX, mouseY, hovered, deltaTicks);
 
-        textFieldWidget.setX(x + 100);
-        textFieldWidget.setY(y);
-        textFieldWidget.render(context, mouseX, mouseY, tickDelta);
+        textFieldWidget.setX(this.getContentX() + 100);
+        textFieldWidget.setY(this.getContentY());
+        textFieldWidget.render(context, mouseX, mouseY, deltaTicks);
     }
 }

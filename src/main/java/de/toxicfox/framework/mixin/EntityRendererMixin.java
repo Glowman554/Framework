@@ -1,21 +1,22 @@
 package de.toxicfox.framework.mixin;
 
-import com.llamalad7.mixinextras.sugar.Local;
 import de.toxicfox.framework.client.mod.impl.ModEntityESP;
 import de.toxicfox.framework.client.registry.FrameworkRegistries;
-import net.minecraft.client.render.WorldRenderer;
+import net.minecraft.client.render.entity.EntityRenderer;
+import net.minecraft.client.render.entity.state.EntityRenderState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyArgs;
-import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.HashSet;
 
-@Mixin(WorldRenderer.class)
-public class WorldRendererMixin {
+@Mixin(EntityRenderer.class)
+public class EntityRendererMixin<T extends Entity, S extends EntityRenderState> {
 
     @Unique
     private final HashSet<EntityType<?>> specialTypes = new HashSet<>() {{
@@ -27,8 +28,8 @@ public class WorldRendererMixin {
         add(EntityType.ARMOR_STAND);
     }};
 
-    @ModifyArgs(method = "renderEntities", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/OutlineVertexConsumerProvider;setColor(IIII)V"))
-    private void renderEntities(Args args, @Local Entity entity) {
+    @Inject(method = "updateRenderState", at = @At(value = "FIELD", target = "Lnet/minecraft/client/render/entity/state/EntityRenderState;outlineColor:I", opcode = Opcodes.PUTFIELD, shift = At.Shift.AFTER))
+    public void updateRenderState(T entity, S state, float tickProgress, CallbackInfo ci) {
         try {
             ModEntityESP mod = (ModEntityESP) FrameworkRegistries.MODS.get(ModEntityESP.class);
             if (!mod.isEnabled() || !mod.isColorful()) {
@@ -36,10 +37,7 @@ public class WorldRendererMixin {
             }
 
             if (specialTypes.contains(entity.getType())) {
-                args.set(0, 0);
-                args.set(1, 255);
-                args.set(2, 255);
-                args.set(3, 255);
+                state.outlineColor = 0xFF00FFFF;
                 return;
             }
 
@@ -49,24 +47,17 @@ public class WorldRendererMixin {
             int distance = (int) mod.getMc().player.squaredDistanceTo(entity);
 
             if (distance < dangerousDistance) {
-                args.set(0, 255);
-                args.set(1, 0);
-                args.set(2, 0);
+                state.outlineColor = 0xFFFF0000; // argb
             } else if (distance < cautionDistance) {
                 int green = (distance - dangerousDistance) * 255 / (cautionDistance - dangerousDistance);
-                args.set(0, 255);
-                args.set(1, green);
-                args.set(2, 0);
+                state.outlineColor = 0xFFFF0000 | (green << 8);
             } else {
-                args.set(0, 0);
-                args.set(1, 255);
-                args.set(2, 0);
+                state.outlineColor = 0xFF00FF00;
             }
-
-            args.set(3, 255);
         } catch (IllegalArgumentException ignored) {
 
         }
     }
+
 
 }

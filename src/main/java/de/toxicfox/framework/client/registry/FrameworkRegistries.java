@@ -20,7 +20,7 @@ public class FrameworkRegistries {
         String keybindingIdentifier = "key.framework." + mod.getId();
         if (KEY_BINDINGS.has(keybindingIdentifier)) {
             FrameworkKeyBinding binding = KEY_BINDINGS.get(keybindingIdentifier);
-            FrameworkClient.LOGGER.info("Binding keybinding {} to mod {}", binding.getTranslationKey(), mod.getId());
+            FrameworkClient.LOGGER.info("Binding keybinding {} to mod {}", binding.getBoundKeyTranslationKey(), mod.getId());
             binding.setLambda(mod::onKeybinding);
         }
         if (FrameworkClient.getInstance().getConfig().development.singleModFile) {

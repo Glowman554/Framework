@@ -4,26 +4,24 @@ import de.toxicfox.framework.client.event.EventManager;
 import de.toxicfox.framework.client.event.EventTarget;
 import de.toxicfox.framework.client.event.impl.TickEvent;
 import de.toxicfox.framework.client.registry.FrameworkRegistries;
-import de.toxicfox.framework.mixin.KeyBindingAccessor;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
-
-import java.util.Map;
-import java.util.Optional;
+import net.minecraft.util.Identifier;
 
 public class FrameworkKeyBinding extends KeyBinding {
-    public final static String MODS = "key.framework.mods";
-    public final static String MISC = "key.framework.misc";
+    public final static Category MODS = Category.create(Identifier.of("framework-mods"));
+    public final static Category MISC = Category.create(Identifier.of("framework-misc"));
+    public final static Category COMMANDS = Category.create(Identifier.of("framework-commands"));
     private Lambda lambda;
     private boolean alreadyPressed = false;
 
-    public FrameworkKeyBinding(String translationKey, int code, String category, Lambda lambda) {
+    public FrameworkKeyBinding(String translationKey, int code, Category category, Lambda lambda) {
         super(translationKey, code, category);
         this.lambda = lambda;
         init();
     }
 
-    public FrameworkKeyBinding(String translationKey, InputUtil.Type type, int code, String category, Lambda lambda) {
+    public FrameworkKeyBinding(String translationKey, InputUtil.Type type, int code, Category category, Lambda lambda) {
         super(translationKey, type, code, category);
         this.lambda = lambda;
         init();
@@ -44,16 +42,10 @@ public class FrameworkKeyBinding extends KeyBinding {
     }
 
     private void init() {
-        FrameworkRegistries.KEY_BINDINGS.register(getTranslationKey(), this);
+        FrameworkRegistries.KEY_BINDINGS.register(getId(), this);
         EventManager.register(this);
 
-        Map<String, Integer> map = KeyBindingAccessor.get_CATEGORY_ORDER_MAP();
-        if (!map.containsKey(getCategory())) {
-            FrameworkClient.LOGGER.info("Adding new keybinding category {}", getCategory());
-            Optional<Integer> largest = map.values().stream().max(Integer::compareTo);
-            int largestInt = largest.orElse(0);
-            map.put(getCategory(), largestInt + 1);
-        }
+        FrameworkClient.LOGGER.info("Registered keybinding {}", getId());
     }
 
     public void setLambda(Lambda lambda) {

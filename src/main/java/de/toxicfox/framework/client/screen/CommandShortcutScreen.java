@@ -81,14 +81,14 @@ public class CommandShortcutScreen extends Screen {
         }
 
         @Override
-        public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            executeButton.setX(x);
-            executeButton.setY(y);
-            executeButton.render(context, mouseX, mouseY, tickDelta);
+        public void render(DrawContext context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
+            executeButton.setX(this.getContentX());
+            executeButton.setY(this.getContentY());
+            executeButton.render(context, mouseX, mouseY, deltaTicks);
 
-            deleteButton.setX(x + 155);
-            deleteButton.setY(y);
-            deleteButton.render(context, mouseX, mouseY, tickDelta);
+            deleteButton.setX(this.getContentX() + 155);
+            deleteButton.setY(this.getContentY());
+            deleteButton.render(context, mouseX, mouseY, deltaTicks);
         }
     }
 

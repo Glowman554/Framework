@@ -6,7 +6,7 @@ import de.toxicfox.framework.client.renderer.TipRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.world.LevelLoadingScreen;
-import net.minecraft.server.WorldGenerationProgressTracker;
+import net.minecraft.client.world.ClientChunkLoadProgress;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -26,7 +26,7 @@ public abstract class LevelLoadingScreenMixin extends Screen {
     }
 
     @Inject(method = "<init>", at = @At("TAIL"))
-    private void constructor(WorldGenerationProgressTracker worldGenerationProgressTracker, CallbackInfo ci) {
+    private void constructor(ClientChunkLoadProgress worldGenerationProgressTracker, LevelLoadingScreen.WorldEntryReason worldEntryReason, CallbackInfo ci) {
         tipRenderer = new TipRenderer();
     }
 

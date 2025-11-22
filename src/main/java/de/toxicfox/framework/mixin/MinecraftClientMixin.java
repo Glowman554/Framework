@@ -6,7 +6,6 @@ import de.toxicfox.framework.client.mod.impl.ModNoTelemetry;
 import de.toxicfox.framework.client.registry.FrameworkRegistries;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.RunArgs;
-import net.minecraft.client.gui.screen.Screen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -84,8 +83,8 @@ public class MinecraftClientMixin {
         }
     }
 
-    @Inject(at = @At("RETURN"), method = "disconnect")
-    private void disconnect(Screen disconnectionScreen, boolean transferring, CallbackInfo ci) {
+    @Inject(at = @At("RETURN"), method = "onDisconnected")
+    private void disconnect(CallbackInfo ci) {
         new WorldJoinEvent(null, null, null).call();
     }
 
