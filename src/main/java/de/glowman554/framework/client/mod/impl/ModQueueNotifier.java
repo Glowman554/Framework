@@ -6,6 +6,8 @@ import de.glowman554.framework.client.FrameworkClient;
 import de.glowman554.framework.client.command.Command;
 import de.glowman554.framework.client.command.CommandEvent;
 import de.glowman554.framework.client.config.Configurable;
+import de.glowman554.framework.client.event.EventTarget;
+import de.glowman554.framework.client.event.impl.ChatEvent;
 import de.glowman554.framework.client.hud.ScreenPosition;
 import de.glowman554.framework.client.mod.ModDraggable;
 import de.glowman554.framework.client.registry.FrameworkRegistries;
@@ -54,15 +56,16 @@ public class ModQueueNotifier extends ModDraggable {
         drawContext.drawText(textRenderer, "Position: 12", pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1, -1, true);
     }
 
-    public void onChat(String content) {
+    @EventTarget
+    public void onChat(ChatEvent event) {
         if (!isEnabled()) {
             return;
         }
-        content = content.replaceAll("§.", "").trim();
+
         int newPosition = -1;
         for (String regex : regexes) {
             Pattern pattern = Pattern.compile(regex);
-            Matcher matcher = pattern.matcher(content);
+            Matcher matcher = pattern.matcher(event.cleanContent());
             while (matcher.find()) {
                 newPosition = Integer.parseInt(matcher.group(1));
             }

@@ -1,5 +1,6 @@
 package de.glowman554.framework.mixin;
 
+import de.glowman554.framework.client.event.impl.ChatEvent;
 import de.glowman554.framework.client.mod.impl.ModQueueNotifier;
 import de.glowman554.framework.client.registry.FrameworkRegistries;
 import net.minecraft.client.gui.hud.ChatHud;
@@ -13,10 +14,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class ChatHudMixin {
     @Inject(at = @At("HEAD"), method = "logChatMessage")
     private void logChatMessage(ChatHudLine message, CallbackInfo ci) {
-        try {
-            ModQueueNotifier notifier = (ModQueueNotifier) FrameworkRegistries.MODS.get(ModQueueNotifier.class);
-            notifier.onChat(message.content().getString());
-        } catch (IllegalArgumentException ignored) {
-        }
+        new ChatEvent(message).call();
     }
 }
