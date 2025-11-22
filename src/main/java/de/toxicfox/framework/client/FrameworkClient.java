@@ -196,6 +196,7 @@ public class FrameworkClient implements ClientModInitializer {
         register(new ModOpenShock());
         register(new ModForceLANPort());
         register(new ModLogo());
+        register(new ModDiscordChat());
 
         // performVersionCheck();
     }
