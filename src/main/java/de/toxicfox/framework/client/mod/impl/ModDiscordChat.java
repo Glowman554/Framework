@@ -6,6 +6,7 @@ import de.toxicfox.framework.client.config.Configurable;
 import de.toxicfox.framework.client.event.EventTarget;
 import de.toxicfox.framework.client.event.impl.ChatEvent;
 import de.toxicfox.framework.client.mod.Mod;
+import de.toxicfox.framework.client.telemetry.buildin.TelemetryModCollector;
 import de.toxicfox.framework.client.utils.WebHook;
 
 import java.io.IOException;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+@TelemetryModCollector.Disabled
 public class ModDiscordChat extends Mod {
     private final ArrayList<String> senderQueue = new ArrayList<>();
     private Timer timer;
