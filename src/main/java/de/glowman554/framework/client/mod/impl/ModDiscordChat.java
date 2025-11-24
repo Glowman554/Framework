@@ -6,6 +6,7 @@ import de.glowman554.framework.client.config.Configurable;
 import de.glowman554.framework.client.event.EventTarget;
 import de.glowman554.framework.client.event.impl.ChatEvent;
 import de.glowman554.framework.client.mod.Mod;
+import de.glowman554.framework.client.telemetry.buildin.TelemetryModCollector;
 import de.glowman554.framework.client.utils.WebHook;
 
 import java.io.IOException;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+@TelemetryModCollector.Disabled
 public class ModDiscordChat extends Mod {
     private final ArrayList<String> senderQueue = new ArrayList<>();
     private Timer timer;
