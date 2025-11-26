@@ -40,7 +40,9 @@ public class ModPiShock extends Mod {
         super.setEnabled(newEnabled);
 
         if (isEnabled()) {
-            client = new PiShockClient(username, apikey);
+            if (client == null) {
+                client = new PiShockClient(username, apikey);
+            }
             FrameworkClient.getInstance().getCommandManager().addCommand("pishock-shock", new ShockCommand(this::trigger));
         } else {
             FrameworkClient.getInstance().getCommandManager().removeCommand("pishock-shock");
