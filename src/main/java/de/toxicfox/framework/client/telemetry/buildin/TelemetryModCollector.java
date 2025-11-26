@@ -25,7 +25,7 @@ public class TelemetryModCollector implements TelemetryCollector {
 
     @Override
     public String id() {
-        return "mod";
+        return "modules";
     }
 
     @Override
