@@ -16,5 +16,8 @@
     },
     "position-display": {
         "enabled": true
+    },
+    "logo": {
+        "enabled": false
     }
 }
