@@ -37,7 +37,7 @@ public class TelemetryManager extends TimerTask {
         } catch (IllegalArgumentException ignored) {
         }
 
-        if (FrameworkClient.getInstance().getConfig().telemetry.enable && !disabled) {
+        if (!disabled) {
             FrameworkClient.LOGGER.info(prefix + "sessionId: " + sessionId);
 
             Timer timer = new Timer("Telemetry timer");

@@ -22,6 +22,7 @@ import de.toxicfox.framework.client.screen.ModSelectionScreen;
 import de.toxicfox.framework.client.telemetry.TelemetryManager;
 import de.toxicfox.framework.client.telemetry.buildin.TelemetryFabricModCollector;
 import de.toxicfox.framework.client.telemetry.buildin.TelemetryModCollector;
+import de.toxicfox.framework.client.telemetry.buildin.TelemetrySystemCollector;
 import de.toxicfox.framework.client.utils.DirectoryUtils;
 import de.toxicfox.framework.data.Data;
 import net.fabricmc.api.ClientModInitializer;
@@ -34,7 +35,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class FrameworkClient implements ClientModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger(FrameworkClient.class);
@@ -46,7 +48,6 @@ public class FrameworkClient implements ClientModInitializer {
     private TelemetryManager telemetryManager;
     private CommandShortcutsManager commandShortcutsManager;
     private ConfigManager modsManager;
-    // private FrameworkConfigSync configSync;
 
     public FrameworkClient() {
         instance = this;
@@ -99,7 +100,7 @@ public class FrameworkClient implements ClientModInitializer {
             throw new RuntimeException(e);
         }
 
-        // ServerInfoFeatured.load(config.development.featuredServersBackend);
+        ServerInfoFeatured.load(config.development.backend.featuredServers);
 
         new FrameworkKeyBinding("key.framework.hud", GLFW.GLFW_KEY_H, FrameworkKeyBinding.MISC, HUDConfigScreen::open);
         new FrameworkKeyBinding("key.framework.modselect", GLFW.GLFW_KEY_M, FrameworkKeyBinding.MISC,
@@ -124,7 +125,6 @@ public class FrameworkClient implements ClientModInitializer {
         commandManager.addCommand("profile", new ProfileCommand());
         commandManager.addCommand("set-hacked", new SetHackedCommand());
         commandManager.addCommand("token", new TokenCommand());
-        // commandManager.addCommand("config", new ConfigCommand());
 
         EventManager.register(commandManager);
 
@@ -134,12 +134,12 @@ public class FrameworkClient implements ClientModInitializer {
         if (config.telemetry.debug) {
             telemetryManager.setDebug(true);
         }
-        // telemetryManager.addEndpoint(new URL("https://telemetry.glowman554.de/"));
-        // try {
-        //    telemetryManager.addEndpoint(new URL(config.development.telemetryCollectorBackend));
-        // } catch (MalformedURLException e) {
-        //    e.printStackTrace();
-        // }
+
+        try {
+            telemetryManager.addEndpoint(new URL(config.development.backend.telemetryCollector));
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
 
 
         FabricLoader.getInstance().getEntrypointContainers("framework", FrameworkEntrypoint.class)
@@ -152,11 +152,7 @@ public class FrameworkClient implements ClientModInitializer {
         FrameworkRegistries.TELEMETRY_COLLECTORS.register(TelemetryFabricModCollector.class,
                 new TelemetryFabricModCollector());
         FrameworkRegistries.TELEMETRY_COLLECTORS.register(TelemetryModCollector.class, new TelemetryModCollector());
-
-
-        // if (config.cloud) {
-        //     cloudLogin();
-        // }
+        FrameworkRegistries.TELEMETRY_COLLECTORS.register(TelemetrySystemCollector.class, new TelemetrySystemCollector());
     }
 
     private void keybinding(String modId) {
@@ -197,57 +193,11 @@ public class FrameworkClient implements ClientModInitializer {
         register(new ModForceLANPort());
         register(new ModLogo());
         register(new ModDiscordChat());
+        register(new ModCloudConfig());
+        register(new ModGlobalChat());
 
-        // performVersionCheck();
+        FrameworkVersionCheck.performVersionCheck();
     }
-
-    /*
-    private void performVersionCheck() {
-        String currentVersion = MinecraftVersion.CURRENT.getName();
-
-        try {
-            String result = WebClient.get(config.development.versionInfoBackend.replace("{version}", currentVersion), Map.of());
-            JsonNode root = Json.json().parse(result);
-
-            JsonNode error = root.get("error");
-            if (error != null) {
-                LOGGER.error("Failed to fetch version info: {}", error.asString());
-                return;
-            }
-
-            if (root.get("eol").asBoolean()) {
-                SystemToast.show(MinecraftClient.getInstance().getToastManager(), SystemToast.Type.PERIODIC_NOTIFICATION, Text.of("End of life"), Text.of("This version of Framework reached end of life."));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void cloudLogin() {
-        String token = MinecraftClient.getInstance().getSession().getAccessToken();
-
-        if (FrameworkConfigSync.ok(token)) {
-            configSync = new FrameworkConfigSync(token);
-            if (config.sync) {
-                EventManager.register(new Object() {
-                    @EventTarget
-                    public void onClientStop(ClientStopEvent event) {
-                        configSync.upload();
-                    }
-
-                    @EventTarget
-                    public void onClientFinishLoading(ClientFinishLoadingEvent event) {
-                        configSync.download();
-                    }
-                });
-            }
-
-            LOGGER.info("cloud init ok");
-        } else {
-            LOGGER.info("cloud init failed");
-        }
-    }
-     */
 
     private void extractDefaultProfile(String profileName) throws IOException {
         LOGGER.info("Extracting default profile {}", profileName);
@@ -305,10 +255,4 @@ public class FrameworkClient implements ClientModInitializer {
     public ConfigManager getModsManager() {
         return modsManager;
     }
-
-    /*
-    public FrameworkConfigSync getConfigSync() {
-        return configSync;
-    }
-     */
 }
