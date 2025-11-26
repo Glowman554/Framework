@@ -5,7 +5,6 @@ import net.minecraft.client.network.ServerInfo;
 import net.shadew.json.Json;
 import net.shadew.json.JsonNode;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -25,7 +24,7 @@ public class ServerInfoFeatured extends ServerInfo {
             for (JsonNode entry : root) {
                 featuredServers.add(new ServerInfoFeatured(entry.get("name").asString(), entry.get("address").asString()));
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

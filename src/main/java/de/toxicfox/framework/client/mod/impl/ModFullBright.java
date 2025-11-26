@@ -18,8 +18,4 @@ public class ModFullBright extends Mod {
         return false;
     }
 
-    @Override
-    public boolean defaultEnable() {
-        return true;
-    }
 }
