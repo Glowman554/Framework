@@ -17,6 +17,8 @@ public abstract class Mod extends AutoSavable {
     protected TextRenderer textRenderer;
     private ConfigManager configManager;
 
+    private boolean eventManagerRegistered = false;
+
     @Saved
     private boolean enabled;
 
@@ -49,9 +51,13 @@ public abstract class Mod extends AutoSavable {
         save();
 
         if (enabled) {
-            EventManager.register(this);
+            if (!eventManagerRegistered) {
+                EventManager.register(this);
+                eventManagerRegistered = true;
+            }
         } else {
             EventManager.unregister(this);
+            eventManagerRegistered = false;
         }
 
         try {
