@@ -14,7 +14,7 @@ import java.util.Map;
 public class FrameworkVersionCheck {
 
     public static void performVersionCheck() {
-        String currentVersion = MinecraftVersion.CURRENT.name();
+        String currentVersion = MinecraftVersion.create().name();
 
         try {
             String result = WebClient.get(FrameworkClient.getInstance().getConfig().development.backend.versionInfo.replace("{version}", currentVersion), Map.of());
