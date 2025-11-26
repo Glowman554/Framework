@@ -25,8 +25,6 @@ public class FrameworkConfig extends AutoSavable {
     public static class TelemetryConfig extends AutoSavable {
         @Saved
         public boolean debug = false;
-        @Saved
-        public boolean enable = true;
     }
 
     public static class DevelopmentConfig extends AutoSavable {
@@ -36,15 +34,27 @@ public class FrameworkConfig extends AutoSavable {
         public boolean runGenerators = false;
         @Saved
         public boolean debugAutoSavable = false;
-        // @Saved
-        // public String featuredServersBackend = "https://framework.glowman554.de/api/featured/fetch";
-        // @Saved
-        // public String telemetryCollectorBackend = "https://framework.glowman554.de/api/telemetry/collect";
-        // @Saved
-        // public String versionInfoBackend = "https://framework.glowman554.de/api/version/{version}";
-        // @Saved
-        // public String configTest = "https://framework.glowman554.de/api/config/test";
-        // @Saved
-        // public String configSync = "https://framework.glowman554.de/api/config/sync";
+        @Saved(remap = Savable.class)
+        public BackendConfig backend = new BackendConfig();
     }
+
+    public static class BackendConfig extends AutoSavable {
+        @Saved
+        public String featuredServers = "https://framework.toxicfox.de/api/v1/featuredServers";
+        @Saved
+        public String telemetryCollector = "https://framework.toxicfox.de/api/v1/telemetry";
+        @Saved
+        public String versionInfo = "https://framework.toxicfox.de/api/v1/version/{version}";
+        @Saved
+        public String testToken = "https://framework.toxicfox.de/api/v1/testToken";
+        @Saved
+        public String profileUpload = "https://framework.toxicfox.de/api/v1/config/uploadProfile";
+        @Saved
+        public String profileDownload = "https://framework.toxicfox.de/api/v1/config/downloadProfile";
+        @Saved
+        public String chatPublish = "https://framework.toxicfox.de/api/v1/chat/publish";
+        @Saved
+        public String chatSubscribe = "wss://framework.toxicfox.de/api/v1/chat/subscribe";
+    }
+
 }

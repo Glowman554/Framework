@@ -34,7 +34,7 @@ public class TelemetryFabricModCollector implements TelemetryCollector {
 
     @Override
     public String id() {
-        return "fabric_mod";
+        return "modifications";
     }
 
     @Override
