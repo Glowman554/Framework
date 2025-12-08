@@ -6,6 +6,7 @@ import de.toxicfox.framework.client.FrameworkClient;
 import de.toxicfox.framework.client.config.Configurable;
 import de.toxicfox.framework.client.event.EventTarget;
 import de.toxicfox.framework.client.event.impl.ChatInputEvent;
+import de.toxicfox.framework.client.event.impl.TickEvent;
 import de.toxicfox.framework.client.mod.Mod;
 import de.toxicfox.framework.client.utils.Memoizer;
 import de.toxicfox.framework.client.utils.WebClient;
@@ -22,15 +23,18 @@ import java.net.http.HttpClient;
 import java.net.http.WebSocket;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CompletionStage;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.Function;
 
 public class ModGlobalChat extends Mod {
     private final Json json = Json.json();
     private String token;
     private Subscription subscription;
+    private final Queue<Message> messageQueue = new ConcurrentLinkedQueue<>();
 
     private final ArrayList<String> publishQueue = new ArrayList<>();
     private Timer timer;
@@ -81,6 +85,7 @@ public class ModGlobalChat extends Mod {
                 timer.cancel();
                 timer = null;
             }
+            messageQueue.clear();
         }
     }
 
@@ -145,9 +150,17 @@ public class ModGlobalChat extends Mod {
         }
     }
 
+    @EventTarget
+    public void onTick(TickEvent event) {
+        Message message;
+        while ((message = messageQueue.poll()) != null) {
+            MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of(String.format("§7[Global] §3<%s> §r%s", message.username, message.message)), null, MessageIndicator.notSecure());
+        }
+    }
+
     private void processMessage(Message message) {
         FrameworkClient.LOGGER.info("[Global chat] {}: {}", message.username, message.message);
-        MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of(String.format("§7[Global] §3<%s> §r%s", message.username, message.message)), null, MessageIndicator.notSecure());
+        messageQueue.add(message);
     }
 
     private class Subscription implements WebSocket.Listener, AutoCloseable {
