@@ -1,8 +1,8 @@
 package de.toxicfox.framework.mixin;
 
 import de.toxicfox.framework.client.event.impl.DeathEvent;
-import net.minecraft.client.gui.screen.DeathScreen;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.screens.DeathScreen;
+import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -14,15 +14,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class DeathScreenMixin {
     @Shadow
     @Final
-    private Text message;
+    private Component causeOfDeath;
 
     @Shadow
-    private Text scoreText;
+    private Component deathScore;
 
     @Inject(at = @At("RETURN"), method = "init")
     private void init(CallbackInfo ci) {
-        if (message != null) {
-            new DeathEvent(message.getString(), scoreText.toString()).call();
+        if (causeOfDeath != null) {
+            new DeathEvent(causeOfDeath.getString(), deathScore.toString()).call();
         } else {
             new DeathEvent(null, null).call();
         }

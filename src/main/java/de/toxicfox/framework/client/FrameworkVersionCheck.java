@@ -1,10 +1,10 @@
 package de.toxicfox.framework.client;
 
 import de.toxicfox.framework.client.utils.WebClient;
-import net.minecraft.MinecraftVersion;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.toast.SystemToast;
-import net.minecraft.text.Text;
+import net.minecraft.DetectedVersion;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.toasts.SystemToast;
+import net.minecraft.network.chat.Component;
 import net.shadew.json.Json;
 import net.shadew.json.JsonNode;
 
@@ -14,7 +14,7 @@ import java.util.Map;
 public class FrameworkVersionCheck {
 
     public static void performVersionCheck() {
-        String currentVersion = MinecraftVersion.create().name();
+        String currentVersion = DetectedVersion.tryDetectVersion().name();
 
         try {
             String result = WebClient.get(FrameworkClient.getInstance().getConfig().development.backend.versionInfo.replace("{version}", currentVersion), Map.of());
@@ -27,7 +27,7 @@ public class FrameworkVersionCheck {
             }
 
             if (root.get("endOfLife").asBoolean()) {
-                SystemToast.show(MinecraftClient.getInstance().getToastManager(), SystemToast.Type.PERIODIC_NOTIFICATION, Text.of("End of life"), Text.of("This version of Framework reached end of life."));
+                SystemToast.addOrUpdate(Minecraft.getInstance().getToastManager(), SystemToast.SystemToastId.PERIODIC_NOTIFICATION, Component.nullToEmpty("End of life"), Component.nullToEmpty("This version of Framework reached end of life."));
             }
         } catch (IOException e) {
             e.printStackTrace();

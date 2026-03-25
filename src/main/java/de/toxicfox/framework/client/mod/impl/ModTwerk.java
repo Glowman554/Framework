@@ -5,7 +5,7 @@ import de.toxicfox.framework.client.config.Configurable;
 import de.toxicfox.framework.client.event.EventTarget;
 import de.toxicfox.framework.client.event.impl.ClientPlayerTickEvent;
 import de.toxicfox.framework.client.mod.Mod;
-import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.KeyMapping;
 
 public class ModTwerk extends Mod {
     @Saved
@@ -30,8 +30,8 @@ public class ModTwerk extends Mod {
             return;
         }
 
-        KeyBinding sneakKey = mc.options.sneakKey;
-        sneakKey.setPressed(!sneakKey.isPressed());
+        KeyMapping sneakKey = mc.options.keyShift;
+        sneakKey.setDown(!sneakKey.isDown());
         timer = -1;
     }
 

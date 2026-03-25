@@ -18,7 +18,7 @@ public class ModAutoSprint extends Mod {
     @EventTarget
     public void onClientPlayerTickEvent(ClientPlayerTickEvent event) {
         assert mc.player != null;
-        if (mc.player.horizontalCollision || mc.player.isSneaking() || mc.player.isInFluid() || mc.player.input.getMovementInput().length() <= 1e-5F) {
+        if (mc.player.horizontalCollision || mc.player.isShiftKeyDown() || mc.player.isInLiquid() || mc.player.input.getMoveVector().length() <= 1e-5F) {
             return;
         }
         mc.player.setSprinting(true);

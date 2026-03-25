@@ -2,28 +2,27 @@ package de.toxicfox.framework.client.screen.config;
 
 import de.toxicfox.framework.client.mod.Mod;
 import de.toxicfox.framework.client.screen.ModConfigurationScreen;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.Element;
-import net.minecraft.client.gui.widget.CheckboxWidget;
-import net.minecraft.text.Text;
-
 import java.lang.reflect.Field;
 import java.util.List;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Checkbox;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.network.chat.Component;
 
 public class BooleanConfigEntry extends ModConfigurationScreen.ModConfigEntry{
-    private final CheckboxWidget checkboxWidget;
+    private final Checkbox checkboxWidget;
 
-    public BooleanConfigEntry(Field field, Mod mod, ModConfigurationScreen.ModConfigWidget parent, MinecraftClient client) {
+    public BooleanConfigEntry(Field field, Mod mod, ModConfigurationScreen.ModConfigWidget parent, Minecraft client) {
         super(field, mod, parent, client);
 
-        CheckboxWidget.Builder checkboxWidgetBuilder = CheckboxWidget.builder(Text.empty(), client.textRenderer);
+        Checkbox.Builder checkboxWidgetBuilder = Checkbox.builder(Component.empty(), client.font);
         try {
-            checkboxWidgetBuilder.checked((boolean) field.get(mod));
+            checkboxWidgetBuilder.selected((boolean) field.get(mod));
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
-        checkboxWidgetBuilder.callback((checkboxWidget, checked) -> {
+        checkboxWidgetBuilder.onValueChange((checkboxWidget, checked) -> {
             try {
                 field.set(mod, checked);
             } catch (IllegalAccessException e) {
@@ -35,13 +34,13 @@ public class BooleanConfigEntry extends ModConfigurationScreen.ModConfigEntry{
     }
 
     @Override
-    public List<? extends Element> children() {
+    public List<? extends GuiEventListener> children() {
         return List.of(checkboxWidget);
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
-        super.render(context, mouseX, mouseY, hovered, deltaTicks);
+    public void renderContent(GuiGraphics context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
+        super.renderContent(context, mouseX, mouseY, hovered, deltaTicks);
 
         checkboxWidget.setX(this.getContentX() + 100);
         checkboxWidget.setY(this.getContentY());

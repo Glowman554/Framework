@@ -4,7 +4,7 @@ import de.toxicfox.framework.client.FrameworkClient;
 import de.toxicfox.framework.client.mod.Mod;
 import de.toxicfox.framework.client.mod.impl.ModNoTelemetry;
 import de.toxicfox.framework.client.registry.FrameworkRegistries;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Minecraft;
 import net.shadew.json.Json;
 import net.shadew.json.JsonNode;
 import org.jetbrains.annotations.NotNull;
@@ -28,7 +28,7 @@ public class TelemetryManager extends TimerTask {
     }
 
     public void start() {
-        boolean disabled = MinecraftClient.getInstance().getGameProfile().name().matches("Player\\d+");
+        boolean disabled = Minecraft.getInstance().getGameProfile().name().matches("Player\\d+");
         try {
             Mod noTelemetry = FrameworkRegistries.MODS.get(ModNoTelemetry.class);
             if (noTelemetry.isEnabled()) {
@@ -118,7 +118,7 @@ public class TelemetryManager extends TimerTask {
     }
 
     public TelemetryIdentifier getIdentifier() {
-        return new TelemetryIdentifier(MinecraftClient.getInstance().getGameProfile().name(), sessionId);
+        return new TelemetryIdentifier(Minecraft.getInstance().getGameProfile().name(), sessionId);
     }
 
     public void setDebug(boolean debug) {

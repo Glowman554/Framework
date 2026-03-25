@@ -1,9 +1,9 @@
 package de.toxicfox.framework.client.config;
 
 import de.toxicfox.config.auto.JsonProcessor;
-import net.minecraft.block.Block;
-import net.minecraft.registry.Registries;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.level.block.Block;
 import net.shadew.json.JsonNode;
 
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ public class BlockArrayProcessor implements JsonProcessor {
         ArrayList<String> blockIds = new ArrayList<>();
         Block[] blocks = (Block[]) o;
         for (Block b : blocks) {
-            blockIds.add(Registries.BLOCK.getId(b).toString());
+            blockIds.add(BuiltInRegistries.BLOCK.getKey(b).toString());
         }
         return JsonNode.stringArray(blockIds);
     }
@@ -30,7 +30,7 @@ public class BlockArrayProcessor implements JsonProcessor {
         String[] blockIds = jsonNode.asStringArray();
         ArrayList<Block> blocks = new ArrayList<>();
         for (String blockId : blockIds) {
-            blocks.add(Registries.BLOCK.get(Identifier.of(blockId)));
+            blocks.add(BuiltInRegistries.BLOCK.getValue(Identifier.parse(blockId)));
         }
         return blocks.toArray(Block[]::new);
     }

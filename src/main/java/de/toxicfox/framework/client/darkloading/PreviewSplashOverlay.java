@@ -1,14 +1,14 @@
 package de.toxicfox.framework.client.darkloading;
 
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.SplashOverlay;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.LoadingOverlay;
 
-public class PreviewSplashOverlay extends SplashOverlay {
+public class PreviewSplashOverlay extends LoadingOverlay {
     private final Runnable onRemoved;
 
     public PreviewSplashOverlay(long durationMs, Runnable onRemoved) {
-        super(MinecraftClient.getInstance(), new FakeResourceReload(durationMs), optional -> {
+        super(Minecraft.getInstance(), new FakeResourceReload(durationMs), optional -> {
 
         }, true);
         this.onRemoved = onRemoved;

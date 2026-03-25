@@ -1,8 +1,6 @@
 package de.toxicfox.framework.mixin;
 
 import de.toxicfox.framework.client.ServerInfoFeatured;
-import net.minecraft.client.network.ServerInfo;
-import net.minecraft.client.option.ServerList;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -11,28 +9,30 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
+import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.client.multiplayer.ServerList;
 
 @Mixin(ServerList.class)
 public abstract class ServerListMixin {
     @Shadow
     @Final
-    private List<ServerInfo> servers;
+    private List<ServerData> serverList;
 
     @Shadow
-    public abstract void loadFile();
+    public abstract void load();
 
-    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/nbt/NbtIo;read(Ljava/nio/file/Path;)Lnet/minecraft/nbt/NbtCompound;", shift = At.Shift.AFTER), method = "loadFile()V")
+    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/nbt/NbtIo;read(Ljava/nio/file/Path;)Lnet/minecraft/nbt/CompoundTag;", shift = At.Shift.AFTER), method = "load()V")
     private void loadFileMixin(CallbackInfo info) {
-        servers.addAll(ServerInfoFeatured.getFeaturedServers());
+        serverList.addAll(ServerInfoFeatured.getFeaturedServers());
     }
 
-    @Inject(at = @At("HEAD"), method = "saveFile()V")
+    @Inject(at = @At("HEAD"), method = "save()V")
     private void saveFileHead(CallbackInfo info) {
-        servers.removeIf(serverInfo -> serverInfo instanceof ServerInfoFeatured);
+        serverList.removeIf(serverInfo -> serverInfo instanceof ServerInfoFeatured);
     }
 
-    @Inject(at = @At("RETURN"), method = "saveFile()V")
+    @Inject(at = @At("RETURN"), method = "save()V")
     private void saveFileReturn(CallbackInfo info) {
-        loadFile();
+        load();
     }
 }

@@ -3,37 +3,36 @@ package de.toxicfox.framework.client.screen;
 import com.google.common.collect.ImmutableList;
 import de.toxicfox.framework.client.FrameworkClient;
 import de.toxicfox.framework.client.commandshortcuts.CommandShortcut;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.Element;
-import net.minecraft.client.gui.Selectable;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.tooltip.Tooltip;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.ElementListWidget;
-import net.minecraft.text.Text;
-
 import java.util.List;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.ContainerObjectSelectionList;
+import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.narration.NarratableEntry;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
 
 public class CommandShortcutScreen extends Screen {
 
 
     public CommandShortcutScreen() {
-        super(Text.of("Command shortcuts"));
+        super(Component.nullToEmpty("Command shortcuts"));
 
     }
 
     public static void open() {
-        MinecraftClient.getInstance().setScreen(new CommandShortcutScreen());
+        Minecraft.getInstance().setScreen(new CommandShortcutScreen());
     }
 
     @Override
     protected void init() {
-        addDrawableChild(new CommandShortcutWidget(MinecraftClient.getInstance(), width, height, 0, 20, FrameworkClient.getInstance().getCommandShortcutsManager().getCommandShortcutConfig().shortcuts, this));
+        addRenderableWidget(new CommandShortcutWidget(Minecraft.getInstance(), width, height, 0, 20, FrameworkClient.getInstance().getCommandShortcutsManager().getCommandShortcutConfig().shortcuts, this));
     }
 
-    private static class CommandShortcutWidget extends ElementListWidget<CommandShortcutEntry> {
-        public CommandShortcutWidget(MinecraftClient minecraftClient, int width, int height, int y, int entryHeight, CommandShortcut[] shortcuts, CommandShortcutScreen commandShortcutScreen) {
+    private static class CommandShortcutWidget extends ContainerObjectSelectionList<CommandShortcutEntry> {
+        public CommandShortcutWidget(Minecraft minecraftClient, int width, int height, int y, int entryHeight, CommandShortcut[] shortcuts, CommandShortcutScreen commandShortcutScreen) {
             super(minecraftClient, width, height, y, entryHeight);
 
             for (CommandShortcut shortcut : shortcuts) {
@@ -42,28 +41,28 @@ public class CommandShortcutScreen extends Screen {
         }
 
         @Override
-        protected int getScrollbarX() {
-            return super.getScrollbarX() + 15;
+        protected int scrollBarX() {
+            return super.scrollBarX() + 15;
         }
     }
 
-    private static class CommandShortcutEntry extends ElementListWidget.Entry<CommandShortcutEntry> {
-        private final ButtonWidget executeButton;
-        private final ButtonWidget deleteButton;
+    private static class CommandShortcutEntry extends ContainerObjectSelectionList.Entry<CommandShortcutEntry> {
+        private final Button executeButton;
+        private final Button deleteButton;
 
         public CommandShortcutEntry(CommandShortcut shortcut, CommandShortcutScreen commandShortcutScreen) {
 
-            executeButton = ButtonWidget.builder(Text.of(shortcut.name), button -> {
+            executeButton = Button.builder(Component.nullToEmpty(shortcut.name), button -> {
                 if (shortcut.execute()) {
-                    MinecraftClient.getInstance().setScreen(null);
+                    Minecraft.getInstance().setScreen(null);
                 }
-            }).tooltip(Tooltip.of(Text.of("Press button to run the command"))).dimensions(0, 0, 150, 20).build();
+            }).tooltip(Tooltip.create(Component.nullToEmpty("Press button to run the command"))).bounds(0, 0, 150, 20).build();
 
-            deleteButton = ButtonWidget.builder(Text.of("Delete"), button -> {
+            deleteButton = Button.builder(Component.nullToEmpty("Delete"), button -> {
                 FrameworkClient.getInstance().getCommandShortcutsManager().getCommandShortcutConfig().delete(shortcut);
                 FrameworkClient.getInstance().getCommandShortcutsManager().save();
-                MinecraftClient.getInstance().setScreen(null);
-            }).tooltip(Tooltip.of(Text.of("Press button to delete shortcut"))).dimensions(0, 0, 50, 20).build();
+                Minecraft.getInstance().setScreen(null);
+            }).tooltip(Tooltip.create(Component.nullToEmpty("Press button to delete shortcut"))).bounds(0, 0, 50, 20).build();
             if (shortcut.command.equals("@new")) {
                 deleteButton.active = false;
                 deleteButton.setTooltip(null);
@@ -71,17 +70,17 @@ public class CommandShortcutScreen extends Screen {
         }
 
         @Override
-        public List<? extends Selectable> selectableChildren() {
+        public List<? extends NarratableEntry> narratables() {
             return ImmutableList.of(executeButton, deleteButton);
         }
 
         @Override
-        public List<? extends Element> children() {
+        public List<? extends GuiEventListener> children() {
             return ImmutableList.of(executeButton, deleteButton);
         }
 
         @Override
-        public void render(DrawContext context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
+        public void renderContent(GuiGraphics context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
             executeButton.setX(this.getContentX());
             executeButton.setY(this.getContentY());
             executeButton.render(context, mouseX, mouseY, deltaTicks);

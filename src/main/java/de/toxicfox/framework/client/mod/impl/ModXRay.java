@@ -3,8 +3,8 @@ package de.toxicfox.framework.client.mod.impl;
 import de.toxicfox.config.auto.Saved;
 import de.toxicfox.framework.client.config.Configurable;
 import de.toxicfox.framework.client.mod.Mod;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 
 public class ModXRay extends Mod {
     @Saved
@@ -24,7 +24,7 @@ public class ModXRay extends Mod {
     @Override
     public void setEnabled(boolean newEnabled) {
         super.setEnabled(newEnabled);
-        mc.worldRenderer.reload();
+        mc.levelRenderer.allChanged();
     }
 
     public boolean check(Block target) {

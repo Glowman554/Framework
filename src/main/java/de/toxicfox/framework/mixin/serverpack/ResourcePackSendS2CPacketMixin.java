@@ -1,10 +1,5 @@
 package de.toxicfox.framework.mixin.serverpack;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ServerInfo;
-import net.minecraft.network.listener.ClientCommonPacketListener;
-import net.minecraft.network.packet.c2s.common.ResourcePackStatusC2SPacket;
-import net.minecraft.network.packet.s2c.common.ResourcePackSendS2CPacket;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -13,19 +8,24 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.UUID;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.network.protocol.common.ClientCommonPacketListener;
+import net.minecraft.network.protocol.common.ClientboundResourcePackPushPacket;
+import net.minecraft.network.protocol.common.ServerboundResourcePackPacket;
 
-@Mixin(ResourcePackSendS2CPacket.class)
+@Mixin(ClientboundResourcePackPushPacket.class)
 public class ResourcePackSendS2CPacketMixin {
     @Shadow
     @Final
     private UUID id;
 
-    @Inject(at = @At("HEAD"), method = "apply(Lnet/minecraft/network/listener/ClientCommonPacketListener;)V", cancellable = true)
+    @Inject(at = @At("HEAD"), method = "handle(Lnet/minecraft/network/protocol/common/ClientCommonPacketListener;)V", cancellable = true)
     private void apply(ClientCommonPacketListener clientCommonPacketListener, CallbackInfo ci) {
-        ServerInfo serverInfo = MinecraftClient.getInstance().getCurrentServerEntry();
-        if (serverInfo != null && serverInfo.getResourcePackPolicy() == ServerInfo.ResourcePackPolicy.DISABLED) {
-            if (MinecraftClient.getInstance().getNetworkHandler() != null) {
-                MinecraftClient.getInstance().getNetworkHandler().sendPacket(new ResourcePackStatusC2SPacket(id, ResourcePackStatusC2SPacket.Status.SUCCESSFULLY_LOADED));
+        ServerData serverInfo = Minecraft.getInstance().getCurrentServer();
+        if (serverInfo != null && serverInfo.getResourcePackStatus() == ServerData.ServerPackStatus.DISABLED) {
+            if (Minecraft.getInstance().getConnection() != null) {
+                Minecraft.getInstance().getConnection().send(new ServerboundResourcePackPacket(id, ServerboundResourcePackPacket.Action.SUCCESSFULLY_LOADED));
             }
             ci.cancel();
         }

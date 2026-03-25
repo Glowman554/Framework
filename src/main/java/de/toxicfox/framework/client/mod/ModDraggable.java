@@ -26,6 +26,6 @@ public abstract class ModDraggable extends Mod implements Renderer {
     }
 
     private int getLineOffset(int lineNum) {
-        return (textRenderer.fontHeight + 3) * lineNum;
+        return (textRenderer.lineHeight + 3) * lineNum;
     }
 }

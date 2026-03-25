@@ -3,10 +3,10 @@ package de.toxicfox.framework.client.hud;
 
 import de.toxicfox.config.auto.AutoSavable;
 import de.toxicfox.config.auto.Saved;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Minecraft;
 
 public class ScreenPosition extends AutoSavable {
-    private static final MinecraftClient mc = MinecraftClient.getInstance();
+    private static final Minecraft mc = Minecraft.getInstance();
 
     @Saved
     private double x;
@@ -33,11 +33,11 @@ public class ScreenPosition extends AutoSavable {
     }
 
     public int getAbsoluteX() {
-        return (int) (x * mc.getWindow().getScaledWidth());
+        return (int) (x * mc.getWindow().getGuiScaledWidth());
     }
 
     public int getAbsoluteY() {
-        return (int) (y * mc.getWindow().getScaledHeight());
+        return (int) (y * mc.getWindow().getGuiScaledHeight());
     }
 
     public double getRelativeX() {
@@ -49,8 +49,8 @@ public class ScreenPosition extends AutoSavable {
     }
 
     public void setAbsolute(int x, int y) {
-        this.x = (double) x / mc.getWindow().getScaledWidth();
-        this.y = (double) y / mc.getWindow().getScaledHeight();
+        this.x = (double) x / mc.getWindow().getGuiScaledWidth();
+        this.y = (double) y / mc.getWindow().getGuiScaledHeight();
     }
 
     public void setRelative(double x, double y) {

@@ -2,10 +2,6 @@ package de.toxicfox.framework.mixin;
 
 import de.toxicfox.framework.client.mod.impl.ModEntityESP;
 import de.toxicfox.framework.client.registry.FrameworkRegistries;
-import net.minecraft.client.render.entity.EntityRenderer;
-import net.minecraft.client.render.entity.state.EntityRenderState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -14,6 +10,10 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.HashSet;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 
 @Mixin(EntityRenderer.class)
 public class EntityRendererMixin<T extends Entity, S extends EntityRenderState> {
@@ -28,7 +28,7 @@ public class EntityRendererMixin<T extends Entity, S extends EntityRenderState> 
         add(EntityType.ARMOR_STAND);
     }};
 
-    @Inject(method = "updateRenderState", at = @At(value = "FIELD", target = "Lnet/minecraft/client/render/entity/state/EntityRenderState;outlineColor:I", opcode = Opcodes.PUTFIELD, shift = At.Shift.AFTER))
+    @Inject(method = "extractRenderState", at = @At(value = "FIELD", target = "Lnet/minecraft/client/renderer/entity/state/EntityRenderState;outlineColor:I", opcode = Opcodes.PUTFIELD, shift = At.Shift.AFTER))
     public void updateRenderState(T entity, S state, float tickProgress, CallbackInfo ci) {
         try {
             ModEntityESP mod = (ModEntityESP) FrameworkRegistries.MODS.get(ModEntityESP.class);
@@ -44,7 +44,7 @@ public class EntityRendererMixin<T extends Entity, S extends EntityRenderState> 
             int dangerousDistance = mod.getDangerousDistance();
             int cautionDistance = mod.getCautionDistance();
 
-            int distance = (int) mod.getMc().player.squaredDistanceTo(entity);
+            int distance = (int) mod.getMc().player.distanceToSqr(entity);
 
             if (distance < dangerousDistance) {
                 state.outlineColor = 0xFFFF0000; // argb

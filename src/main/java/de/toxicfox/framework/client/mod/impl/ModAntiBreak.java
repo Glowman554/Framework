@@ -5,10 +5,10 @@ import de.toxicfox.framework.client.event.EventTarget;
 import de.toxicfox.framework.client.event.impl.LeftClickEvent;
 import de.toxicfox.framework.client.event.impl.RightClickEvent;
 import de.toxicfox.framework.client.mod.Mod;
-import net.minecraft.client.toast.SystemToast;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.components.toasts.SystemToast;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
 
 public class ModAntiBreak extends Mod {
     @Override
@@ -33,13 +33,13 @@ public class ModAntiBreak extends Mod {
 
     private void doAntiBreak(EventCancelable event) {
         assert mc.player != null;
-        PlayerInventory inventory = mc.player.getInventory();
-        ItemStack item = inventory.getSelectedStack();
-        if (item.isDamageable()) {
-            if (item.getMaxDamage() - item.getDamage() < 2) {
+        Inventory inventory = mc.player.getInventory();
+        ItemStack item = inventory.getSelectedItem();
+        if (item.isDamageableItem()) {
+            if (item.getMaxDamage() - item.getDamageValue() < 2) {
                 event.setCanceled(true);
 
-                SystemToast.show(mc.getToastManager(), SystemToast.Type.PERIODIC_NOTIFICATION, Text.of("Anti break"), Text.of("Click canceled since your item is about to break!"));
+                SystemToast.addOrUpdate(mc.getToastManager(), SystemToast.SystemToastId.PERIODIC_NOTIFICATION, Component.nullToEmpty("Anti break"), Component.nullToEmpty("Click canceled since your item is about to break!"));
             }
         }
     }

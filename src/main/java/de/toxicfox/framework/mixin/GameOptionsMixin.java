@@ -3,8 +3,6 @@ package de.toxicfox.framework.mixin;
 import com.google.common.collect.Lists;
 import de.toxicfox.framework.client.FrameworkKeyBinding;
 import de.toxicfox.framework.client.registry.FrameworkRegistries;
-import net.minecraft.client.option.GameOptions;
-import net.minecraft.client.option.KeyBinding;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
@@ -14,22 +12,24 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Options;
 
-@Mixin(GameOptions.class)
+@Mixin(Options.class)
 public class GameOptionsMixin {
 
     @Final
     @Shadow
     @Mutable
-    public KeyBinding[] allKeys;
+    public KeyMapping[] keyMappings;
 
     @Inject(at = @At("HEAD"), method = "load")
     public void load(CallbackInfo ci) {
         List<FrameworkKeyBinding> instances = List.of(FrameworkRegistries.KEY_BINDINGS.getRegistry().values().toArray(new FrameworkKeyBinding[0]));
 
-        List<KeyBinding> newKeysAll = Lists.newArrayList(allKeys);
+        List<KeyMapping> newKeysAll = Lists.newArrayList(keyMappings);
         newKeysAll.removeAll(instances);
         newKeysAll.addAll(instances);
-        allKeys = newKeysAll.toArray(new KeyBinding[0]);
+        keyMappings = newKeysAll.toArray(new KeyMapping[0]);
     }
 }

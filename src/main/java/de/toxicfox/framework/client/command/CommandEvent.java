@@ -1,8 +1,8 @@
 package de.toxicfox.framework.client.command;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.hud.MessageIndicator;
-import net.minecraft.text.Text;
+import net.minecraft.client.GuiMessageTag;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
 
 public record CommandEvent(String message, String command, String[] args) {
 
@@ -13,7 +13,7 @@ public record CommandEvent(String message, String command, String[] args) {
     }
 
     public static void sendText(String text) {
-        MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of(text), null, MessageIndicator.notSecure());
+        Minecraft.getInstance().gui.getChat().addMessage(Component.nullToEmpty(text), null, GuiMessageTag.chatNotSecure());
     }
 
     public static CommandEvent from(String message) {

@@ -10,9 +10,9 @@ import de.toxicfox.framework.client.event.impl.TickEvent;
 import de.toxicfox.framework.client.mod.Mod;
 import de.toxicfox.framework.client.utils.Memoizer;
 import de.toxicfox.framework.client.utils.WebClient;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.hud.MessageIndicator;
-import net.minecraft.text.Text;
+import net.minecraft.client.GuiMessageTag;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
 import net.shadew.json.Json;
 import net.shadew.json.JsonNode;
 import net.shadew.json.JsonSyntaxException;
@@ -63,7 +63,7 @@ public class ModGlobalChat extends Mod {
         super.setEnabled(newEnabled);
 
         if (isEnabled()) {
-            token = MinecraftClient.getInstance().getSession().getAccessToken();
+            token = Minecraft.getInstance().getUser().getAccessToken();
             if (subscription == null) {
                 subscription = new Subscription();
             }
@@ -154,7 +154,7 @@ public class ModGlobalChat extends Mod {
     public void onTick(TickEvent event) {
         Message message;
         while ((message = messageQueue.poll()) != null) {
-            MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of(String.format("§7[Global] §3<%s> §r%s", message.username, message.message)), null, MessageIndicator.notSecure());
+            Minecraft.getInstance().gui.getChat().addMessage(Component.nullToEmpty(String.format("§7[Global] §3<%s> §r%s", message.username, message.message)), null, GuiMessageTag.chatNotSecure());
         }
     }
 

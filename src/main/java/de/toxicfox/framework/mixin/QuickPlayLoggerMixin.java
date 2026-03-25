@@ -1,31 +1,31 @@
 package de.toxicfox.framework.mixin;
 
 import de.toxicfox.framework.client.event.impl.WorldJoinEvent;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.QuickPlayLogger;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.quickplay.QuickPlayLog;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(QuickPlayLogger.class)
+@Mixin(QuickPlayLog.class)
 public abstract class QuickPlayLoggerMixin {
     @Unique
-    private static final QuickPlayLogger new_NOOP = new QuickPlayLogger("") {
-        public void save(MinecraftClient client) {
+    private static final QuickPlayLog new_NOOP = new QuickPlayLog("") {
+        public void log(Minecraft client) {
         }
 
-        public void setWorld(WorldType worldType, String id, String name) {
+        public void setWorldData(Type worldType, String id, String name) {
             new WorldJoinEvent(worldType, name, id).call();
         }
     };
 
-    @Inject(at = @At("HEAD"), method = "create", cancellable = true)
-    private static void create(String relativePath, CallbackInfoReturnable<QuickPlayLogger> cir) {
-        cir.setReturnValue(relativePath == null ? new_NOOP : new QuickPlayLogger(relativePath) {
-            public void setWorld(QuickPlayLogger.WorldType worldType, String id, String name) {
-                super.setWorld(worldType, id, name);
+    @Inject(at = @At("HEAD"), method = "of", cancellable = true)
+    private static void create(String relativePath, CallbackInfoReturnable<QuickPlayLog> cir) {
+        cir.setReturnValue(relativePath == null ? new_NOOP : new QuickPlayLog(relativePath) {
+            public void setWorldData(QuickPlayLog.Type worldType, String id, String name) {
+                super.setWorldData(worldType, id, name);
                 new WorldJoinEvent(worldType, name, id).call();
             }
         });

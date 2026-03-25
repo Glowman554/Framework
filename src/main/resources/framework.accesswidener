@@ -1,6 +1,6 @@
 accessWidener v2 named
-accessible method net/minecraft/client/QuickPlayLogger <init> (Ljava/lang/String;)V
-accessible method net/minecraft/client/gui/screen/Screen addDrawableChild (Lnet/minecraft/client/gui/Element;)Lnet/minecraft/client/gui/Element;
-accessible class net/minecraft/client/MinecraftClient$LoadingContext
-accessible method net/minecraft/client/gui/screen/Screen remove (Lnet/minecraft/client/gui/Element;)V
-accessible method net/minecraft/client/MinecraftClient getWindowTitle ()Ljava/lang/String;
+accessible method net/minecraft/client/quickplay/QuickPlayLog <init> (Ljava/lang/String;)V
+accessible method net/minecraft/client/gui/screens/Screen addRenderableWidget (Lnet/minecraft/client/gui/components/events/GuiEventListener;)Lnet/minecraft/client/gui/components/events/GuiEventListener;
+accessible class net/minecraft/client/Minecraft$GameLoadCookie
+accessible method net/minecraft/client/gui/screens/Screen removeWidget (Lnet/minecraft/client/gui/components/events/GuiEventListener;)V
+accessible method net/minecraft/client/Minecraft createTitle ()Ljava/lang/String;

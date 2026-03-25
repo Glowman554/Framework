@@ -2,12 +2,11 @@ package de.toxicfox.framework.client.renderer;
 
 import de.toxicfox.framework.client.mod.impl.ModTips;
 import de.toxicfox.framework.client.registry.FrameworkRegistries;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.text.OrderedText;
-import net.minecraft.text.Text;
-
 import java.util.List;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.FormattedCharSequence;
 
 public class TipRenderer {
     private float tipTimer = 0f;
@@ -17,21 +16,21 @@ public class TipRenderer {
         selectRandomTip();
     }
 
-    public void drawLoadingTips(TextRenderer textRenderer, DrawContext drawContext, int width, int height, float delta) {
+    public void drawLoadingTips(Font textRenderer, GuiGraphics drawContext, int width, int height, float delta) {
         tipTimer += delta;
         if (tipTimer >= 100f) {
             selectRandomTip();
             tipTimer = 0f;
         }
-        List<OrderedText> wrappedText = textRenderer.wrapLines(Text.of(currentTip), width / 3);
+        List<FormattedCharSequence> wrappedText = textRenderer.split(Component.nullToEmpty(currentTip), width / 3);
 
-        int textY = height - textRenderer.fontHeight;
+        int textY = height - textRenderer.lineHeight;
         int textX = 0;
 
         for (int i = wrappedText.size() - 1; i >= 0; i--) {
             textY = renderTipTextLine(drawContext, wrappedText, textY, textX, i, textRenderer);
         }
-        drawContext.drawTextWithShadow(textRenderer, Text.of("Tip:"), textX, textY, 3847130);
+        drawContext.drawString(textRenderer, Component.nullToEmpty("Tip:"), textX, textY, 3847130);
     }
 
     private void selectRandomTip() {
@@ -43,10 +42,10 @@ public class TipRenderer {
         }
     }
 
-    private int renderTipTextLine(DrawContext drawContext, List<OrderedText> wrappedText, int textY, int textX, int i, TextRenderer textRenderer) {
-        OrderedText orderedText = wrappedText.get(i);
-        drawContext.drawTextWithShadow(textRenderer, orderedText, textX, textY, 16777215);
-        textY -= (int) (textRenderer.fontHeight * 1.25f);
+    private int renderTipTextLine(GuiGraphics drawContext, List<FormattedCharSequence> wrappedText, int textY, int textX, int i, Font textRenderer) {
+        FormattedCharSequence orderedText = wrappedText.get(i);
+        drawContext.drawString(textRenderer, orderedText, textX, textY, 16777215);
+        textY -= (int) (textRenderer.lineHeight * 1.25f);
         return textY;
     }
 }

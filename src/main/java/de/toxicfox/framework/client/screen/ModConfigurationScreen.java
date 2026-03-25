@@ -4,17 +4,16 @@ import de.toxicfox.framework.client.FrameworkClient;
 import de.toxicfox.framework.client.config.Configurable;
 import de.toxicfox.framework.client.mod.Mod;
 import de.toxicfox.framework.client.screen.config.*;
-import net.minecraft.block.Block;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.Selectable;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.ElementListWidget;
-import net.minecraft.text.Text;
-
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.ContainerObjectSelectionList;
+import net.minecraft.client.gui.narration.NarratableEntry;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.block.Block;
 
 public class ModConfigurationScreen extends Screen {
     private final static HashMap<Class<?>, ModConfigEntryCreator> configEntryCreators = new HashMap<>();
@@ -31,36 +30,36 @@ public class ModConfigurationScreen extends Screen {
     private final Mod mod;
 
     public ModConfigurationScreen(Mod mod) {
-        super(Text.of(mod.getName()));
+        super(Component.nullToEmpty(mod.getName()));
         this.mod = mod;
     }
 
     public static void open(Mod mod) {
-        MinecraftClient.getInstance().setScreen(new ModConfigurationScreen(mod));
+        Minecraft.getInstance().setScreen(new ModConfigurationScreen(mod));
     }
 
     @Override
     protected void init() {
-        addDrawableChild(new ModConfigWidget(mod, MinecraftClient.getInstance(), width, height, 20, 20, this));
+        addRenderableWidget(new ModConfigWidget(mod, Minecraft.getInstance(), width, height, 20, 20, this));
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
 
         String text = mod.getName() + " configuration";
-        context.drawTextWithShadow(textRenderer, text, width / 2 - textRenderer.getWidth(text) / 2, 1, -1);
+        context.drawString(font, text, width / 2 - font.width(text) / 2, 1, -1);
     }
 
     public interface ModConfigEntryCreator {
-        ModConfigEntry create(Field field, Mod mod, ModConfigWidget parent, MinecraftClient client);
+        ModConfigEntry create(Field field, Mod mod, ModConfigWidget parent, Minecraft client);
     }
 
-    public static class ModConfigWidget extends ElementListWidget<ModConfigEntry> {
+    public static class ModConfigWidget extends ContainerObjectSelectionList<ModConfigEntry> {
         public final ModConfigurationScreen parent;
         protected int maxKeyNameLength = 0;
 
-        public ModConfigWidget(Mod mod, MinecraftClient minecraftClient, int width, int height, int y, int entryHeight, ModConfigurationScreen parent) {
+        public ModConfigWidget(Mod mod, Minecraft minecraftClient, int width, int height, int y, int entryHeight, ModConfigurationScreen parent) {
             super(minecraftClient, width, height, y, entryHeight);
             this.parent = parent;
 
@@ -78,38 +77,38 @@ public class ModConfigurationScreen extends Screen {
         }
 
         @Override
-        protected int getScrollbarX() {
-            return super.getScrollbarX() + 15;
+        protected int scrollBarX() {
+            return super.scrollBarX() + 15;
         }
     }
 
-    public abstract static class ModConfigEntry extends ElementListWidget.Entry<ModConfigEntry> {
+    public abstract static class ModConfigEntry extends ContainerObjectSelectionList.Entry<ModConfigEntry> {
         protected final Field field;
         protected final Mod mod;
         private final String title;
         private final ModConfigWidget parent;
 
-        protected ModConfigEntry(Field field, Mod mod, ModConfigWidget parent, MinecraftClient client) {
+        protected ModConfigEntry(Field field, Mod mod, ModConfigWidget parent, Minecraft client) {
             this.field = field;
             this.field.setAccessible(true);
             this.mod = mod;
             title = field.getAnnotation(Configurable.class).text();
             this.parent = parent;
 
-            int i = client.textRenderer.getWidth(title);
+            int i = client.font.width(title);
             if (i > parent.maxKeyNameLength) {
                 parent.maxKeyNameLength = i;
             }
         }
 
         @Override
-        public List<? extends Selectable> selectableChildren() {
+        public List<? extends NarratableEntry> narratables() {
             return List.of();
         }
 
         @Override
-        public void render(DrawContext context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
-            context.drawText(MinecraftClient.getInstance().textRenderer, title, this.getContentX() + 90 - parent.maxKeyNameLength, this.getContentY() + getContentHeight() / 2, -1, true);
+        public void renderContent(GuiGraphics context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
+            context.drawString(Minecraft.getInstance().font, title, this.getContentX() + 90 - parent.maxKeyNameLength, this.getContentY() + getContentHeight() / 2, -1, true);
         }
     }
 }

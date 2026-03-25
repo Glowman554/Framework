@@ -2,19 +2,18 @@ package de.toxicfox.framework.client.mod.impl;
 
 import de.toxicfox.framework.client.hud.ScreenPosition;
 import de.toxicfox.framework.client.mod.ModDraggable;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gl.RenderPipelines;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.util.Identifier;
-
 import java.util.Arrays;
 import java.util.Collections;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.resources.Identifier;
 
 public class ModLogo extends ModDraggable {
-    private final Identifier logo = Identifier.of("framework", "icon.png");
+    private final Identifier logo = Identifier.fromNamespaceAndPath("framework", "icon.png");
 
     private final String[] message = {
-            MinecraftClient.getInstance().getWindowTitle(),
+            Minecraft.getInstance().createTitle(),
             "Thank you for using Framework <3",
             "Use M to open the Mod selector list",
             "Use H to open the drag overlay",
@@ -23,24 +22,24 @@ public class ModLogo extends ModDraggable {
 
     @Override
     public int getWidth() {
-        int size = message.length * textRenderer.fontHeight;
-        return size + Collections.max(Arrays.stream(message).map(textRenderer::getWidth).toList()) + 1;
+        int size = message.length * textRenderer.lineHeight;
+        return size + Collections.max(Arrays.stream(message).map(textRenderer::width).toList()) + 1;
     }
 
     @Override
     public int getHeight() {
-        int size = message.length * textRenderer.fontHeight;
-        return Math.max(size, textRenderer.fontHeight * message.length);
+        int size = message.length * textRenderer.lineHeight;
+        return Math.max(size, textRenderer.lineHeight * message.length);
     }
 
     @Override
-    public void render(DrawContext drawContext, ScreenPosition pos) {
-        int size = message.length * textRenderer.fontHeight;
+    public void render(GuiGraphics drawContext, ScreenPosition pos) {
+        int size = message.length * textRenderer.lineHeight;
 
-        drawContext.drawTexture(RenderPipelines.GUI_TEXTURED, logo, pos.getAbsoluteX(), pos.getAbsoluteY(), 0, 0, size, size, size, size);
+        drawContext.blit(RenderPipelines.GUI_TEXTURED, logo, pos.getAbsoluteX(), pos.getAbsoluteY(), 0, 0, size, size, size, size);
 
         for (int i = 0; i < message.length; i++) {
-            drawContext.drawText(textRenderer, message[i], pos.getAbsoluteX() + size + 1, pos.getAbsoluteY() + 1 + textRenderer.fontHeight * i, -1, true);
+            drawContext.drawString(textRenderer, message[i], pos.getAbsoluteX() + size + 1, pos.getAbsoluteY() + 1 + textRenderer.lineHeight * i, -1, true);
         }
     }
 

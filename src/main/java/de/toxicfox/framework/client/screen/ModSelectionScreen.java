@@ -4,38 +4,37 @@ import de.toxicfox.framework.client.FrameworkClient;
 import de.toxicfox.framework.client.config.Configurable;
 import de.toxicfox.framework.client.mod.Mod;
 import de.toxicfox.framework.client.registry.FrameworkRegistries;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.Element;
-import net.minecraft.client.gui.Selectable;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.tooltip.Tooltip;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.ElementListWidget;
-import net.minecraft.text.Text;
-
 import java.lang.reflect.Field;
 import java.util.Comparator;
 import java.util.List;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.ContainerObjectSelectionList;
+import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.narration.NarratableEntry;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
 
 public class ModSelectionScreen extends Screen {
     public ModSelectionScreen() {
-        super(Text.of("Mod selection"));
+        super(Component.nullToEmpty("Mod selection"));
     }
 
     public static void open() {
-        MinecraftClient.getInstance().setScreen(new ModSelectionScreen());
+        Minecraft.getInstance().setScreen(new ModSelectionScreen());
     }
 
     @Override
     protected void init() {
-        addDrawableChild(new ModListWidget(MinecraftClient.getInstance(), width, height, 0, 20));
+        addRenderableWidget(new ModListWidget(Minecraft.getInstance(), width, height, 0, 20));
     }
 
-    private static class ModListWidget extends ElementListWidget<ModListEntry> {
+    private static class ModListWidget extends ContainerObjectSelectionList<ModListEntry> {
         int maxKeyNameLength = 0;
 
-        public ModListWidget(MinecraftClient minecraftClient, int width, int height, int y, int entryHeight) {
+        public ModListWidget(Minecraft minecraftClient, int width, int height, int y, int entryHeight) {
             super(minecraftClient, width, height, y, entryHeight);
 
             List<Mod> mods = FrameworkRegistries.MODS.getRegistry().values().stream().sorted(Comparator.comparing(Mod::getName)).toList();
@@ -46,7 +45,7 @@ public class ModSelectionScreen extends Screen {
                 }
 
                 addEntry(new ModListEntry(mod, this));
-                int i = client.textRenderer.getWidth(mod.getName());
+                int i = minecraft.font.width(mod.getName());
                 if (i > maxKeyNameLength) {
                     maxKeyNameLength = i;
                 }
@@ -54,14 +53,14 @@ public class ModSelectionScreen extends Screen {
         }
 
         @Override
-        protected int getScrollbarX() {
-            return super.getScrollbarX() + 15;
+        protected int scrollBarX() {
+            return super.scrollBarX() + 15;
         }
     }
 
-    private static class ModListEntry extends ElementListWidget.Entry<ModListEntry> {
-        private final ButtonWidget toggleButton;
-        private final ButtonWidget configButton;
+    private static class ModListEntry extends ContainerObjectSelectionList.Entry<ModListEntry> {
+        private final Button toggleButton;
+        private final Button configButton;
         private final Mod mod;
         private final ModListWidget parent;
         private boolean isConfigurable = false;
@@ -70,11 +69,11 @@ public class ModSelectionScreen extends Screen {
             this.mod = mod;
             this.parent = parent;
 
-            toggleButton = ButtonWidget.builder(Text.of(getButtonString()), button -> {
+            toggleButton = Button.builder(Component.nullToEmpty(getButtonString()), button -> {
                 mod.setEnabled(!mod.isEnabled());
-                button.setMessage(Text.of(getButtonString()));
-                button.setTooltip(Tooltip.of(Text.of(getButtonTooltip())));
-            }).tooltip(Tooltip.of(Text.of(getButtonTooltip()))).dimensions(0, 0, 75 + 25, 20).build();
+                button.setMessage(Component.nullToEmpty(getButtonString()));
+                button.setTooltip(Tooltip.create(Component.nullToEmpty(getButtonTooltip())));
+            }).tooltip(Tooltip.create(Component.nullToEmpty(getButtonTooltip()))).bounds(0, 0, 75 + 25, 20).build();
 
             for (Field field : mod.getClass().getDeclaredFields()) {
                 if (field.isAnnotationPresent(Configurable.class)) {
@@ -84,9 +83,9 @@ public class ModSelectionScreen extends Screen {
             }
 
             if (isConfigurable) {
-                configButton = ButtonWidget.builder(Text.of("⚙"), button -> {
+                configButton = Button.builder(Component.nullToEmpty("⚙"), button -> {
                     ModConfigurationScreen.open(mod);
-                }).tooltip(Tooltip.of(Text.of("Configure " + mod.getName().toLowerCase()))).dimensions(0, 0, 20, 20).build();
+                }).tooltip(Tooltip.create(Component.nullToEmpty("Configure " + mod.getName().toLowerCase()))).bounds(0, 0, 20, 20).build();
             } else {
                 configButton = null;
             }
@@ -109,12 +108,12 @@ public class ModSelectionScreen extends Screen {
         }
 
         @Override
-        public List<? extends Selectable> selectableChildren() {
+        public List<? extends NarratableEntry> narratables() {
             return List.of();
         }
 
         @Override
-        public List<? extends Element> children() {
+        public List<? extends GuiEventListener> children() {
             if (isConfigurable) {
                 return List.of(toggleButton, configButton);
             } else {
@@ -123,7 +122,7 @@ public class ModSelectionScreen extends Screen {
         }
 
         @Override
-        public void render(DrawContext context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
+        public void renderContent(GuiGraphics context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
             toggleButton.setX(this.getContentX() + 90);
             toggleButton.setY(this.getContentY());
             toggleButton.render(context, mouseX, mouseY, deltaTicks);
@@ -135,7 +134,7 @@ public class ModSelectionScreen extends Screen {
             }
 
             String renderName = mod.getName();
-            context.drawText(MinecraftClient.getInstance().textRenderer, renderName, this.getContentX() + 90 - parent.maxKeyNameLength, this.getContentY() + getContentHeight() / 2, -1, true);
+            context.drawString(Minecraft.getInstance().font, renderName, this.getContentX() + 90 - parent.maxKeyNameLength, this.getContentY() + getContentHeight() / 2, -1, true);
         }
     }
 }

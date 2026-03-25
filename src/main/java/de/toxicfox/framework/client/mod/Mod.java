@@ -7,14 +7,14 @@ import de.toxicfox.framework.client.FrameworkClient;
 import de.toxicfox.framework.client.event.EventManager;
 import de.toxicfox.framework.client.registry.FrameworkRegistries;
 import de.toxicfox.framework.client.telemetry.buildin.TelemetryModCollector;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.toast.SystemToast;
-import net.minecraft.text.Text;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.components.toasts.SystemToast;
+import net.minecraft.network.chat.Component;
 
 public abstract class Mod extends AutoSavable {
-    protected MinecraftClient mc;
-    protected TextRenderer textRenderer;
+    protected Minecraft mc;
+    protected Font textRenderer;
     private ConfigManager configManager;
 
     private boolean eventManagerRegistered = false;
@@ -24,8 +24,8 @@ public abstract class Mod extends AutoSavable {
 
 
     public void configure(ConfigManager configManager) {
-        this.mc = MinecraftClient.getInstance();
-        this.textRenderer = mc.textRenderer;
+        this.mc = Minecraft.getInstance();
+        this.textRenderer = mc.font;
         this.configManager = configManager;
 
         try {
@@ -75,7 +75,7 @@ public abstract class Mod extends AutoSavable {
 
     public void onKeybinding() {
         setEnabled(!isEnabled());
-        SystemToast.show(mc.getToastManager(), SystemToast.Type.PERIODIC_NOTIFICATION, Text.of(getName()), Text.of(String.format("%s is now %s", getName(), isEnabled() ? "enabled" : "disabled")));
+        SystemToast.addOrUpdate(mc.getToastManager(), SystemToast.SystemToastId.PERIODIC_NOTIFICATION, Component.nullToEmpty(getName()), Component.nullToEmpty(String.format("%s is now %s", getName(), isEnabled() ? "enabled" : "disabled")));
     }
 
     public abstract String getId();
@@ -88,7 +88,7 @@ public abstract class Mod extends AutoSavable {
 
     public abstract boolean isHacked();
 
-    public MinecraftClient getMc() {
+    public Minecraft getMc() {
         return mc;
     }
 }

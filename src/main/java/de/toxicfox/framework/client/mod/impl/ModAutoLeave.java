@@ -5,7 +5,7 @@ import de.toxicfox.framework.client.config.Configurable;
 import de.toxicfox.framework.client.event.EventTarget;
 import de.toxicfox.framework.client.event.impl.ClientPlayerTickEvent;
 import de.toxicfox.framework.client.mod.Mod;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 
 public class ModAutoLeave extends Mod {
     @Saved
@@ -25,14 +25,14 @@ public class ModAutoLeave extends Mod {
     @EventTarget
     public void onClientPlayerTick(ClientPlayerTickEvent event) {
         assert mc.player != null;
-        if (mc.player.getAbilities().creativeMode) {
+        if (mc.player.getAbilities().instabuild) {
             return;
         }
 
         float currentHealth = mc.player.getHealth();
         if (currentHealth <= health) {
-            assert mc.world != null;
-            mc.world.disconnect(Text.of("Low health"));
+            assert mc.level != null;
+            mc.level.disconnect(Component.nullToEmpty("Low health"));
 
             setEnabled(false);
         }

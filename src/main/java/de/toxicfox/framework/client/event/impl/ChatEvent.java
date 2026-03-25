@@ -1,16 +1,16 @@
 package de.toxicfox.framework.client.event.impl;
 
 import de.toxicfox.framework.client.event.Event;
-import net.minecraft.client.gui.hud.ChatHudLine;
+import net.minecraft.client.GuiMessage;
 
 public class ChatEvent extends Event {
-    private final ChatHudLine message;
+    private final GuiMessage message;
 
-    public ChatEvent(ChatHudLine message) {
+    public ChatEvent(GuiMessage message) {
         this.message = message;
     }
 
-    public ChatHudLine getMessage() {
+    public GuiMessage getMessage() {
         return message;
     }
 

@@ -4,36 +4,36 @@ import de.toxicfox.framework.client.hud.ScreenPosition;
 import de.toxicfox.framework.client.mod.Mod;
 import de.toxicfox.framework.client.mod.ModDraggable;
 import de.toxicfox.framework.client.registry.FrameworkRegistries;
-import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.GuiGraphics;
 
 public class ModModList extends ModDraggable {
     private final String[] dummy = new String[]{"X Ray", "Entity ESP", "Rainbow"};
 
     @Override
     public int getWidth() {
-        return textRenderer.getWidth(dummy[1]);
+        return textRenderer.width(dummy[1]);
     }
 
     @Override
     public int getHeight() {
-        return textRenderer.fontHeight * dummy.length;
+        return textRenderer.lineHeight * dummy.length;
     }
 
     @Override
-    public void render(DrawContext drawContext, ScreenPosition pos) {
+    public void render(GuiGraphics drawContext, ScreenPosition pos) {
         String[] mods = FrameworkRegistries.MODS.getRegistry().values().stream().filter(Mod::isEnabled).map(Mod::getName).sorted().toArray(String[]::new);
         renderList(drawContext, mods, pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1);
     }
 
     @Override
-    public void renderDummy(DrawContext drawContext, ScreenPosition pos) {
+    public void renderDummy(GuiGraphics drawContext, ScreenPosition pos) {
         renderList(drawContext, dummy, pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1);
     }
 
-    private void renderList(DrawContext context, String[] list, int x, int y) {
+    private void renderList(GuiGraphics context, String[] list, int x, int y) {
         for (String entry : list) {
-            context.drawText(textRenderer, entry, x, y, -1, true);
-            y += textRenderer.fontHeight;
+            context.drawString(textRenderer, entry, x, y, -1, true);
+            y += textRenderer.lineHeight;
         }
     }
 

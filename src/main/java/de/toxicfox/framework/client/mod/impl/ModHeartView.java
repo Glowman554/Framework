@@ -2,38 +2,38 @@ package de.toxicfox.framework.client.mod.impl;
 
 import de.toxicfox.framework.client.hud.ScreenPosition;
 import de.toxicfox.framework.client.mod.ModDraggable;
-import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.GuiGraphics;
 
 public class ModHeartView extends ModDraggable {
 
     @Override
     public int getWidth() {
-        return textRenderer.getWidth("Oxygen: 20/20");
+        return textRenderer.width("Oxygen: 20/20");
     }
 
     @Override
     public int getHeight() {
-        return textRenderer.fontHeight * 2;
+        return textRenderer.lineHeight * 2;
     }
 
     @Override
-    public void render(DrawContext drawContext, ScreenPosition pos) {
+    public void render(GuiGraphics drawContext, ScreenPosition pos) {
         int i = 0;
-        drawContext.drawText(textRenderer,
+        drawContext.drawString(textRenderer,
                 String.format("Health: %d/%d", (int) mc.player.getHealth(), (int) mc.player.getMaxHealth()),
-                pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1 + textRenderer.fontHeight * i++, -1, true);
-        drawContext.drawText(textRenderer,
-                String.format("Oxygen: %d/%d", (int) mc.player.getAir(), (int) mc.player.getMaxAir()),
-                pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1 + textRenderer.fontHeight * i++, -1, true);
+                pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1 + textRenderer.lineHeight * i++, -1, true);
+        drawContext.drawString(textRenderer,
+                String.format("Oxygen: %d/%d", (int) mc.player.getAirSupply(), (int) mc.player.getMaxAirSupply()),
+                pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1 + textRenderer.lineHeight * i++, -1, true);
     }
 
     @Override
-    public void renderDummy(DrawContext drawContext, ScreenPosition pos) {
+    public void renderDummy(GuiGraphics drawContext, ScreenPosition pos) {
         int i = 0;
-        drawContext.drawText(textRenderer, "Health: 20/20", pos.getAbsoluteX() + 1,
-                pos.getAbsoluteY() + 1 + textRenderer.fontHeight * i++, -1, true);
-        drawContext.drawText(textRenderer, "Oxygen: 20/20", pos.getAbsoluteX() + 1,
-                pos.getAbsoluteY() + 1 + textRenderer.fontHeight * i++, -1, true);
+        drawContext.drawString(textRenderer, "Health: 20/20", pos.getAbsoluteX() + 1,
+                pos.getAbsoluteY() + 1 + textRenderer.lineHeight * i++, -1, true);
+        drawContext.drawString(textRenderer, "Oxygen: 20/20", pos.getAbsoluteX() + 1,
+                pos.getAbsoluteY() + 1 + textRenderer.lineHeight * i++, -1, true);
     }
 
     @Override

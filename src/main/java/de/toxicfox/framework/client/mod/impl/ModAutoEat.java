@@ -5,15 +5,15 @@ import de.toxicfox.framework.client.config.Configurable;
 import de.toxicfox.framework.client.event.EventTarget;
 import de.toxicfox.framework.client.event.impl.ClientPlayerTickEvent;
 import de.toxicfox.framework.client.mod.Mod;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.FoodComponent;
-import net.minecraft.component.type.FoodComponents;
-import net.minecraft.entity.player.HungerManager;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.food.FoodData;
+import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.food.Foods;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.EntityHitResult;
 
 public class ModAutoEat extends Mod {
     @Saved
@@ -39,7 +39,7 @@ public class ModAutoEat extends Mod {
 
     @EventTarget
     public void onClientPlayerTickEvent(ClientPlayerTickEvent event) {
-        ClientPlayerEntity player = mc.player;
+        LocalPlayer player = mc.player;
 
         if (!shouldEat()) {
             stopEating();
@@ -48,14 +48,14 @@ public class ModAutoEat extends Mod {
 
         if (isEating()) {
             assert mc.player != null;
-            if (mc.player.getInventory().getSelectedStack() == null || mc.player.getInventory().getSelectedStack().get(DataComponentTypes.FOOD) == null) {
+            if (mc.player.getInventory().getSelectedItem() == null || mc.player.getInventory().getSelectedItem().get(DataComponents.FOOD) == null) {
                 stopEating();
                 return;
             }
         }
 
         assert player != null;
-        HungerManager hungerManager = player.getHungerManager();
+        FoodData hungerManager = player.getFoodData();
         int foodLevel = hungerManager.getFoodLevel();
 
 
@@ -66,7 +66,7 @@ public class ModAutoEat extends Mod {
 
     private void eat() {
         assert mc.player != null;
-        PlayerInventory inventory = mc.player.getInventory();
+        Inventory inventory = mc.player.getInventory();
         int foodSlot = findBestFoodSlot();
 
         if (foodSlot == -1) {
@@ -82,22 +82,22 @@ public class ModAutoEat extends Mod {
             inventory.setSelectedSlot(foodSlot);
         }
 
-        mc.options.useKey.setPressed(true);
-        assert mc.interactionManager != null;
-        mc.interactionManager.interactItem(mc.player, Hand.MAIN_HAND);
+        mc.options.keyUse.setDown(true);
+        assert mc.gameMode != null;
+        mc.gameMode.useItem(mc.player, InteractionHand.MAIN_HAND);
     }
 
     private int findBestFoodSlot() {
         assert mc.player != null;
-        PlayerInventory inventory = mc.player.getInventory();
-        FoodComponent bestFood = null;
+        Inventory inventory = mc.player.getInventory();
+        FoodProperties bestFood = null;
         int bestSlot = -1;
         for (int slot = 0; slot < 9; slot++) {
-            ItemStack item = inventory.getStack(slot);
-            FoodComponent foodComponent = item.get(DataComponentTypes.FOOD);
+            ItemStack item = inventory.getItem(slot);
+            FoodProperties foodComponent = item.get(DataComponents.FOOD);
             if (foodComponent != null) {
 
-                if (foodComponent == FoodComponents.CHORUS_FRUIT) {
+                if (foodComponent == Foods.CHORUS_FRUIT) {
                     continue;
                 }
 
@@ -113,12 +113,12 @@ public class ModAutoEat extends Mod {
 
     private boolean shouldEat() {
         assert mc.player != null;
-        return !mc.player.getAbilities().creativeMode && mc.player.canConsume(false) && !(mc.crosshairTarget instanceof EntityHitResult);
+        return !mc.player.getAbilities().instabuild && mc.player.canEat(false) && !(mc.hitResult instanceof EntityHitResult);
     }
 
     private void stopEating() {
         if (isEating()) {
-            mc.options.useKey.setPressed(false);
+            mc.options.keyUse.setDown(false);
             assert mc.player != null;
             mc.player.getInventory().setSelectedSlot(oldSlot);
             oldSlot = -1;

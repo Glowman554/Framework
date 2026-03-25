@@ -1,16 +1,15 @@
 package de.toxicfox.framework.client.hud;
 
 import de.toxicfox.framework.client.FrameworkClient;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.Click;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.text.Text;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.function.Predicate;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.network.chat.Component;
 
 public class HUDConfigScreen extends Screen {
     private final HashMap<Renderer, ScreenPosition> renderers = new HashMap<>();
@@ -18,7 +17,7 @@ public class HUDConfigScreen extends Screen {
     private int prevX, prevY;
 
     protected HUDConfigScreen(HUDManager api) {
-        super(Text.empty());
+        super(Component.empty());
         Collection<Renderer> registeredRenderers = api.getRegisteredRenderers();
 
         for (Renderer renderer : registeredRenderers) {
@@ -39,11 +38,11 @@ public class HUDConfigScreen extends Screen {
     }
 
     public static void open() {
-        MinecraftClient.getInstance().setScreen(new HUDConfigScreen(FrameworkClient.getInstance().getHudManager()));
+        Minecraft.getInstance().setScreen(new HUDConfigScreen(FrameworkClient.getInstance().getHudManager()));
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
         // super.renderBackground(context, mouseX, mouseY, delta);
 
         this.drawHollowRect(context, 0, 0, this.width - 1, this.height - 1, 0xFFFF0000);
@@ -55,17 +54,17 @@ public class HUDConfigScreen extends Screen {
         }
     }
 
-    private void drawHollowRect(DrawContext drawContext, int absoluteX, int absoluteY, int width, int height, int color) {
-        drawContext.drawHorizontalLine(absoluteX, absoluteX + width, absoluteY, color);
-        drawContext.drawHorizontalLine(absoluteX, absoluteX + width, absoluteY + height, color);
+    private void drawHollowRect(GuiGraphics drawContext, int absoluteX, int absoluteY, int width, int height, int color) {
+        drawContext.hLine(absoluteX, absoluteX + width, absoluteY, color);
+        drawContext.hLine(absoluteX, absoluteX + width, absoluteY + height, color);
 
-        drawContext.drawVerticalLine(absoluteX, absoluteY + height, absoluteY, color);
-        drawContext.drawVerticalLine(absoluteX + width, absoluteY + height, absoluteY, color);
+        drawContext.vLine(absoluteX, absoluteY + height, absoluteY, color);
+        drawContext.vLine(absoluteX + width, absoluteY + height, absoluteY, color);
     }
 
 
     @Override
-    public boolean mouseDragged(Click click, double offsetX, double offsetY) {
+    public boolean mouseDragged(MouseButtonEvent click, double offsetX, double offsetY) {
         if (selectedRenderer.isPresent()) {
             moveSelectedRendererBy((int) click.x() - prevX, (int) click.y() - prevY);
         }
@@ -89,27 +88,27 @@ public class HUDConfigScreen extends Screen {
     }
 
     private void adjustBounds(Renderer renderer, ScreenPosition pos) {
-        int absoluteX = Math.max(0, Math.min(pos.getAbsoluteX(), Math.max(MinecraftClient.getInstance().getWindow().getScaledWidth() - renderer.getWidth(), 0)));
-        int absoluteY = Math.max(0, Math.min(pos.getAbsoluteY(), Math.max(MinecraftClient.getInstance().getWindow().getScaledHeight() - renderer.getHeight(), 0)));
+        int absoluteX = Math.max(0, Math.min(pos.getAbsoluteX(), Math.max(Minecraft.getInstance().getWindow().getGuiScaledWidth() - renderer.getWidth(), 0)));
+        int absoluteY = Math.max(0, Math.min(pos.getAbsoluteY(), Math.max(Minecraft.getInstance().getWindow().getGuiScaledHeight() - renderer.getHeight(), 0)));
 
         pos.setAbsolute(absoluteX, absoluteY);
     }
 
     @Override
-    public void close() {
-        super.close();
+    public void onClose() {
+        super.onClose();
         for (Renderer renderer : renderers.keySet()) {
             renderer.setPos(renderers.get(renderer));
         }
     }
 
     @Override
-    public boolean shouldPause() {
+    public boolean isPauseScreen() {
         return true;
     }
 
     @Override
-    public boolean mouseClicked(Click click, boolean doubled) {
+    public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {
         this.prevX = (int) click.x();
         this.prevY = (int) click.y();
 

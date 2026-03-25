@@ -11,7 +11,7 @@ import de.toxicfox.framework.client.event.impl.ClientStopEvent;
 import de.toxicfox.framework.client.mod.Mod;
 import de.toxicfox.framework.client.registry.FrameworkRegistries;
 import de.toxicfox.framework.client.utils.WebClient;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Minecraft;
 import net.shadew.json.Json;
 import net.shadew.json.JsonNode;
 
@@ -46,7 +46,7 @@ public class ModCloudConfig extends Mod {
         super.setEnabled(newEnabled);
 
         if (isEnabled()) {
-            token = MinecraftClient.getInstance().getSession().getAccessToken();
+            token = Minecraft.getInstance().getUser().getAccessToken();
             FrameworkClient.getInstance().getCommandManager().addCommand("config", new ConfigCommand());
         } else {
             token = null;

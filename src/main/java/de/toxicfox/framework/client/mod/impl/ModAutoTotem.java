@@ -4,13 +4,13 @@ import de.toxicfox.framework.client.event.EventTarget;
 import de.toxicfox.framework.client.event.impl.ClientPlayerTickEvent;
 import de.toxicfox.framework.client.hud.ScreenPosition;
 import de.toxicfox.framework.client.mod.ModDraggable;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.gui.screen.ingame.InventoryScreen;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.screen.slot.SlotActionType;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 public class ModAutoTotem extends ModDraggable {
     private int totemsLeft;
@@ -18,22 +18,22 @@ public class ModAutoTotem extends ModDraggable {
 
     @Override
     public int getWidth() {
-        return textRenderer.getWidth("11 totems left");
+        return textRenderer.width("11 totems left");
     }
 
     @Override
     public int getHeight() {
-        return textRenderer.fontHeight;
+        return textRenderer.lineHeight;
     }
 
     @Override
-    public void render(DrawContext drawContext, ScreenPosition pos) {
-        drawContext.drawText(textRenderer, totemsLeft + " totems left", pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1, -1, true);
+    public void render(GuiGraphics drawContext, ScreenPosition pos) {
+        drawContext.drawString(textRenderer, totemsLeft + " totems left", pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1, -1, true);
     }
 
     @Override
-    public void renderDummy(DrawContext drawContext, ScreenPosition pos) {
-        drawContext.drawText(textRenderer, "11 totems left", pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1, -1, true);
+    public void renderDummy(GuiGraphics drawContext, ScreenPosition pos) {
+        drawContext.drawString(textRenderer, "11 totems left", pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1, -1, true);
     }
 
     @Override
@@ -63,17 +63,17 @@ public class ModAutoTotem extends ModDraggable {
 
         assert mc.player != null;
 
-        PlayerInventory inventory = mc.player.getInventory();
+        Inventory inventory = mc.player.getInventory();
 
         int nextTotemSlot = searchForTotems(mc.player.getInventory());
-        ItemStack offhandStack = inventory.getStack(40);
+        ItemStack offhandStack = inventory.getItem(40);
         if (offhandStack.getItem() == Items.TOTEM_OF_UNDYING) {
             totemsLeft++;
             return;
         }
 
 
-        if ((mc.currentScreen instanceof HandledScreen<?> && !(mc.currentScreen instanceof InventoryScreen)) || nextTotemSlot == -1) {
+        if ((mc.screen instanceof AbstractContainerScreen<?> && !(mc.screen instanceof InventoryScreen)) || nextTotemSlot == -1) {
             return;
         }
 
@@ -83,9 +83,9 @@ public class ModAutoTotem extends ModDraggable {
     private void moveTotem(int nextTotemSlot, ItemStack offhandStack) {
         boolean offhandEmpty = offhandStack.isEmpty();
 
-        assert mc.interactionManager != null;
-        mc.interactionManager.clickSlot(0, nextTotemSlot, 0, SlotActionType.PICKUP, mc.player);
-        mc.interactionManager.clickSlot(0, 45, 0, SlotActionType.PICKUP, mc.player);
+        assert mc.gameMode != null;
+        mc.gameMode.handleInventoryMouseClick(0, nextTotemSlot, 0, ClickType.PICKUP, mc.player);
+        mc.gameMode.handleInventoryMouseClick(0, 45, 0, ClickType.PICKUP, mc.player);
 
 
         if (!offhandEmpty) {
@@ -98,17 +98,17 @@ public class ModAutoTotem extends ModDraggable {
             return;
         }
 
-        assert mc.interactionManager != null;
-        mc.interactionManager.clickSlot(0, nextTickSlot, 0, SlotActionType.PICKUP, mc.player);
+        assert mc.gameMode != null;
+        mc.gameMode.handleInventoryMouseClick(0, nextTickSlot, 0, ClickType.PICKUP, mc.player);
         nextTickSlot = -1;
     }
 
-    private int searchForTotems(PlayerInventory inventory) {
+    private int searchForTotems(Inventory inventory) {
         totemsLeft = 0;
         int nextTotemSlot = -1;
 
         for (int i = 0; i <= 36; i++) {
-            if (inventory.getStack(i).getItem() == Items.TOTEM_OF_UNDYING) {
+            if (inventory.getItem(i).getItem() == Items.TOTEM_OF_UNDYING) {
                 totemsLeft++;
                 nextTotemSlot = i < 9 ? i + 36 : i;
             }

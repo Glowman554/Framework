@@ -4,19 +4,18 @@ import com.google.common.collect.Sets;
 import de.toxicfox.framework.client.event.EventManager;
 import de.toxicfox.framework.client.event.EventTarget;
 import de.toxicfox.framework.client.event.impl.RenderEvent;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.ChatScreen;
-import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.ChatScreen;
+import net.minecraft.client.gui.screens.inventory.ContainerScreen;
 
 public class HUDManager {
     private static HUDManager instance = null;
     private final Set<Renderer> registeredRenderers = Sets.newHashSet();
-    private final MinecraftClient mc = MinecraftClient.getInstance();
+    private final Minecraft mc = Minecraft.getInstance();
 
     private HUDManager() {
 
@@ -49,14 +48,14 @@ public class HUDManager {
 
     @EventTarget
     public void onRender(RenderEvent e) {
-        if (mc.currentScreen == null || mc.currentScreen instanceof GenericContainerScreen || mc.currentScreen instanceof ChatScreen) {
+        if (mc.screen == null || mc.screen instanceof ContainerScreen || mc.screen instanceof ChatScreen) {
             for (Renderer renderer : registeredRenderers) {
                 callRenderer(e.getDrawContext(), renderer);
             }
         }
     }
 
-    private void callRenderer(DrawContext drawContext, Renderer renderer) {
+    private void callRenderer(GuiGraphics drawContext, Renderer renderer) {
         if (!renderer.isEnabled()) {
             return;
         }

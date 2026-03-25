@@ -5,7 +5,7 @@ import de.toxicfox.config.auto.Saved;
 import de.toxicfox.framework.client.FrameworkClient;
 import de.toxicfox.framework.client.command.CommandEvent;
 import de.toxicfox.framework.client.screen.NewCommandShortcutScreen;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Minecraft;
 
 public class CommandShortcut extends AutoSavable {
     @Saved
@@ -35,8 +35,8 @@ public class CommandShortcut extends AutoSavable {
             NewCommandShortcutScreen.open();
             return false;
         } else {
-            assert MinecraftClient.getInstance().player != null;
-            MinecraftClient.getInstance().player.networkHandler.sendChatCommand(command);
+            assert Minecraft.getInstance().player != null;
+            Minecraft.getInstance().player.connection.sendCommand(command);
         }
         return true;
     }

@@ -10,9 +10,9 @@ import de.toxicfox.framework.client.event.impl.DeathEvent;
 import de.toxicfox.framework.client.hud.ScreenPosition;
 import de.toxicfox.framework.client.mod.ModDraggable;
 import de.toxicfox.framework.mixin.MinecraftServerAccessor;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.network.ServerInfo;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.core.BlockPos;
 import net.shadew.json.JsonNode;
 
 import java.util.Objects;
@@ -26,27 +26,27 @@ public class ModDeathPositionSaver extends ModDraggable {
 
     @Override
     public int getWidth() {
-        return textRenderer.getWidth("New World, minecraft:overworld");
+        return textRenderer.width("New World, minecraft:overworld");
     }
 
     @Override
     public int getHeight() {
-        return textRenderer.fontHeight * 2;
+        return textRenderer.lineHeight * 2;
     }
 
     @Override
-    public void render(DrawContext drawContext, ScreenPosition pos) {
+    public void render(GuiGraphics drawContext, ScreenPosition pos) {
         if (lastDeaths.lastDeaths.length > 0) {
             DeathPosition position = lastDeaths.lastDeaths[lastDeaths.lastDeaths.length - 1];
-            drawContext.drawText(textRenderer, String.format("Death XYZ: %d, %d, %d", position.x, position.y, position.z), pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1, -1, true);
-            drawContext.drawText(textRenderer, String.format(position.address + ", " + position.dimension), pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1 + textRenderer.fontHeight, -1, true);
+            drawContext.drawString(textRenderer, String.format("Death XYZ: %d, %d, %d", position.x, position.y, position.z), pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1, -1, true);
+            drawContext.drawString(textRenderer, String.format(position.address + ", " + position.dimension), pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1 + textRenderer.lineHeight, -1, true);
         }
     }
 
     @Override
-    public void renderDummy(DrawContext drawContext, ScreenPosition pos) {
-        drawContext.drawText(textRenderer, "Death XYZ: 0, 0, 0", pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1, -1, true);
-        drawContext.drawText(textRenderer, "New World, minecraft:overworld", pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1 + textRenderer.fontHeight, -1, true);
+    public void renderDummy(GuiGraphics drawContext, ScreenPosition pos) {
+        drawContext.drawString(textRenderer, "Death XYZ: 0, 0, 0", pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1, -1, true);
+        drawContext.drawString(textRenderer, "New World, minecraft:overworld", pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1 + textRenderer.lineHeight, -1, true);
     }
 
     @Override
@@ -62,14 +62,14 @@ public class ModDeathPositionSaver extends ModDraggable {
     @EventTarget
     public void onDeathEvent(DeathEvent event) {
         assert mc.player != null;
-        assert mc.world != null;
-        ServerInfo info = Objects.requireNonNull(mc.getNetworkHandler()).getServerInfo();
+        assert mc.level != null;
+        ServerData info = Objects.requireNonNull(mc.getConnection()).getServerData();
         if (info != null) {
-            lastDeaths.add(mc.player.getBlockPos(), mc.world.getRegistryKey().getValue().toString(), info.address);
+            lastDeaths.add(mc.player.blockPosition(), mc.level.dimension().identifier().toString(), info.ip);
         } else {
-            MinecraftServerAccessor server = (MinecraftServerAccessor) mc.getServer();
+            MinecraftServerAccessor server = (MinecraftServerAccessor) mc.getSingleplayerServer();
             assert server != null;
-            lastDeaths.add(mc.player.getBlockPos(), mc.world.getRegistryKey().getValue().toString(), server.getSession().getDirectoryName());
+            lastDeaths.add(mc.player.blockPosition(), mc.level.dimension().identifier().toString(), server.getStorageSource().getLevelId());
         }
     }
 

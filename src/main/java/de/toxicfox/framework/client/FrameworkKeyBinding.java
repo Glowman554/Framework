@@ -1,17 +1,17 @@
 package de.toxicfox.framework.client;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import de.toxicfox.framework.client.event.EventManager;
 import de.toxicfox.framework.client.event.EventTarget;
 import de.toxicfox.framework.client.event.impl.TickEvent;
 import de.toxicfox.framework.client.registry.FrameworkRegistries;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.util.InputUtil;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.resources.Identifier;
 
-public class FrameworkKeyBinding extends KeyBinding {
-    public final static Category MODS = Category.create(Identifier.of("framework-mods"));
-    public final static Category MISC = Category.create(Identifier.of("framework-misc"));
-    public final static Category COMMANDS = Category.create(Identifier.of("framework-commands"));
+public class FrameworkKeyBinding extends KeyMapping {
+    public final static Category MODS = Category.register(Identifier.parse("framework-mods"));
+    public final static Category MISC = Category.register(Identifier.parse("framework-misc"));
+    public final static Category COMMANDS = Category.register(Identifier.parse("framework-commands"));
     private Lambda lambda;
     private boolean alreadyPressed = false;
 
@@ -21,7 +21,7 @@ public class FrameworkKeyBinding extends KeyBinding {
         init();
     }
 
-    public FrameworkKeyBinding(String translationKey, InputUtil.Type type, int code, Category category, Lambda lambda) {
+    public FrameworkKeyBinding(String translationKey, InputConstants.Type type, int code, Category category, Lambda lambda) {
         super(translationKey, type, code, category);
         this.lambda = lambda;
         init();
@@ -30,7 +30,7 @@ public class FrameworkKeyBinding extends KeyBinding {
 
     @EventTarget
     public void onTick(TickEvent event) {
-        if (isPressed()) {
+        if (isDown()) {
             if (alreadyPressed) {
                 return;
             }
@@ -42,10 +42,10 @@ public class FrameworkKeyBinding extends KeyBinding {
     }
 
     private void init() {
-        FrameworkRegistries.KEY_BINDINGS.register(getId(), this);
+        FrameworkRegistries.KEY_BINDINGS.register(getName(), this);
         EventManager.register(this);
 
-        FrameworkClient.LOGGER.info("Registered keybinding {}", getId());
+        FrameworkClient.LOGGER.info("Registered keybinding {}", getName());
     }
 
     public void setLambda(Lambda lambda) {

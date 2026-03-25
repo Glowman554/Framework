@@ -2,9 +2,8 @@ package de.toxicfox.framework.client.mod.impl;
 
 import de.toxicfox.framework.client.hud.ScreenPosition;
 import de.toxicfox.framework.client.mod.ModDraggable;
-import net.minecraft.client.gui.DrawContext;
-
 import java.util.Objects;
+import net.minecraft.client.gui.GuiGraphics;
 
 public class ModPingDisplay extends ModDraggable {
     public ModPingDisplay() {
@@ -13,26 +12,26 @@ public class ModPingDisplay extends ModDraggable {
 
     @Override
     public int getWidth() {
-        return textRenderer.getWidth("0 ms");
+        return textRenderer.width("0 ms");
     }
 
     @Override
     public int getHeight() {
-        return textRenderer.fontHeight;
+        return textRenderer.lineHeight;
     }
 
     @Override
-    public void render(DrawContext drawContext, ScreenPosition pos) {
-        if (!mc.isInSingleplayer()) {
-            drawContext.drawText(textRenderer, Objects.requireNonNull(mc.getCurrentServerEntry()).ping + " ms", pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1, -1, true);
+    public void render(GuiGraphics drawContext, ScreenPosition pos) {
+        if (!mc.isLocalServer()) {
+            drawContext.drawString(textRenderer, Objects.requireNonNull(mc.getCurrentServer()).ping + " ms", pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1, -1, true);
         } else {
-            drawContext.drawText(textRenderer, "0 ms", pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1, -1, true);
+            drawContext.drawString(textRenderer, "0 ms", pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1, -1, true);
         }
     }
 
     @Override
-    public void renderDummy(DrawContext drawContext, ScreenPosition pos) {
-        drawContext.drawText(textRenderer, "0 ms", pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1, -1, true);
+    public void renderDummy(GuiGraphics drawContext, ScreenPosition pos) {
+        drawContext.drawString(textRenderer, "0 ms", pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1, -1, true);
     }
 
     @Override

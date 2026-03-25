@@ -1,19 +1,19 @@
 package de.toxicfox.framework.client;
 
 import de.toxicfox.framework.client.utils.WebClient;
-import net.minecraft.client.network.ServerInfo;
+import net.minecraft.client.multiplayer.ServerData;
 import net.shadew.json.Json;
 import net.shadew.json.JsonNode;
 
 import java.util.ArrayList;
 import java.util.Map;
 
-public class ServerInfoFeatured extends ServerInfo {
+public class ServerInfoFeatured extends ServerData {
     private static final ArrayList<ServerInfoFeatured> featuredServers = new ArrayList<>();
 
 
     public ServerInfoFeatured(String name, String address) {
-        super(name, address, ServerType.OTHER);
+        super(name, address, Type.OTHER);
     }
 
     public static void load(String from) {

@@ -11,11 +11,10 @@ import de.toxicfox.framework.client.mod.ModDraggable;
 import de.toxicfox.framework.client.registry.FrameworkRegistries;
 import de.toxicfox.framework.client.telemetry.buildin.TelemetryModCollector;
 import de.toxicfox.framework.client.utils.WebHook;
-import net.minecraft.client.gui.DrawContext;
-
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import net.minecraft.client.gui.GuiGraphics;
 
 @TelemetryModCollector.Disabled
 public class ModQueueNotifier extends ModDraggable {
@@ -34,24 +33,24 @@ public class ModQueueNotifier extends ModDraggable {
 
     @Override
     public int getWidth() {
-        return textRenderer.getWidth("Position: 12");
+        return textRenderer.width("Position: 12");
     }
 
     @Override
     public int getHeight() {
-        return textRenderer.fontHeight;
+        return textRenderer.lineHeight;
     }
 
     @Override
-    public void render(DrawContext drawContext, ScreenPosition pos) {
+    public void render(GuiGraphics drawContext, ScreenPosition pos) {
         if (position != -1) {
-            drawContext.drawText(textRenderer, String.format("Position: %d", position), pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1, -1, true);
+            drawContext.drawString(textRenderer, String.format("Position: %d", position), pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1, -1, true);
         }
     }
 
     @Override
-    public void renderDummy(DrawContext drawContext, ScreenPosition pos) {
-        drawContext.drawText(textRenderer, "Position: 12", pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1, -1, true);
+    public void renderDummy(GuiGraphics drawContext, ScreenPosition pos) {
+        drawContext.drawString(textRenderer, "Position: 12", pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1, -1, true);
     }
 
     public void onChat(String content) {

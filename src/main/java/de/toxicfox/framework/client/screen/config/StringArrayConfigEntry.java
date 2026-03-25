@@ -3,36 +3,35 @@ package de.toxicfox.framework.client.screen.config;
 import de.toxicfox.framework.client.config.Configurable;
 import de.toxicfox.framework.client.mod.Mod;
 import de.toxicfox.framework.client.screen.ModConfigurationScreen;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.Element;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.tooltip.Tooltip;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.EditBoxWidget;
-import net.minecraft.text.Text;
-
 import java.lang.reflect.Field;
 import java.util.List;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.MultiLineEditBox;
+import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
 
 public class StringArrayConfigEntry extends ModConfigurationScreen.ModConfigEntry {
-    private final ButtonWidget buttonWidget;
+    private final Button buttonWidget;
 
-    public StringArrayConfigEntry(Field field, Mod mod, ModConfigurationScreen.ModConfigWidget parent, MinecraftClient client) {
+    public StringArrayConfigEntry(Field field, Mod mod, ModConfigurationScreen.ModConfigWidget parent, Minecraft client) {
         super(field, mod, parent, client);
-        buttonWidget = ButtonWidget.builder(Text.of("Open config"), button -> {
+        buttonWidget = Button.builder(Component.nullToEmpty("Open config"), button -> {
             client.setScreen(new StringArrayConfigScreen(this, parent.parent));
-        }).tooltip(Tooltip.of(Text.of("Click to open config screen"))).dimensions(0, 0, 100, 20).build();
+        }).tooltip(Tooltip.create(Component.nullToEmpty("Click to open config screen"))).bounds(0, 0, 100, 20).build();
     }
 
     @Override
-    public List<? extends Element> children() {
+    public List<? extends GuiEventListener> children() {
         return List.of(buttonWidget);
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
-        super.render(context, mouseX, mouseY, hovered, deltaTicks);
+    public void renderContent(GuiGraphics context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
+        super.renderContent(context, mouseX, mouseY, hovered, deltaTicks);
 
         buttonWidget.setX(this.getContentX() + 100);
         buttonWidget.setY(this.getContentY());
@@ -44,14 +43,14 @@ public class StringArrayConfigEntry extends ModConfigurationScreen.ModConfigEntr
         private final ModConfigurationScreen parent;
 
         public StringArrayConfigScreen(StringArrayConfigEntry entry, ModConfigurationScreen parent) {
-            super(Text.empty());
+            super(Component.empty());
             this.entry = entry;
             this.parent = parent;
         }
 
         @Override
-        public void close() {
-            MinecraftClient.getInstance().setScreen(parent);
+        public void onClose() {
+            Minecraft.getInstance().setScreen(parent);
         }
 
 
@@ -59,20 +58,20 @@ public class StringArrayConfigEntry extends ModConfigurationScreen.ModConfigEntr
         protected void init() {
             super.init();
 
-            EditBoxWidget editBoxWidget = addDrawableChild(EditBoxWidget.builder().x(0).y(20).build(textRenderer, width, height -40, Text.empty()));
+            MultiLineEditBox editBoxWidget = addRenderableWidget(MultiLineEditBox.builder().setX(0).setY(20).build(font, width, height -40, Component.empty()));
 
             try {
                 StringBuilder text = new StringBuilder();
                 for (String entry : (String[]) entry.field.get(entry.mod)) {
                     text.append(entry).append("\n");
                 }
-                editBoxWidget.setText(text.toString());
+                editBoxWidget.setValue(text.toString());
             } catch (IllegalAccessException e) {
                 throw new RuntimeException(e);
             }
 
-            editBoxWidget.setMaxLength(Integer.MAX_VALUE);
-            editBoxWidget.setChangeListener(string -> {
+            editBoxWidget.setCharacterLimit(Integer.MAX_VALUE);
+            editBoxWidget.setValueListener(string -> {
                 try {
                     if (string.isEmpty()) {
                         entry.field.set(entry.mod, new String[]{});
@@ -85,14 +84,14 @@ public class StringArrayConfigEntry extends ModConfigurationScreen.ModConfigEntr
                 entry.mod.save();
             });
 
-            addDrawableChild(ButtonWidget.builder(Text.of("Done"), button -> close()).dimensions(width / 2 - 50, height - 20, 100, 20).build());
+            addRenderableWidget(Button.builder(Component.nullToEmpty("Done"), button -> onClose()).bounds(width / 2 - 50, height - 20, 100, 20).build());
         }
 
         @Override
-        public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
             super.render(context, mouseX, mouseY, delta);
             String text = entry.field.getAnnotation(Configurable.class).text();
-            context.drawTextWithShadow(textRenderer, text, width / 2 - textRenderer.getWidth(text) / 2, 1, -1);
+            context.drawString(font, text, width / 2 - font.width(text) / 2, 1, -1);
         }
     }
 }

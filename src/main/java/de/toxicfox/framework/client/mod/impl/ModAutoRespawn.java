@@ -18,7 +18,7 @@ public class ModAutoRespawn extends Mod {
     @EventTarget
     public void onDeathEvent(DeathEvent event) {
         assert mc.player != null;
-        mc.player.requestRespawn();
+        mc.player.respawn();
     }
 
     @Override
