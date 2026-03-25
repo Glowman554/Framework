@@ -7,7 +7,7 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.MultiLineEditBox;
 import net.minecraft.client.gui.components.Tooltip;
@@ -17,6 +17,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
+
 
 public class BlockArrayConfigEntry extends ModConfigurationScreen.ModConfigEntry {
     private final Button buttonWidget;
@@ -34,12 +35,12 @@ public class BlockArrayConfigEntry extends ModConfigurationScreen.ModConfigEntry
     }
 
     @Override
-    public void renderContent(GuiGraphics context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
-        super.renderContent(context, mouseX, mouseY, hovered, deltaTicks);
+    public void extractContent(GuiGraphicsExtractor graphics, int mouseX, int mouseY, boolean hovered, float a) {
+        super.extractContent(graphics, mouseX, mouseY, hovered, a);
 
         buttonWidget.setX(this.getContentX() + 100);
         buttonWidget.setY(this.getContentY());
-        buttonWidget.render(context, mouseX, mouseY, deltaTicks);
+        buttonWidget.extractRenderState(graphics, mouseX, mouseY, a);
     }
 
     private static class BlockArrayConfigScreen extends Screen {
@@ -92,10 +93,11 @@ public class BlockArrayConfigEntry extends ModConfigurationScreen.ModConfigEntry
         }
 
         @Override
-        public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
-            super.render(context, mouseX, mouseY, delta);
+        public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+            super.extractRenderState(graphics, mouseX, mouseY, a);
+
             String text = entry.field.getAnnotation(Configurable.class).text();
-            context.drawString(font, text, width / 2 - font.width(text) / 2, 1, -1);
+            graphics.text(font, text, width / 2 - font.width(text) / 2, 1, -1);
         }
     }
 }

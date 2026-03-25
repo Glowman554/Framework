@@ -4,11 +4,11 @@ import de.toxicfox.framework.client.event.EventTarget;
 import de.toxicfox.framework.client.event.impl.ClientPlayerTickEvent;
 import de.toxicfox.framework.client.hud.ScreenPosition;
 import de.toxicfox.framework.client.mod.ModDraggable;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.ContainerInput;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
@@ -27,13 +27,13 @@ public class ModAutoTotem extends ModDraggable {
     }
 
     @Override
-    public void render(GuiGraphics drawContext, ScreenPosition pos) {
-        drawContext.drawString(textRenderer, totemsLeft + " totems left", pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1, -1, true);
+    public void render(GuiGraphicsExtractor drawContext, ScreenPosition pos) {
+        drawContext.text(textRenderer, totemsLeft + " totems left", pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1, -1, true);
     }
 
     @Override
-    public void renderDummy(GuiGraphics drawContext, ScreenPosition pos) {
-        drawContext.drawString(textRenderer, "11 totems left", pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1, -1, true);
+    public void renderDummy(GuiGraphicsExtractor drawContext, ScreenPosition pos) {
+        drawContext.text(textRenderer, "11 totems left", pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1, -1, true);
     }
 
     @Override
@@ -84,8 +84,8 @@ public class ModAutoTotem extends ModDraggable {
         boolean offhandEmpty = offhandStack.isEmpty();
 
         assert mc.gameMode != null;
-        mc.gameMode.handleInventoryMouseClick(0, nextTotemSlot, 0, ClickType.PICKUP, mc.player);
-        mc.gameMode.handleInventoryMouseClick(0, 45, 0, ClickType.PICKUP, mc.player);
+        mc.gameMode.handleContainerInput(mc.player.inventoryMenu.containerId, nextTotemSlot, 0, ContainerInput.PICKUP, mc.player);
+        mc.gameMode.handleContainerInput(mc.player.inventoryMenu.containerId, 45, 0, ContainerInput.PICKUP, mc.player);
 
 
         if (!offhandEmpty) {
@@ -99,7 +99,7 @@ public class ModAutoTotem extends ModDraggable {
         }
 
         assert mc.gameMode != null;
-        mc.gameMode.handleInventoryMouseClick(0, nextTickSlot, 0, ClickType.PICKUP, mc.player);
+        mc.gameMode.handleContainerInput(mc.player.inventoryMenu.containerId, nextTickSlot, 0, ContainerInput.PICKUP, mc.player);
         nextTickSlot = -1;
     }
 

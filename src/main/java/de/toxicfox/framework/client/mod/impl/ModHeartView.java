@@ -2,7 +2,7 @@ package de.toxicfox.framework.client.mod.impl;
 
 import de.toxicfox.framework.client.hud.ScreenPosition;
 import de.toxicfox.framework.client.mod.ModDraggable;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public class ModHeartView extends ModDraggable {
 
@@ -17,22 +17,22 @@ public class ModHeartView extends ModDraggable {
     }
 
     @Override
-    public void render(GuiGraphics drawContext, ScreenPosition pos) {
+    public void render(GuiGraphicsExtractor drawContext, ScreenPosition pos) {
         int i = 0;
-        drawContext.drawString(textRenderer,
+        drawContext.text(textRenderer,
                 String.format("Health: %d/%d", (int) mc.player.getHealth(), (int) mc.player.getMaxHealth()),
                 pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1 + textRenderer.lineHeight * i++, -1, true);
-        drawContext.drawString(textRenderer,
+        drawContext.text(textRenderer,
                 String.format("Oxygen: %d/%d", (int) mc.player.getAirSupply(), (int) mc.player.getMaxAirSupply()),
                 pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1 + textRenderer.lineHeight * i++, -1, true);
     }
 
     @Override
-    public void renderDummy(GuiGraphics drawContext, ScreenPosition pos) {
+    public void renderDummy(GuiGraphicsExtractor drawContext, ScreenPosition pos) {
         int i = 0;
-        drawContext.drawString(textRenderer, "Health: 20/20", pos.getAbsoluteX() + 1,
+        drawContext.text(textRenderer, "Health: 20/20", pos.getAbsoluteX() + 1,
                 pos.getAbsoluteY() + 1 + textRenderer.lineHeight * i++, -1, true);
-        drawContext.drawString(textRenderer, "Oxygen: 20/20", pos.getAbsoluteX() + 1,
+        drawContext.text(textRenderer, "Oxygen: 20/20", pos.getAbsoluteX() + 1,
                 pos.getAbsoluteY() + 1 + textRenderer.lineHeight * i++, -1, true);
     }
 

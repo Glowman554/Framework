@@ -1,15 +1,15 @@
 package de.toxicfox.framework.client.hud;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public interface Renderer {
     int getWidth();
 
     int getHeight();
 
-    void render(GuiGraphics drawContext, ScreenPosition pos);
+    void render(GuiGraphicsExtractor drawContext, ScreenPosition pos);
 
-    default void renderDummy(GuiGraphics drawContext, ScreenPosition pos) {
+    default void renderDummy(GuiGraphicsExtractor drawContext, ScreenPosition pos) {
         render(drawContext, pos);
     }
 

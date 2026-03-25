@@ -1,7 +1,7 @@
 package de.toxicfox.framework.client.event.impl;
 
 import de.toxicfox.framework.client.event.Event;
-import net.minecraft.client.GuiMessage;
+import net.minecraft.client.multiplayer.chat.GuiMessage;
 
 public class ChatEvent extends Event {
     private final GuiMessage message;

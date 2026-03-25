@@ -1,4 +1,4 @@
-accessWidener v2 named
+accessWidener v2 official
 accessible method net/minecraft/client/quickplay/QuickPlayLog <init> (Ljava/lang/String;)V
 accessible method net/minecraft/client/gui/screens/Screen addRenderableWidget (Lnet/minecraft/client/gui/components/events/GuiEventListener;)Lnet/minecraft/client/gui/components/events/GuiEventListener;
 accessible class net/minecraft/client/Minecraft$GameLoadCookie

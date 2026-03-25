@@ -4,7 +4,6 @@ import de.toxicfox.framework.client.mod.impl.ModXRay;
 import de.toxicfox.framework.client.registry.FrameworkRegistries;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
@@ -15,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Pseudo
 @Mixin(targets = "net.caffeinemc.mods.sodium.client.render.chunk.compile.pipeline.DefaultFluidRenderer", remap = false)
 public class DefaultFluidRendererMixin {
+    /*
     @Inject(at = @At("HEAD"), method = "isSideExposed", cancellable = true)
     private void isSideExposed(BlockAndTintGetter world, int x, int y, int z, Direction dir, float height, CallbackInfoReturnable<Boolean> cir) {
         BlockPos pos = new BlockPos(x, y, z);
@@ -33,4 +33,5 @@ public class DefaultFluidRendererMixin {
 
         }
     }
+     */
 }

@@ -14,7 +14,7 @@ import net.minecraft.network.chat.Component;
 
 public abstract class Mod extends AutoSavable {
     protected Minecraft mc;
-    protected Font textRenderer;
+    public Font textRenderer;
     private ConfigManager configManager;
 
     private boolean eventManagerRegistered = false;

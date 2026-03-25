@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Optional;
 import java.util.function.Predicate;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
@@ -42,24 +42,24 @@ public class HUDConfigScreen extends Screen {
     }
 
     @Override
-    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
-        // super.renderBackground(context, mouseX, mouseY, delta);
+    public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+        super.extractRenderState(graphics, mouseX, mouseY, a);
 
-        this.drawHollowRect(context, 0, 0, this.width - 1, this.height - 1, 0xFFFF0000);
+        this.drawHollowRect(graphics, 0, 0, this.width - 1, this.height - 1, 0xFFFF0000);
 
         for (Renderer renderer : renderers.keySet()) {
             ScreenPosition pos = renderers.get(renderer);
-            renderer.renderDummy(context, pos);
-            this.drawHollowRect(context, pos.getAbsoluteX(), pos.getAbsoluteY(), renderer.getWidth(), renderer.getHeight(), 0xFF00FFFF);
+            renderer.renderDummy(graphics, pos);
+            this.drawHollowRect(graphics, pos.getAbsoluteX(), pos.getAbsoluteY(), renderer.getWidth(), renderer.getHeight(), 0xFF00FFFF);
         }
     }
 
-    private void drawHollowRect(GuiGraphics drawContext, int absoluteX, int absoluteY, int width, int height, int color) {
-        drawContext.hLine(absoluteX, absoluteX + width, absoluteY, color);
-        drawContext.hLine(absoluteX, absoluteX + width, absoluteY + height, color);
+    private void drawHollowRect(GuiGraphicsExtractor drawContext, int absoluteX, int absoluteY, int width, int height, int color) {
+        drawContext.horizontalLine(absoluteX, absoluteX + width, absoluteY, color);
+        drawContext.horizontalLine(absoluteX, absoluteX + width, absoluteY + height, color);
 
-        drawContext.vLine(absoluteX, absoluteY + height, absoluteY, color);
-        drawContext.vLine(absoluteX + width, absoluteY + height, absoluteY, color);
+        drawContext.verticalLine(absoluteX, absoluteY + height, absoluteY, color);
+        drawContext.verticalLine(absoluteX + width, absoluteY + height, absoluteY, color);
     }
 
 

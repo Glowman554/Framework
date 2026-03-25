@@ -2,7 +2,7 @@ package de.toxicfox.framework.client.mod.impl;
 
 import de.toxicfox.framework.client.hud.ScreenPosition;
 import de.toxicfox.framework.client.mod.ModDraggable;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public class ModFpsDisplay extends ModDraggable {
     public ModFpsDisplay() {
@@ -20,13 +20,13 @@ public class ModFpsDisplay extends ModDraggable {
     }
 
     @Override
-    public void render(GuiGraphics drawContext, ScreenPosition pos) {
-        drawContext.drawString(textRenderer, "FPS: " + mc.getFps(), pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1, -1, true);
+    public void render(GuiGraphicsExtractor drawContext, ScreenPosition pos) {
+        drawContext.text(textRenderer, "FPS: " + mc.getFps(), pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1, -1, true);
     }
 
     @Override
-    public void renderDummy(GuiGraphics drawContext, ScreenPosition pos) {
-        drawContext.drawString(textRenderer, "FPS: 120", pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1, -1, true);
+    public void renderDummy(GuiGraphicsExtractor drawContext, ScreenPosition pos) {
+        drawContext.text(textRenderer, "FPS: 120", pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1, -1, true);
     }
 
     @Override

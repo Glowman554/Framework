@@ -2,7 +2,6 @@ package de.toxicfox.framework.mixin;
 
 import de.toxicfox.framework.client.mod.impl.ModForceLANPort;
 import de.toxicfox.framework.client.registry.FrameworkRegistries;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.ShareToLanScreen;
@@ -48,16 +47,6 @@ public class OpenToLanScreenMixin  {
             if (FrameworkRegistries.MODS.get(ModForceLANPort.class).isEnabled()) {
                 port = getPort();
                 cir.setReturnValue(null);
-            }
-        } catch (IllegalArgumentException ignored) {
-        }
-    }
-
-    @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;drawCenteredString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;III)V", ordinal = 2), cancellable = true)
-    public void render(GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        try {
-            if (FrameworkRegistries.MODS.get(ModForceLANPort.class).isEnabled()) {
-                ci.cancel();
             }
         } catch (IllegalArgumentException ignored) {
         }

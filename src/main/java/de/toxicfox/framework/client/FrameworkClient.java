@@ -181,7 +181,6 @@ public class FrameworkClient implements ClientModInitializer {
         register(new ModAutoRespawn());
         register(new ModDeathPositionSaver());
         register(new ModAutoLeave());
-        register(new ModTips());
         register(new ModTwerk());
         register(new ModHeartView());
         if (config.enableLegacyPiShock) {

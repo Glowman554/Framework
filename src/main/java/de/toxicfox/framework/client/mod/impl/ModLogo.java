@@ -5,7 +5,7 @@ import de.toxicfox.framework.client.mod.ModDraggable;
 import java.util.Arrays;
 import java.util.Collections;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 
@@ -33,13 +33,13 @@ public class ModLogo extends ModDraggable {
     }
 
     @Override
-    public void render(GuiGraphics drawContext, ScreenPosition pos) {
+    public void render(GuiGraphicsExtractor drawContext, ScreenPosition pos) {
         int size = message.length * textRenderer.lineHeight;
 
         drawContext.blit(RenderPipelines.GUI_TEXTURED, logo, pos.getAbsoluteX(), pos.getAbsoluteY(), 0, 0, size, size, size, size);
 
         for (int i = 0; i < message.length; i++) {
-            drawContext.drawString(textRenderer, message[i], pos.getAbsoluteX() + size + 1, pos.getAbsoluteY() + 1 + textRenderer.lineHeight * i, -1, true);
+            drawContext.text(textRenderer, message[i], pos.getAbsoluteX() + size + 1, pos.getAbsoluteY() + 1 + textRenderer.lineHeight * i, -1, true);
         }
     }
 

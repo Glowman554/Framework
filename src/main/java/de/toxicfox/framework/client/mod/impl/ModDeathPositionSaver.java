@@ -10,7 +10,7 @@ import de.toxicfox.framework.client.event.impl.DeathEvent;
 import de.toxicfox.framework.client.hud.ScreenPosition;
 import de.toxicfox.framework.client.mod.ModDraggable;
 import de.toxicfox.framework.mixin.MinecraftServerAccessor;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.core.BlockPos;
 import net.shadew.json.JsonNode;
@@ -35,18 +35,18 @@ public class ModDeathPositionSaver extends ModDraggable {
     }
 
     @Override
-    public void render(GuiGraphics drawContext, ScreenPosition pos) {
+    public void render(GuiGraphicsExtractor drawContext, ScreenPosition pos) {
         if (lastDeaths.lastDeaths.length > 0) {
             DeathPosition position = lastDeaths.lastDeaths[lastDeaths.lastDeaths.length - 1];
-            drawContext.drawString(textRenderer, String.format("Death XYZ: %d, %d, %d", position.x, position.y, position.z), pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1, -1, true);
-            drawContext.drawString(textRenderer, String.format(position.address + ", " + position.dimension), pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1 + textRenderer.lineHeight, -1, true);
+            drawContext.text(textRenderer, String.format("Death XYZ: %d, %d, %d", position.x, position.y, position.z), pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1, -1, true);
+            drawContext.text(textRenderer, String.format(position.address + ", " + position.dimension), pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1 + textRenderer.lineHeight, -1, true);
         }
     }
 
     @Override
-    public void renderDummy(GuiGraphics drawContext, ScreenPosition pos) {
-        drawContext.drawString(textRenderer, "Death XYZ: 0, 0, 0", pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1, -1, true);
-        drawContext.drawString(textRenderer, "New World, minecraft:overworld", pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1 + textRenderer.lineHeight, -1, true);
+    public void renderDummy(GuiGraphicsExtractor drawContext, ScreenPosition pos) {
+        drawContext.text(textRenderer, "Death XYZ: 0, 0, 0", pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1, -1, true);
+        drawContext.text(textRenderer, "New World, minecraft:overworld", pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1 + textRenderer.lineHeight, -1, true);
     }
 
     @Override

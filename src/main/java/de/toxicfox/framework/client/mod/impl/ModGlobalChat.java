@@ -10,7 +10,6 @@ import de.toxicfox.framework.client.event.impl.TickEvent;
 import de.toxicfox.framework.client.mod.Mod;
 import de.toxicfox.framework.client.utils.Memoizer;
 import de.toxicfox.framework.client.utils.WebClient;
-import net.minecraft.client.GuiMessageTag;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.shadew.json.Json;
@@ -154,7 +153,7 @@ public class ModGlobalChat extends Mod {
     public void onTick(TickEvent event) {
         Message message;
         while ((message = messageQueue.poll()) != null) {
-            Minecraft.getInstance().gui.getChat().addMessage(Component.nullToEmpty(String.format("§7[Global] §3<%s> §r%s", message.username, message.message)), null, GuiMessageTag.chatNotSecure());
+            Minecraft.getInstance().gui.getChat().addClientSystemMessage(Component.nullToEmpty(String.format("§7[Global] §3<%s> §r%s", message.username, message.message)));
         }
     }
 

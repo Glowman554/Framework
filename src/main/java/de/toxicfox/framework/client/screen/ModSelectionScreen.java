@@ -8,7 +8,7 @@ import java.lang.reflect.Field;
 import java.util.Comparator;
 import java.util.List;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ContainerObjectSelectionList;
 import net.minecraft.client.gui.components.Tooltip;
@@ -122,19 +122,19 @@ public class ModSelectionScreen extends Screen {
         }
 
         @Override
-        public void renderContent(GuiGraphics context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
+        public void extractContent(GuiGraphicsExtractor graphics, int mouseX, int mouseY, boolean hovered, float a) {
             toggleButton.setX(this.getContentX() + 90);
             toggleButton.setY(this.getContentY());
-            toggleButton.render(context, mouseX, mouseY, deltaTicks);
+            toggleButton.extractRenderState(graphics, mouseX, mouseY, a);
 
             if (isConfigurable) {
                 configButton.setX(this.getContentX() + 90 + 75 + 25);
                 configButton.setY(this.getContentY());
-                configButton.render(context, mouseX, mouseY, deltaTicks);
+                configButton.extractRenderState(graphics, mouseX, mouseY, a);
             }
 
             String renderName = mod.getName();
-            context.drawString(Minecraft.getInstance().font, renderName, this.getContentX() + 90 - parent.maxKeyNameLength, this.getContentY() + getContentHeight() / 2, -1, true);
+            graphics.text(Minecraft.getInstance().font, renderName, this.getContentX() + 90 - parent.maxKeyNameLength, this.getContentY() + getContentHeight() / 2, -1, true);
         }
     }
 }

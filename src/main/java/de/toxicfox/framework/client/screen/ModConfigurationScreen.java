@@ -8,7 +8,7 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.ContainerObjectSelectionList;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.screens.Screen;
@@ -43,13 +43,15 @@ public class ModConfigurationScreen extends Screen {
         addRenderableWidget(new ModConfigWidget(mod, Minecraft.getInstance(), width, height, 20, 20, this));
     }
 
+
     @Override
-    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
-        super.render(context, mouseX, mouseY, delta);
+    public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+        super.extractRenderState(graphics, mouseX, mouseY, a);
 
         String text = mod.getName() + " configuration";
-        context.drawString(font, text, width / 2 - font.width(text) / 2, 1, -1);
+        graphics.text(font, text, width / 2 - font.width(text) / 2, 1, -1);
     }
+
 
     public interface ModConfigEntryCreator {
         ModConfigEntry create(Field field, Mod mod, ModConfigWidget parent, Minecraft client);
@@ -73,7 +75,6 @@ public class ModConfigurationScreen extends Screen {
                     }
                 }
             }
-
         }
 
         @Override
@@ -107,8 +108,8 @@ public class ModConfigurationScreen extends Screen {
         }
 
         @Override
-        public void renderContent(GuiGraphics context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
-            context.drawString(Minecraft.getInstance().font, title, this.getContentX() + 90 - parent.maxKeyNameLength, this.getContentY() + getContentHeight() / 2, -1, true);
+        public void extractContent(GuiGraphicsExtractor graphics, int mouseX, int mouseY, boolean hovered, float a) {
+            graphics.text(Minecraft.getInstance().font, title, this.getContentX() + 90 - parent.maxKeyNameLength, this.getContentY() + getContentHeight() / 2, -1, true);
         }
     }
 }

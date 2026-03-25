@@ -5,7 +5,7 @@ import de.toxicfox.framework.client.FrameworkClient;
 import de.toxicfox.framework.client.commandshortcuts.CommandShortcut;
 import java.util.List;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ContainerObjectSelectionList;
 import net.minecraft.client.gui.components.Tooltip;
@@ -80,14 +80,14 @@ public class CommandShortcutScreen extends Screen {
         }
 
         @Override
-        public void renderContent(GuiGraphics context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
+        public void extractContent(GuiGraphicsExtractor graphics, int mouseX, int mouseY, boolean hovered, float a) {
             executeButton.setX(this.getContentX());
             executeButton.setY(this.getContentY());
-            executeButton.render(context, mouseX, mouseY, deltaTicks);
+            executeButton.extractRenderState(graphics, mouseX, mouseY, a);
 
             deleteButton.setX(this.getContentX() + 155);
             deleteButton.setY(this.getContentY());
-            deleteButton.render(context, mouseX, mouseY, deltaTicks);
+            deleteButton.extractRenderState(graphics, mouseX, mouseY, a);
         }
     }
 

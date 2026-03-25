@@ -5,7 +5,7 @@ import de.toxicfox.framework.client.screen.ModConfigurationScreen;
 import java.lang.reflect.Field;
 import java.util.List;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.network.chat.Component;
@@ -39,13 +39,12 @@ public class StringConfigEntry extends ModConfigurationScreen.ModConfigEntry {
         return List.of(textFieldWidget);
     }
 
-
     @Override
-    public void renderContent(GuiGraphics context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
-        super.renderContent(context, mouseX, mouseY, hovered, deltaTicks);
+    public void extractContent(GuiGraphicsExtractor graphics, int mouseX, int mouseY, boolean hovered, float a) {
+        super.extractContent(graphics, mouseX, mouseY, hovered, a);
 
         textFieldWidget.setX(this.getContentX() + 100);
         textFieldWidget.setY(this.getContentY());
-        textFieldWidget.render(context, mouseX, mouseY, deltaTicks);
+        textFieldWidget.extractWidgetRenderState(graphics, mouseX, mouseY, a);
     }
 }

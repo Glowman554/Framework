@@ -2,7 +2,7 @@ package de.toxicfox.framework.client.mod.impl;
 
 import de.toxicfox.framework.client.hud.ScreenPosition;
 import de.toxicfox.framework.client.mod.ModDraggable;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public class ModMemoryDisplay extends ModDraggable {
     @Override
@@ -16,14 +16,14 @@ public class ModMemoryDisplay extends ModDraggable {
     }
 
     @Override
-    public void render(GuiGraphics drawContext, ScreenPosition pos) {
+    public void render(GuiGraphicsExtractor drawContext, ScreenPosition pos) {
         Runtime runtime = Runtime.getRuntime();
         long i = Runtime.getRuntime().maxMemory();
         long j = Runtime.getRuntime().totalMemory();
         long k = Runtime.getRuntime().freeMemory();
         long l = j - k;
 
-        drawContext.drawString(textRenderer, String.format("Mem: %d%% %d/%dMB", l * 100L / i, bytesToMb(l), bytesToMb(i)), pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1, -1, true);
+        drawContext.text(textRenderer, String.format("Mem: %d%% %d/%dMB", l * 100L / i, bytesToMb(l), bytesToMb(i)), pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1, -1, true);
     }
 
     private long bytesToMb(long bytes) {
@@ -31,8 +31,8 @@ public class ModMemoryDisplay extends ModDraggable {
     }
 
     @Override
-    public void renderDummy(GuiGraphics drawContext, ScreenPosition pos) {
-        drawContext.drawString(textRenderer, "Memory: 100% 512/512MB", pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1, -1, true);
+    public void renderDummy(GuiGraphicsExtractor drawContext, ScreenPosition pos) {
+        drawContext.text(textRenderer, "Memory: 100% 512/512MB", pos.getAbsoluteX() + 1, pos.getAbsoluteY() + 1, -1, true);
     }
 
     @Override

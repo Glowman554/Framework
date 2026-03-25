@@ -3,7 +3,7 @@ package de.toxicfox.framework.client.screen;
 import de.toxicfox.framework.client.FrameworkClient;
 import de.toxicfox.framework.client.commandshortcuts.CommandShortcut;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
@@ -41,11 +41,10 @@ public class NewCommandShortcutScreen extends Screen {
     }
 
     @Override
-    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
-        super.render(context, mouseX, mouseY, delta);
+    public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+        super.extractRenderState(graphics, mouseX, mouseY, a);
 
-        context.drawString(this.font, ENTER_NAME_TEXT, this.width / 2 - 100 + 1, 53, 10526880);
-        context.drawString(this.font, ENTER_COMMAND_TEXT, this.width / 2 - 100 + 1, 94, 10526880);
+        graphics.text(this.font, ENTER_NAME_TEXT, this.width / 2 - 100 + 1, 53, 10526880);
+        graphics.text(this.font, ENTER_COMMAND_TEXT, this.width / 2 - 100 + 1, 94, 10526880);
     }
-
 }

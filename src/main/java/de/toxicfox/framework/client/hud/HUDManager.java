@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.client.gui.screens.inventory.ContainerScreen;
 
@@ -55,7 +55,7 @@ public class HUDManager {
         }
     }
 
-    private void callRenderer(GuiGraphics drawContext, Renderer renderer) {
+    private void callRenderer(GuiGraphicsExtractor drawContext, Renderer renderer) {
         if (!renderer.isEnabled()) {
             return;
         }

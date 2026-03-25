@@ -6,11 +6,12 @@ import de.toxicfox.framework.client.screen.TestButtonExecutor;
 import java.lang.reflect.Field;
 import java.util.List;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.network.chat.Component;
+
 
 public class TestButtonConfigEntry extends ModConfigurationScreen.ModConfigEntry{
     private final Button buttonWidget;
@@ -32,11 +33,12 @@ public class TestButtonConfigEntry extends ModConfigurationScreen.ModConfigEntry
         return List.of(buttonWidget);
     }
 
-
     @Override
-    public void renderContent(GuiGraphics context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
+    public void extractContent(GuiGraphicsExtractor graphics, int mouseX, int mouseY, boolean hovered, float a) {
+        super.extractContent(graphics, mouseX, mouseY, hovered, a);
+
         buttonWidget.setX(this.getContentX() + 100);
         buttonWidget.setY(this.getContentY());
-        buttonWidget.render(context, mouseX, mouseY, deltaTicks);
+        buttonWidget.extractRenderState(graphics, mouseX, mouseY, a);
     }
 }

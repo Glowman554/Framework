@@ -1,16 +1,16 @@
 package de.toxicfox.framework.client.event.impl;
 
 import de.toxicfox.framework.client.event.Event;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public class RenderEvent extends Event {
-    private final GuiGraphics drawContext;
+    private final GuiGraphicsExtractor drawContext;
 
-    public RenderEvent(GuiGraphics drawContext) {
+    public RenderEvent(GuiGraphicsExtractor drawContext) {
         this.drawContext = drawContext;
     }
 
-    public GuiGraphics getDrawContext() {
+    public GuiGraphicsExtractor getDrawContext() {
         return drawContext;
     }
 }
